@@ -1,337 +1,46 @@
-\chapter{CƠ SỞ LÝ THUYẾT}
+% \begin{center}
+%     \textbf{\MakeUppercase{Lời mở đầu}}
+% \end{center}
+\chapter{TỔNG QUAN HỆ THỐNG}
+\addcontentsline{toc}{chapter}{Tổng quan hệ thống}
 
-\section{Công nghệ trí tuệ nhân tạo và học sâu}
+\section{ Lý do chọn đề tài}
+Trong bối cảnh xã hội hiện đại, nhu cầu làm đẹp và chăm sóc cá nhân, đặc biệt là dịch vụ cắt tóc – tạo kiểu ngày càng gia tăng, nhất là tại các đô thị lớn. Tuy nhiên, phần lớn các tiệm cắt tóc hiện nay vẫn quản lý lịch hẹn theo phương thức thủ công như ghi chép sổ sách, nhắn tin hoặc nhận đặt lịch trực tiếp. Điều này dẫn đến nhiều hạn chế như trùng lịch hẹn, khó kiểm soát số lượng khách, mất nhiều thời gian chờ đợi, gây ảnh hưởng đến trải nghiệm của khách hàng cũng như hiệu quả vận hành của cửa tiệm.
 
-\subsection{Giới thiệu về Deep Learning}
+Bên cạnh đó, sự phát triển mạnh mẽ của công nghệ thông tin và trí tuệ nhân tạo (AI) đã tạo điều kiện thuận lợi cho việc xây dựng các hệ thống dịch vụ thông minh, tự động hóa và cá nhân hóa trải nghiệm người dùng. Đặc biệt, AI có khả năng hỗ trợ gợi ý kiểu tóc phù hợp dựa trên khuôn mặt, sở thích và lịch sử sử dụng dịch vụ, góp phần nâng cao chất lượng phục vụ và sự hài lòng của khách hàng.
 
-Deep Learning (Học sâu) là một nhánh quan trọng của Machine Learning, sử dụng các mạng nơ-ron nhân tạo nhiều lớp để tự động học và trích xuất đặc trưng từ dữ liệu. Với khả năng xử lý dữ liệu lớn và phức tạp, Deep Learning đã đạt được nhiều thành tựu nổi bật trong các lĩnh vực như thị giác máy tính, xử lý ngôn ngữ tự nhiên, nhận dạng giọng nói và các hệ thống tư vấn thông minh.
+Xuất phát từ những vấn đề thực tiễn nêu trên, đề tài \textbf{``Xây dựng hệ thống đặt lịch và quản lý tiệm tóc tích hợp trí tuệ nhân tạo''} được lựa chọn nhằm nghiên cứu và phát triển một hệ thống hỗ trợ đặt lịch trực tuyến, quản lý khách hàng và ứng dụng AI trong tư vấn kiểu tóc, góp phần hiện đại hóa hoạt động quản lý tiệm cắt tóc và nâng cao trải nghiệm người dùng.
 
-Trong lĩnh vực thị giác máy tính, Deep Learning cho phép máy tính phân tích và hiểu nội dung hình ảnh, từ đó thực hiện các nhiệm vụ như nhận diện khuôn mặt, phân vùng ảnh, phân loại đặc trưng và sinh ảnh mới. Đây là nền tảng quan trọng cho các ứng dụng tạo kiểu tóc, phân tích khuôn mặt và cá nhân hóa trải nghiệm người dùng trong đề tài.
+\section{ Tình hình nghiên cứu}
+Trong những năm gần đây, nhiều nền tảng đặt lịch trực tuyến đã được phát triển và ứng dụng trong các lĩnh vực như y tế, làm đẹp và dịch vụ cá nhân. Một số hệ thống cho phép khách hàng đặt lịch qua website hoặc ứng dụng di động, giúp giảm tải công việc quản lý thủ công cho cửa hàng.
 
-Quá trình huấn luyện mô hình Deep Learning thường bao gồm các bước chính sau:
+Tuy nhiên, phần lớn các phần mềm hiện có chủ yếu tập trung vào chức năng đặt lịch cơ bản, chưa tích hợp sâu các công nghệ trí tuệ nhân tạo. Việc tư vấn kiểu tóc vẫn phụ thuộc hoàn toàn vào kinh nghiệm của thợ cắt tóc, chưa tận dụng dữ liệu khuôn mặt, sở thích cá nhân và lịch sử sử dụng dịch vụ của khách hàng.
+
+Tại Việt Nam, nhiều tiệm cắt tóc nhỏ lẻ chưa có hệ thống quản lý lịch hẹn chuyên nghiệp, trong khi nhu cầu đặt lịch online ngày càng tăng, đặc biệt là từ nhóm khách hàng trẻ. Điều này cho thấy vẫn còn nhiều tiềm năng để phát triển một phần mềm đặt lịch cắt tóc thông minh, tích hợp AI với chi phí hợp lý, phù hợp với điều kiện thực tế trong nước.
+
+Vì vậy, việc nghiên cứu và xây dựng phần mềm đặt lịch cắt tóc tích hợp trí tuệ nhân tạo là cần thiết, có ý nghĩa cả về mặt khoa học lẫn thực tiễn.
+
+\section{ Nhiệm vụ nghiên cứu}
+Để đạt được mục tiêu đề ra, đề tài tập trung thực hiện các nhiệm vụ sau:
 \begin{itemize}
-    \item Chuẩn bị dữ liệu: Thu thập, tiền xử lý và gán nhãn dữ liệu huấn luyện.
-    \item Xây dựng mô hình: Thiết kế kiến trúc mạng nơ-ron và khởi tạo tham số.
-    \item Lan truyền xuôi (Forward propagation): Tính toán đầu ra dự đoán.
-    \item Tính toán hàm mất mát (Loss function): Đánh giá sai lệch giữa dự đoán và nhãn thực.
-    \item Lan truyền ngược (Backpropagation): Cập nhật trọng số thông qua thuật toán tối ưu.
-    \item Đánh giá và tinh chỉnh mô hình: Đánh giá hiệu suất và điều chỉnh siêu tham số.
+    \item Khảo sát và phân tích thực trạng quản lý lịch hẹn tại các tiệm cắt tóc hiện nay.
+    \item Nghiên cứu các công nghệ liên quan đến hệ thống đặt lịch trực tuyến và trí tuệ nhân tạo.
+    \item Phân tích yêu cầu chức năng và phi chức năng của phần mềm đặt lịch cắt tóc.
+    \item Thiết kế kiến trúc hệ thống, cơ sở dữ liệu và giao diện người dùng.
+    \item Xây dựng phần mềm đặt lịch cắt tóc tích hợp AI tư vấn kiểu tóc.
+    \item Thực hiện kiểm thử và đánh giá hiệu quả hoạt động của hệ thống.
 \end{itemize}
 
-Pipeline Deep Learning tổng quát được áp dụng xuyên suốt cho các mô hình học sâu trong hệ thống, bao gồm các bước chính như sau:
-
-\begin{center}
-Dữ liệu đầu vào
-$\rightarrow$ Tiền xử lý dữ liệu
-$\rightarrow$ Trích xuất đặc trưng
-$\rightarrow$ Huấn luyện mô hình
-$\rightarrow$ Dự đoán / Sinh kết quả
-$\rightarrow$ Hậu xử lý
-$\rightarrow$ Trả kết quả cho người dùng
-\end{center}
-
-
-\subsection{Mô hình sinh ảnh Generative AI – Stable Diffusion 1.5}
-
-Stable Diffusion 1.5 là một mô hình Generative AI dựa trên Diffusion Model, có khả năng sinh ảnh từ mô tả văn bản (text-to-image). Mô hình hoạt động bằng cách dần loại bỏ nhiễu khỏi dữ liệu ngẫu nhiên để tạo ra hình ảnh phù hợp với prompt đầu vào.
-
-Kiến trúc của Stable Diffusion 1.5 bao gồm các thành phần chính:
+\section{Phương pháp nghiên cứu}
+Trong quá trình thực hiện đề tài, các phương pháp nghiên cứu sau được sử dụng:
 \begin{itemize}
-    \item Text Encoder: Chuyển đổi prompt văn bản thành vector đặc trưng.
-    \item U-Net: Thực hiện quá trình khử nhiễu trong không gian tiềm ẩn.
-    \item Variational Autoencoder (VAE): Mã hóa và giải mã dữ liệu ảnh.
+    \item Phương pháp nghiên cứu tài liệu: Thu thập và phân tích các tài liệu, bài báo khoa học liên quan đến đặt lịch trực tuyến, quản lý dịch vụ và trí tuệ nhân tạo.
+    \item Phương pháp phân tích và thiết kế hệ thống: Phân tích yêu cầu, xây dựng mô hình hệ thống, sơ đồ UML và thiết kế cơ sở dữ liệu.
+    \item Phương pháp thực nghiệm: Triển khai xây dựng phần mềm, kiểm thử các chức năng và đánh giá kết quả đạt được.
 \end{itemize}
 
+\section{Các kết quả đạt được}
+Kết quả của đề tài là xây dựng được một phần     mềm đặt lịch cắt tóc tích hợp trí tuệ nhân tạo đáp ứng các yêu cầu đề ra. Hệ thống cho phép khách hàng đặt lịch trực tuyến, quản lý thông tin cá nhân, xem lịch sử cắt tóc và nhận gợi ý kiểu tóc phù hợp thông qua AI.
 
-Pipeline của mô hình Stable Diffusion 1.5 trong hệ thống tạo kiểu tóc được thiết kế theo hướng sinh ảnh từ văn bản kết hợp đặc điểm khuôn mặt, bao gồm các bước sau:
+Đối với cửa hàng, phần mềm hỗ trợ quản lý lịch hẹn, khách hàng, nhân viên và thống kê hoạt động kinh doanh một cách hiệu quả. Ngoài ra, đề tài còn giúp em vận dụng kiến thức đã học về lập trình, cơ sở dữ liệu và phân tích thiết kế hệ thống vào thực tế, đồng thời nâng cao kỹ năng nghiên cứu và triển khai các công nghệ mới.
 
-\begin{itemize}
-    \item Bước 1 – Nhập dữ liệu:
-    \begin{itemize}
-        \item Prompt văn bản mô tả kiểu tóc, màu sắc và phong cách.
-        \item Ảnh khuôn mặt người dùng (tùy chọn).
-    \end{itemize}
-
-    \item Bước 2 – Mã hóa văn bản:
-    \begin{itemize}
-        \item Text Encoder chuyển đổi prompt thành vector đặc trưng ngữ nghĩa.
-    \end{itemize}
-
-    \item Bước 3 – Mã hóa ảnh:
-    \begin{itemize}
-        \item VAE Encoder nén ảnh khuôn mặt vào không gian tiềm ẩn (latent space).
-    \end{itemize}
-
-    \item Bước 4 – Quá trình Diffusion:
-    \begin{itemize}
-        \item U-Net thực hiện khử nhiễu từng bước trong không gian tiềm ẩn.
-        \item Quá trình được điều khiển bởi vector văn bản.
-    \end{itemize}
-
-    \item Bước 5 – Giải mã ảnh:
-    \begin{itemize}
-        \item VAE Decoder chuyển latent vector thành ảnh hoàn chỉnh.
-    \end{itemize}
-
-    \item Bước 6 – Hậu xử lý:
-    \begin{itemize}
-        \item Căn chỉnh khuôn mặt và cải thiện chất lượng ảnh.
-    \end{itemize}
-
-    \item Bước 7 – Xuất kết quả:
-    \begin{itemize}
-        \item Hiển thị ảnh kiểu tóc cho người dùng tham khảo trước khi đặt lịch.
-    \end{itemize}
-\end{itemize}
-
-Trong hệ thống, Stable Diffusion 1.5 được sử dụng để tạo hình ảnh kiểu tóc dựa trên mô tả của người dùng và đặc điểm khuôn mặt, giúp khách hàng hình dung trực quan kết quả trước khi đặt lịch cắt tóc.
-
-\subsection{MediaPipe trong nhận diện và phân chia khuôn mặt}
-
-MediaPipe là thư viện mã nguồn mở do Google phát triển, hỗ trợ xây dựng các pipeline xử lý hình ảnh và video theo thời gian thực. MediaPipe Face Mesh cung cấp hơn 468 điểm mốc (landmarks) trên khuôn mặt, cho phép xác định chính xác các vùng như trán, má, cằm, mắt, mũi và miệng.
-
-
-MediaPipe Face Mesh được sử dụng như một bước tiền xử lý quan trọng trong hệ thống, với pipeline như sau:
-
-\begin{itemize}
-    \item Bước 1 – Nhập ảnh hoặc video từ camera thiết bị.
-    \item Bước 2 – Phát hiện khuôn mặt (Face Detection).
-    \item Bước 3 – Trích xuất 468 điểm mốc (landmarks) trên khuôn mặt.
-    \item Bước 4 – Phân chia các vùng khuôn mặt:
-    \begin{itemize}
-        \item Trán
-        \item Má trái
-        \item Má phải
-        \item Mũi
-        \item Cằm
-    \end{itemize}
-    \item Bước 5 – Tạo vùng quan tâm (ROI) hoặc mặt nạ khuôn mặt.
-    \item Bước 6 – Cung cấp dữ liệu đầu vào cho các mô hình:
-    \begin{itemize}
-        \item CNN phân tích da mặt
-        \item Stable Diffusion tạo kiểu tóc
-    \end{itemize}
-\end{itemize}
-
-Trong đề tài, MediaPipe được sử dụng để:
-\begin{itemize}
-    \item Phát hiện và theo dõi khuôn mặt người dùng.
-    \item Phân chia các vùng khuôn mặt phục vụ phân tích đặc trưng.
-    \item Cung cấp dữ liệu đầu vào cho các mô hình AI khác như tạo kiểu tóc và phân tích da.
-\end{itemize}
-
-\subsection{Mạng nơ-ron tích chập}
-
-CNN (Convolutional Neural Network) là kiến trúc mạng nơ-ron chuyên xử lý dữ liệu dạng lưới như hình ảnh. CNN có khả năng tự động trích xuất đặc trưng quan trọng thông qua các lớp tích chập và pooling.
-
-\subsubsection{Kiến trúc cơ bản}
-
-1. Lớp tích chập (Convolutional Layer):
-\begin{equation}
-Y_{i,j} = \sigma\left(\sum_{m}\sum_{n} W_{m,n} \cdot X_{i+m,j+n} + b\right)
-\end{equation}
-
-2. Lớp gộp (Pooling Layer):
-\begin{equation}
-Y_{i,j} = \max_{m,n \in R} X_{i+m,j+n}
-\end{equation}
-
-3. Lớp kết nối đầy đủ (Fully Connected):
-\begin{equation}
-y = \sigma(W \cdot x + b)
-\end{equation}
-
-4. Hàm Softmax:
-\begin{equation}
-P(y=k) = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}
-\end{equation}
-
-5. Hàm mất mát Cross-Entropy:
-\begin{equation}
-\mathcal{L} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} y_{i,k} \cdot \log(P(y_i=k))
-\end{equation}
-
-
-Mô hình CNN được sử dụng để phân loại khuôn mặt có mụn hoặc không có mụn, với pipeline xử lý như sau:
-
-\begin{itemize}
-    \item Bước 1 – Thu thập dữ liệu:
-    \begin{itemize}
-        \item Ảnh khuôn mặt đã được cắt từ MediaPipe.
-        \item Nhãn dữ liệu: Có mụn / Không mụn.
-    \end{itemize}
-
-    \item Bước 2 – Tiền xử lý dữ liệu:
-    \begin{itemize}
-        \item Chuẩn hóa kích thước ảnh về 64×64.
-        \item Chuẩn hóa giá trị pixel.
-        \item Tăng cường dữ liệu (Data Augmentation).
-    \end{itemize}
-
-    \item Bước 3 – Trích xuất đặc trưng:
-    \begin{itemize}
-        \item Các lớp Convolution và ReLU.
-        \item Lớp MaxPooling giảm kích thước đặc trưng.
-    \end{itemize}
-
-    \item Bước 4 – Phân loại:
-    \begin{itemize}
-        \item Flatten và Fully Connected.
-        \item Dropout giảm overfitting.
-        \item Softmax sinh xác suất phân loại.
-    \end{itemize}
-
-    \item Bước 5 – Huấn luyện mô hình:
-    \begin{itemize}
-        \item Hàm mất mát Cross-Entropy.
-        \item Thuật toán tối ưu Adam.
-    \end{itemize}
-
-    \item Bước 6 – Dự đoán và đánh giá:
-    \begin{itemize}
-        \item Phân loại tình trạng da mặt người dùng.
-    \end{itemize}
-
-    \item Bước 7 – Xuất kết quả:
-    \begin{itemize}
-        \item Hiển thị kết quả phân tích và gợi ý chăm sóc da.
-    \end{itemize}
-\end{itemize}
-
-\subsubsection{Ứng dụng trong hệ thống}
-
-Nhiệm vụ: Phân loại khuôn mặt có mụn hoặc không có mụn.
-
-Kiến trúc mô hình:
-\begin{center}
-\begin{tabular}{l}
-Đầu vào (64×64×3) \\
-$\rightarrow$ Conv2D(32, 3×3) $\rightarrow$ ReLU $\rightarrow$ MaxPool(2×2) \\
-$\rightarrow$ Conv2D(64, 3×3) $\rightarrow$ ReLU $\rightarrow$ MaxPool(2×2) \\
-$\rightarrow$ Flatten $\rightarrow$ Dense(128) $\rightarrow$ Dropout(0.5) \\
-$\rightarrow$ Dense(2) $\rightarrow$ Softmax
-\end{tabular}
-\end{center}
-
-\subsection{Mô hình RAG và Chatbot sử dụng Gemini API}
-
-Retrieval-Augmented Generation (RAG) là mô hình kết hợp giữa truy xuất thông tin và sinh ngôn ngữ tự nhiên. RAG cho phép chatbot truy xuất dữ liệu từ cơ sở tri thức trước khi sinh câu trả lời, giúp tăng độ chính xác và giảm sai lệch thông tin.
-
-
-Pipeline của chatbot thông minh được xây dựng theo mô hình Retrieval-Augmented Generation (RAG), bao gồm các bước sau:
-
-\begin{itemize}
-    \item Bước 1 – Người dùng nhập câu hỏi hoặc yêu cầu tư vấn.
-    \item Bước 2 – Tiền xử lý câu hỏi:
-    \begin{itemize}
-        \item Chuẩn hóa văn bản.
-        \item Xác định ý định người dùng.
-    \end{itemize}
-
-    \item Bước 3 – Truy xuất tri thức:
-    \begin{itemize}
-        \item Tìm kiếm thông tin từ cơ sở dữ liệu:
-        \begin{itemize}
-            \item Kiểu tóc
-            \item Dịch vụ salon
-            \item Lịch hẹn
-        \end{itemize}
-    \end{itemize}
-
-    \item Bước 4 – Kết hợp ngữ cảnh:
-    \begin{itemize}
-        \item Ghép dữ liệu truy xuất vào prompt đầu vào.
-    \end{itemize}
-
-    \item Bước 5 – Sinh câu trả lời:
-    \begin{itemize}
-        \item Sử dụng Gemini API để sinh phản hồi tự nhiên.
-    \end{itemize}
-
-    \item Bước 6 – Hậu xử lý phản hồi:
-    \begin{itemize}
-        \item Kiểm tra nội dung và chuẩn hóa ngôn ngữ.
-    \end{itemize}
-
-    \item Bước 7 – Trả kết quả:
-    \begin{itemize}
-        \item Hiển thị câu trả lời tư vấn cho người dùng.
-    \end{itemize}
-\end{itemize}
-
-Trong hệ thống, RAG được kết hợp với Gemini API để:
-\begin{itemize}
-    \item Truy xuất thông tin về kiểu tóc, dịch vụ và lịch hẹn.
-    \item Sinh câu trả lời tư vấn tự nhiên cho người dùng.
-    \item Hỗ trợ giao tiếp thông minh giữa khách hàng và hệ thống.
-\end{itemize}
-
-
-\section{Ngôn ngữ lập trình}
-
-\subsection{Python}
-
-Python là ngôn ngữ lập trình bậc cao, thông dịch, đa mục đích, ra đời năm 1991. Python nổi bật với cú pháp đơn giản, dễ đọc và sử dụng indent để định nghĩa khối lệnh.
-
-Đặc điểm:
-\begin{itemize}
-    \item Cú pháp đơn giản, gần với ngôn ngữ tự nhiên.
-    \item Động, không cần khai báo kiểu dữ liệu trước.
-    \item Đa nền tảng, chạy trên nhiều hệ điều hành.
-    \item Thư viện phong phú cho nhiều lĩnh vực.
-    \item Cộng đồng lớn, nhiều tài liệu hỗ trợ.
-\end{itemize}
-
-\subsubsection{Ưu điểm trong phát triển AI/ML}
-\begin{itemize}
-    \item Thư viện và framework mạnh như TensorFlow, PyTorch, Scikit-learn, Keras, OpenCV, NumPy, Pandas.
-    \item Tốc độ phát triển nhanh nhờ cú pháp đơn giản.
-\end{itemize}
-
-Các thư viện và công cụ hỗ trợ:
-\begin{itemize}
-    \item Ultralytics: thư viện chính cho YOLOv8, hỗ trợ detection, segmentation, classification.
-    \item OpenCV: xử lý ảnh, tiền xử lý, vẽ bounding box, camera real-time.
-    \item PyTorch: xây dựng và huấn luyện CNN nhận dạng ký tự.
-    \item DeepFace: tích hợp nhiều mô hình nhận diện khuôn mặt.
-    \item NumPy: xử lý mảng đa chiều, tính toán số học.
-    \item Pillow: xử lý ảnh cơ bản, hỗ trợ nhiều định dạng.
-    \item Tkinter: thư viện để phát triển ứng dụng desktop giao diện đồ họa.
-    \item Flask: framework nhẹ dùng để xây dựng backend API.
-\end{itemize}
-\subsection{Flutter}
-
-Flutter là bộ công cụ phát triển giao diện người dùng (UI toolkit) đa nền tảng do Google phát triển, cho phép xây dựng ứng dụng hoạt động trên nhiều hệ điều hành như Android, iOS, Web và Desktop từ một codebase duy nhất. Flutter sử dụng ngôn ngữ lập trình Dart và cơ chế render riêng, giúp tạo giao diện mượt mà và đồng nhất trên các nền tảng.
-
-Đặc điểm:
-\begin{itemize}
-    \item Phát triển đa nền tảng từ một mã nguồn duy nhất.
-    \item Hiệu năng cao nhờ biên dịch trực tiếp sang mã máy (AOT).
-    \item Giao diện được xây dựng hoàn toàn bằng widget.
-    \item Hỗ trợ Hot Reload giúp tăng tốc quá trình phát triển.
-    \item Hệ sinh thái thư viện phong phú và được cộng đồng hỗ trợ mạnh mẽ.
-\end{itemize}
-
-Ưu điểm trong phát triển ứng dụng di động:
-\begin{itemize}
-    \item Codebase duy nhất cho Android và iOS, giảm thời gian và chi phí phát triển.
-    \item Widget linh hoạt, dễ dàng tùy biến giao diện theo yêu cầu.
-    \item Hiệu năng gần với ứng dụng native.
-    \item Hot Reload cho phép xem ngay thay đổi mà không cần khởi động lại ứng dụng.
-    \item Dễ dàng tích hợp với các API và dịch vụ backend.
-    \item Hỗ trợ tốt cho phát triển giao diện hiện đại và trải nghiệm người dùng (UI/UX).
-\end{itemize}
-
-
-Jetpack Compose: UI toolkit hiện đại dùng lập trình khai báo, viết UI bằng Kotlin, phát triển nhanh với preview và hot reload.
-Android SDK: cung cấp thư viện và API cần thiết như Activity, ViewModel, LiveData, Retrofit.
-
-
-\section{Cơ sở dữ liệu Supabase và PostgreSQL}
-
-
-Cơ sở dữ liệu là tập hợp dữ liệu có tổ chức, được lưu trữ và quản lý nhằm phục vụ cho việc truy xuất, cập nhật và xử lý thông tin hiệu quả. Trong các hệ thống ứng dụng hiện đại, cơ sở dữ liệu đóng vai trò trung tâm trong việc lưu trữ dữ liệu người dùng, dữ liệu nghiệp vụ và kết quả xử lý của các mô hình trí tuệ nhân tạo.
-
-Trong đề tài, hệ thống sử dụng Supabase để quản lý cơ sở dữ liệu. Supabase là nền tảng Backend-as-a-Service mã nguồn mở, sử dụng PostgreSQL làm hệ quản trị cơ sở dữ liệu chính. PostgreSQL là hệ cơ sở dữ liệu quan hệ mạnh mẽ, hỗ trợ ngôn ngữ truy vấn SQL, đảm bảo tính toàn vẹn, nhất quán và khả năng mở rộng của dữ liệu.
-
-Supabase cung cấp các chức năng quan trọng như quản lý dữ liệu quan hệ, xác thực người dùng, phân quyền truy cập và lưu trữ tệp tin. Việc sử dụng Supabase giúp đơn giản hóa quá trình xây dựng backend, đồng thời đảm bảo an toàn và hiệu quả trong quản lý dữ liệu của hệ thống.
