@@ -7,7 +7,7 @@
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/fdd_user.jpg}
-    \caption{Phân rã chức năng theo app mobile người dùng}
+    \caption{FDD người dùng app mobile}
     \label{fig:fdd_user}
 \end{figure}
 
@@ -15,22 +15,20 @@
 \begin{itemize}
     \item \textbf{Đăng ký tài khoản}
     \begin{itemize}
-        \item Người dùng có thể tạo tài khoản mới bằng email, số điện thoại hoặc tài khoản mạng xã hội
-        \item Hệ thống yêu cầu xác thực email/số điện thoại trước khi kích hoạt tài khoản
-        \item Mật khẩu phải đáp ứng các tiêu chuẩn bảo mật (tối thiểu 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt)
+        \item Người dùng có thể tạo tài khoản mới bằng email hoặc tài khoản Google
+        \item Hệ thống yêu cầu xác thực email trước khi kích hoạt tài khoản
     \end{itemize}
     
     \item \textbf{Đăng nhập}
     \begin{itemize}
-        \item Hỗ trợ đăng nhập bằng email/số điện thoại và mật khẩu
-        \item Hỗ trợ đăng nhập bằng sinh trắc học (vân tay, Face ID)
-        \item Tích hợp đăng nhập qua Google, Facebook, Apple ID
+        \item Hỗ trợ đăng nhập bằng email và mật khẩu
+        \item Tích hợp đăng nhập qua Google.
     \end{itemize}
     
     \item \textbf{Quên mật khẩu}
     \begin{itemize}
-        \item Cho phép người dùng đặt lại mật khẩu qua email hoặc SMS
-        \item Hệ thống gửi mã OTP để xác thực danh tính
+        \item Cho phép người dùng đặt lại mật khẩu qua email.
+        \item Hệ thống gửi email để xác thực danh tính
     \end{itemize}
     
     \item \textbf{Đổi mật khẩu}
@@ -45,106 +43,32 @@
         \item Xóa token xác thực và dữ liệu phiên làm việc
     \end{itemize}
     
-    \item \textbf{Tích hợp đối tác}
-    \begin{itemize}
-        \item Hỗ trợ liên kết với các ứng dụng đối tác (ví điện tử, chương trình khách hàng thân thiết)
-    \end{itemize}
 \end{itemize}
 
 \subsubsection{Quản lý đặt lịch}
 \begin{itemize}
     \item \textbf{Tạo đặt lịch}
     \begin{itemize}
-        \item Người dùng chọn salon, thợ cắt tóc, dịch vụ và thời gian mong muốn
-        \item Hiển thị các khung giờ còn trống theo thời gian thực
-        \item Cho phép thêm ghi chú đặc biệt cho cuộc hẹn
+        \item Người dùng chọn của tiệm, dịch vụ và thời gian mong muốn
+        \item Hiển thị các khung giờ còn trống theo thời gian 9thực
     \end{itemize}
     
     \item \textbf{Xem lịch đặt}
     \begin{itemize}
         \item Hiển thị danh sách các lịch hẹn đã đặt (quá khứ, hiện tại, tương lai)
-        \item Phân loại theo trạng thái: đã xác nhận, đang chờ, đã hoàn thành, đã hủy
+        \item Phân loại theo trạng thái: đã xác nhận, sắp đến, đã hoàn thành, đã hủy
         \item Cung cấp bộ lọc và tìm kiếm lịch hẹn
     \end{itemize}
     
     \item \textbf{Sửa lịch đặt}
     \begin{itemize}
-        \item Cho phép thay đổi thời gian, dịch vụ hoặc thợ cắt tóc
-        \item Hiển thị cảnh báo nếu thay đổi ảnh hưởng đến giá cả hoặc thời gian chờ
-        \item Yêu cầu xác nhận từ salon khi thay đổi lịch
+        \item Cho phép thay đổi thời gian, dịch vụ và cửa tiệm
     \end{itemize}
     
     \item \textbf{Hủy lịch đặt}
     \begin{itemize}
-        \item Cho phép hủy lịch hẹn với lý do cụ thể
-        \item Áp dụng chính sách hủy (miễn phí nếu hủy trước X giờ)
-        \item Thông báo cho salon và thợ cắt tóc khi lịch hẹn bị hủy
-    \end{itemize}
-\end{itemize}
-
-\subsubsection{Quản lý đặt lịch}
-\begin{itemize}
-    \item \textbf{Tạo đặt lịch}
-    \begin{itemize}
-        \item Phân tích hình dạng khuôn mặt từ ảnh người dùng upload
-        \item Xác định các đặc điểm: hình dạng mặt, tỷ lệ khuôn mặt, đường nét
-    \end{itemize}
-    
-    \item \textbf{Chuẩn đoán vi trị phân}
-    \begin{itemize}
-        \item Phân tích tình trạng da đầu và tóc từ hình ảnh
-        \item Phát hiện các vấn đề: gàu, rụng tóc, tóc khô, tóc gãy
-    \end{itemize}
-    
-    \item \textbf{Gợi ý kiểu tóc}
-    \begin{itemize}
-        \item Đề xuất các kiểu tóc phù hợp dựa trên hình dạng khuôn mặt
-        \item Cân nhắc yếu tố: độ tuổi, giới tính, phong cách cá nhân
-        \item Hiển thị hình ảnh minh họa cho mỗi kiểu tóc
-    \end{itemize}
-    
-    \item \textbf{Chọn kiểu tóc}
-    \begin{itemize}
-        \item Cho phép người dùng lựa chọn kiểu tóc từ danh sách gợi ý
-        \item Lưu kiểu tóc đã chọn vào hồ sơ người dùng
-        \item Chia sẻ thông tin với thợ cắt tóc khi đặt lịch
-    \end{itemize}
-    
-    \item \textbf{Xem kết quả}
-    \begin{itemize}
-        \item Hiển thị kết quả phân tích từ AI (hình dạng mặt, tình trạng tóc)
-        \item So sánh ảnh trước và sau khi thử kiểu tóc (tính năng AR)
-        \item Lưu lịch sử các lần phân tích
-    \end{itemize}
-    
-    \item \textbf{Tạo phiên tư vấn}
-    \begin{itemize}
-        \item Khởi tạo phiên chat với AI chatbot để được tư vấn chi tiết
-        \item Hỏi đáp về cách chăm sóc tóc, sản phẩm phù hợp
-    \end{itemize}
-    
-    \item \textbf{Xem tin nhắn}
-    \begin{itemize}
-        \item Hiển thị lịch sử trò chuyện với AI chatbot
-        \item Lưu trữ các gợi ý và lời khuyên từ AI
-    \end{itemize}
-    
-    \item \textbf{Xem lịch sử phiên tư vấn}
-    \begin{itemize}
-        \item Truy cập các phiên tư vấn trước đó
-        \item Theo dõi sự thay đổi của tình trạng tóc theo thời gian
-    \end{itemize}
-    
-    \item \textbf{Tạo lịch sử phiên tư vấn}
-    \begin{itemize}
-        \item Tự động lưu mỗi phiên tư vấn với AI
-        \item Gắn nhãn và phân loại theo chủ đề
-    \end{itemize}
-    
-    \item \textbf{Gửi tin nhắn}
-    \begin{itemize}
-        \item Gửi câu hỏi và nhận phản hồi từ AI chatbot
-        \item Hỗ trợ gửi hình ảnh để phân tích chi tiết hơn
+        \item Cho phép hủy lịch hẹn 
+        \item Thông báo cho cửa tiệm khi lịch hẹn bị hủy
     \end{itemize}
 \end{itemize}
 
@@ -152,9 +76,8 @@
 \begin{itemize}
     \item \textbf{Cập nhật thông tin}
     \begin{itemize}
-        \item Chỉnh sửa thông tin cá nhân: tên, số điện thoại, email, địa chỉ
+        \item Chỉnh sửa thông tin cá nhân: tên, số điện thoại, email
         \item Upload và thay đổi ảnh đại diện
-        \item Cập nhật sở thích và phong cách tóc yêu thích
     \end{itemize}
     
     \item \textbf{Xem hồ sơ}
@@ -170,7 +93,7 @@
     \item \textbf{Đánh giá sao}
     \begin{itemize}
         \item Đánh giá dịch vụ bằng thang điểm 1-5 sao
-        \item Đánh giá riêng cho từng yếu tố: thợ cắt tóc, không gian, dịch vụ khách hàng
+        \item Đánh giá cửa cửa hàng.
     \end{itemize}
     
     \item \textbf{Xem lịch sử đánh giá}
@@ -184,15 +107,14 @@
 \begin{itemize}
     \item \textbf{Xem bản đồ}
     \begin{itemize}
-        \item Hiển thị vị trí các salon trên bản đồ
-        \item Tích hợp Google Maps hoặc Apple Maps
+        \item Hiển thị vị trí cửa tiệm trên bản đồ
+        \item Tích hợp OpenStreetMap
     \end{itemize}
     
     \item \textbf{Chỉ đường đến tiệm}
     \begin{itemize}
-        \item Cung cấp hướng dẫn đường đi từ vị trí hiện tại đến salon
+        \item Cung cấp hướng dẫn đường đi từ vị trí hiện tại đến cửa tiệm
         \item Hiển thị thời gian di chuyển ước tính
-        \item Hỗ trợ nhiều phương tiện: đi bộ, xe máy, ô tô, phương tiện công cộng
     \end{itemize}
 \end{itemize}
 
@@ -200,14 +122,8 @@
 \begin{itemize}
     \item \textbf{Nhắc hẹn sắp tới}
     \begin{itemize}
-        \item Gửi thông báo trước 24 giờ, 3 giờ và 30 phút trước lịch hẹn
-        \item Cho phép người dùng tùy chỉnh thời gian nhắc nhở
-    \end{itemize}
-    
-    \item \textbf{Xem nhắc hẹn}
-    \begin{itemize}
-        \item Hiển thị danh sách các thông báo nhắc hẹn
-        \item Phân loại đã đọc và chưa đọc
+        \item Gửi thông báo sắp tới lịch hẹn
+        \item Thông báo khi cửa tiệm từ chối hoặc hoàn thành lịch hẹn
     \end{itemize}
 \end{itemize}
 
@@ -215,15 +131,15 @@
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/fdd_ower.jpg}
-    \caption{Phân rã chức năng theo app mobile người thợ cắt tóc}
+    \caption{FDD app mobile người thợ cắt tóc}
     \label{fig:fdd_ower}
 \end{figure}
 \subsubsection{ Quản lý cửa hàng}
 \begin{itemize}
     \item \textbf{Cập nhật thông tin}
     \begin{itemize}
-        \item Chỉnh sửa thông tin salon: tên, địa chỉ, số điện thoại
-        \item Upload hình ảnh không gian salon
+        \item Chỉnh sửa thông tin cửa tiệm: tên, địa chỉ, số điện thoại
+        \item Upload hình ảnh không gian cửa tiệm
         \item Cập nhật giờ mở cửa và đóng cửa
     \end{itemize}
     
@@ -231,7 +147,6 @@
     \begin{itemize}
         \item Thêm, sửa, xóa các dịch vụ cắt tóc
         \item Thiết lập giá cả và thời gian thực hiện cho mỗi dịch vụ
-        \item Quản lý combo và gói dịch vụ
     \end{itemize}
     
     \item \textbf{Cài đặt giờ làm}
@@ -239,12 +154,7 @@
         \item Thiết lập lịch làm việc cho từng thợ cắt tóc
         \item Đánh dấu ngày nghỉ, ngày lễ
         \item Quản lý ca làm việc
-    \end{itemize}
-    
-    \item \textbf{Cài đặt khung giờ}
-    \begin{itemize}
         \item Định nghĩa các khung giờ đặt lịch (15 phút, 30 phút, 1 giờ)
-        \item Thiết lập số lượng khách tối đa cho mỗi khung giờ
     \end{itemize}
 \end{itemize}
 
@@ -255,86 +165,70 @@
         \item Hiển thị danh sách lịch hẹn theo ngày, tuần, tháng
         \item Lọc theo thợ cắt tóc, trạng thái, dịch vụ
         \item Xem chi tiết thông tin khách hàng và yêu cầu
+        \item Hiển thị lịch hẹn dưới dạng danh sách và lịch biểu
     \end{itemize}
     
     \item \textbf{Chấp nhận/Từ chối}
     \begin{itemize}
-        \item Xác nhận hoặc từ chối lịch hẹn của khách hàng
+        \item Tự động nhận và cho phép từ chối lịch hẹn của khách hàng
         \item Gửi thông báo cho khách hàng về trạng thái lịch hẹn
-        \item Đưa ra lý do khi từ chối (nếu cần)
     \end{itemize}
     
     \item \textbf{Hoàn thành}
     \begin{itemize}
         \item Đánh dấu lịch hẹn đã hoàn thành
         \item Ghi nhận dịch vụ đã thực hiện
-        \item Yêu cầu khách hàng đánh giá
     \end{itemize}
     
-    \item \textbf{Thông kê đặt lịch}
-    \begin{itemize}
-        \item Xem báo cáo số lượng lịch hẹn theo thời gian
-        \item Phân tích tỷ lệ hủy lịch, khách hàng quay lại
-        \item Thống kê doanh thu từ lịch hẹn
-    \end{itemize}
 \end{itemize}
 
 \subsubsection{Tìm kiếm}
 \begin{itemize}
-    \item \textbf{Tìm khách hàng}
+    \item \textbf{Tìm và lọc khách hàng}
     \begin{itemize}
         \item Tìm kiếm theo tên, số điện thoại, email
-        \item Xem lịch sử sử dụng dịch vụ của khách hàng
-    \end{itemize}
-    
-    \item \textbf{Lọc theo trạng thái}
-    \begin{itemize}
-        \item Lọc khách hàng theo: khách mới, khách thân thiết, khách VIP
-        \item Lọc lịch hẹn theo trạng thái: chờ xác nhận, đã xác nhận, đã hoàn thành, đã hủy
+        \item Xem thông tin sử dụng dịch vụ của khách hàng
+        \item Lọc khách hàng theo trạng thái lịch hẹn
     \end{itemize}
 \end{itemize}
 
 \subsubsection{Thống kê}
 \begin{itemize}
-    \item \textbf{Thống kê lịch hẹn}
+    \item \textbf{Thống kê lịch hẹn và khách hàng}
     \begin{itemize}
-        \item Báo cáo số lượng lịch hẹn theo ngày, tuần, tháng, năm
+        \item Báo cáo số lượng lịch hẹn theo ngày, tuần, tháng
         \item Biểu đồ xu hướng đặt lịch
+        \item Thống kê tất cả khách hàng
+        \item Thông kê khách hôm nay, tuần này, tháng này
     \end{itemize}
-    
-    \item \textbf{Thống kê khách hàng}
-    \begin{itemize}
-        \item Số lượng khách hàng mới và khách hàng quay lại
-        \item Phân tích độ tuổi, giới tính, sở thích của khách hàng
-        \item Xác định nhóm khách hàng tiềm năng
-    \end{itemize}
+  
 \end{itemize}
 
 \subsection{Module 3: Web Admin Panel - Quản trị hệ thống}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/fdd_admin.jpg}
-    \caption{Phân rã chức năng theo module web admin}
+    \caption{FDD module web admin}
     \label{fig:fdd_admin}
 \end{figure}
 \subsubsection{Quản lý đối tác}
 \begin{itemize}
     \item \textbf{Duyệt yêu cầu}
     \begin{itemize}
-        \item Xem danh sách salon đăng ký làm đối tác
+        \item Xem danh sách cửa tiệm đăng ký làm đối tác
         \item Phê duyệt hoặc từ chối yêu cầu
         \item Gửi thông báo cho đối tác về kết quả
     \end{itemize}
     
     \item \textbf{Phê duyệt/Từ chối}
     \begin{itemize}
-        \item Kiểm tra thông tin và giấy tờ pháp lý của đối tác
+        \item Kiểm tra thông tin của đối tác
         \item Xác minh địa chỉ và thông tin liên hệ
     \end{itemize}
     
     \item \textbf{Tạo tài khoản}
     \begin{itemize}
-        \item Tạo tài khoản quản trị cho salon đã được phê duyệt
+        \item Tạo tài khoản quản trị cho cửa tiệm đã được phê duyệt
         \item Gửi thông tin đăng nhập cho đối tác
     \end{itemize}
 \end{itemize}
@@ -350,15 +244,12 @@
     \item \textbf{Thống kê người dùng}
     \begin{itemize}
         \item Báo cáo số lượng người dùng mới theo thời gian
-        \item Phân tích tỷ lệ người dùng hoạt động/không hoạt động
-        \item Thống kê theo vùng địa lý
+        \item Thống kê người dùng hoạt động/không hoạt động
     \end{itemize}
     
     \item \textbf{Quản lý tài khoản}
     \begin{itemize}
         \item Khóa/mở khóa tài khoản người dùng vi phạm
-        \item Đặt lại mật khẩu cho người dùng
-        \item Xóa tài khoản theo yêu cầu hoặc vi phạm chính sách
     \end{itemize}
 \end{itemize}
 
@@ -366,20 +257,20 @@
 \begin{itemize}
     \item \textbf{Xem cửa hàng}
     \begin{itemize}
-        \item Hiển thị danh sách tất cả salon trong hệ thống
-        \item Xem thông tin chi tiết, hình ảnh, dịch vụ của từng salon
+        \item Hiển thị danh sách tất cả cửa tiệm trong hệ thống
+        \item Xem thông tin chi tiết, hình ảnh, dịch vụ của từng cửa tiệm
     \end{itemize}
     
     \item \textbf{Thống kê cửa hàng}
     \begin{itemize}
-        \item Báo cáo hiệu suất hoạt động của từng salon
-        \item Xếp hạng salon theo đánh giá và doanh thu
+        \item Thống kê về số lượng của hàng tiệm theo khu vực, trạng thái hoạt động
+        \item Xếp hạng cửa tiệm theo đánh giá
     \end{itemize}
     
     \item \textbf{Quản lý trạng thái}
     \begin{itemize}
-        \item Kích hoạt/vô hiệu hóa salon
-        \item Tạm ngưng hoạt động đối với salon vi phạm
+        \item Kích hoạt/vô hiệu hóa cửa tiệm
+        \item Tạm ngưng hoạt động đối với cửa tiệm vi phạm
     \end{itemize}
 \end{itemize}
 
@@ -392,13 +283,6 @@
         \item Quản lý cơ sở tri thức cho AI chatbot
     \end{itemize}
     
-    \item \textbf{Thêm/Sửa/Xóa Documents}
-    \begin{itemize}
-        \item Upload tài liệu hướng dẫn, chính sách, quy định
-        \item Chỉnh sửa nội dung tài liệu hiện có
-        \item Xóa tài liệu không còn sử dụng
-    \end{itemize}
-    
     \item \textbf{Kiểm thử AI Chat}
     \begin{itemize}
         \item Giao diện test chatbot trước khi triển khai
@@ -408,79 +292,88 @@
 \end{itemize}
 
 \section{Yêu cầu Phi chức năng}
-
 \subsection{Hiệu năng (Performance)}
 \begin{itemize}
-    \item Thời gian phản hồi của ứng dụng không vượt quá 2 giây cho các thao tác thông thường
-    \item API phải xử lý tối thiểu 1000 requests đồng thời
-    \item Thời gian xử lý AI phân tích khuôn mặt không quá 5 giây
-    \item Thời gian load danh sách lịch hẹn không quá 1 giây
-    \item Trang web admin có thể hiển thị báo cáo với tối thiểu 100,000 bản ghi trong vòng 3 giây
+    \item Thời gian phản hồi thao tác thông thường: 2-3 giây
+    \item Thời gian xử lý AI tạo kiểu tóc: 10-15 giây
+    \item Thời gian xử lý AI phân tích mụn: 3-5 giây
+    \item Thời gian phản hồi chatbot RAG: 2-4 giây
+    \item Thời gian load danh sách và báo cáo: 2-5 giây
 \end{itemize}
 
 \subsection{Khả năng mở rộng (Scalability)}
 \begin{itemize}
-    \item Hệ thống phải hỗ trợ tối thiểu 100,000 người dùng đồng thời
-    \item Kiến trúc microservices để dễ dàng scale từng module độc lập
-    \item Database phải hỗ trợ horizontal scaling
-    \item Sử dụng CDN để phân phối nội dung tĩnh và giảm tải cho server
-    \item Hỗ trợ auto-scaling dựa trên tải hệ thống
+    \item Kiến trúc phân lớp Three-Tier cho phép mở rộng độc lập từng tầng
+    \item Backend services tách biệt theo chức năng
+    \item Database schema thiết kế hỗ trợ mở rộng features
+    \item Component-based architecture cho frontend
+    \item API RESTful chuẩn hóa, dễ tích hợp
 \end{itemize}
 
 \subsection{Bảo mật (Security)}
 \begin{itemize}
-    \item Mã hóa dữ liệu nhạy cảm (mật khẩu, thông tin cá nhân) bằng AES-256
-    \item Sử dụng HTTPS cho tất cả các kết nối
-    \item Xác thực đa yếu tố (2FA) cho tài khoản admin và barber
-    \item Token JWT có thời gian hết hạn và được làm mới định kỳ
-    \item Chống tấn công SQL Injection, XSS, CSRF
-    \item Backup dữ liệu hàng ngày và lưu trữ ở vị trí an toàn
-    \item Tuân thủ các tiêu chuẩn bảo mật OWASP Top 10
-    \item Giới hạn số lần đăng nhập sai để chống brute force attack
+    \item Xác thực qua Supabase Authentication (Email/Password, Google OAuth)
+    \item JWT tokens tự động quản lý bởi Supabase
+    \item Row Level Security (RLS) kiểm soát quyền truy cập dữ liệu
+    \item Pydantic schemas validation cho input
+    \item Environment variables cho API keys
 \end{itemize}
+
+\textbf{Lưu ý:} Sản phẩm demo chạy môi trường local, chưa triển khai các biện pháp bảo mật nâng cao cho production.
 
 \subsection{Tính khả dụng (Availability)}
 \begin{itemize}
-    \item Hệ thống phải đảm bảo uptime 99.9\% (downtime tối đa 8.76 giờ/năm)
-    \item Triển khai load balancer để phân phối tải và đảm bảo high availability
-    \item Cơ chế failover tự động khi có sự cố
-    \item Monitoring và alerting 24/7 để phát hiện sự cố sớm
-    \item Kế hoạch disaster recovery với RTO < 4 giờ và RPO < 1 giờ
+    \item Xử lý lỗi với try-catch và error logging
+    \item Thông báo lỗi user-friendly
+    \item Cache dữ liệu cơ bản trên mobile app
+    \item Retry mechanism cho API calls thất bại
 \end{itemize}
 
 \subsection{Khả năng bảo trì (Maintainability)}
 \begin{itemize}
-    \item Code phải tuân thủ coding standards và best practices
-    \item Tài liệu kỹ thuật đầy đủ cho từng module
-    \item Sử dụng version control (Git) với quy trình branching rõ ràng
-    \item Automated testing với coverage tối thiểu 80\%
+    \item Code tuân thủ coding standards (PEP 8, Dart style guide, Vue.js style guide)
+    \item Kiến trúc phân lớp rõ ràng
+    \item Comments và docstrings cho code quan trọng
+    \item Version control với Git
+    \item Separation of concerns, reusable components
 \end{itemize}
 
+\subsection{Khả năng kiểm thử (Testability)}
+\begin{itemize}
+    \item Manual testing cho chức năng chính
+    \item Postman collection để test APIs
+    \item Test cases cho user flows quan trọng
+    \item Mock data cho UI/UX testing
+\end{itemize}
 
-\section{Sơ đồ use case }
-\subsection{Sơ đồ use case tổng quát}
+\include{chapters/chapter3/erd}
+
+\include{chapters/chapter3/dfd}
+
+\section{Use case Diagram }
+\subsection{Use case Diagram tổng quát}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/usecase_tq.jpg}
-    \caption{Sơ đồ use case tổng quát}
+    \includegraphics[scale=0.21]{figures/usecase_tq.jpg}
+    \caption{Use case Diagram tổng quát}
     \label{fig:usecase_overall}
 \end{figure}
 Các Actor trong Hệ thống bao gồm:
 \begin{itemize}[noitemsep]
-    \item Customer (Khách hàng): Người dùng cuối sử dụng ứng dụng mobile để đặt lịch cắt tóc, nhận gợi ý kiểu tóc và tư vấn chăm sóc tóc thông qua hệ thống AI.
+    \item Customer: Người dùng cuối sử dụng ứng dụng mobile để đặt lịch cắt tóc, nhận gợi ý kiểu tóc và tư vấn chăm sóc tóc thông qua hệ thống AI.
 
-    \item Barber Owner (Chủ tiệm cắt tóc): Chủ salon hoặc người quản lý sử dụng ứng dụng mobile để quản lý cửa hàng, dịch vụ, thợ cắt tóc và xử lý các lịch hẹn của khách hàng.
+    \item Barber Owner: Chủ cửa tiệm hoặc người quản lý sử dụng ứng dụng mobile để quản lý cửa hàng, dịch vụ, thợ cắt tóc và xử lý các lịch hẹn của khách hàng.
 
-    \item Admin (Quản trị viên): Người quản trị hệ thống sử dụng web admin panel để quản lý người dùng, salon, cấu hình hệ thống và giám sát hoạt động của AI chatbot.
+    \item Admin: Người quản trị hệ thống sử dụng web admin panel để quản lý người dùng, cửa tiệm, cấu hình hệ thống và giám sát hoạt động của AI chatbot.
 
-    \item AI System (Hệ thống AI): Hệ thống trí tuệ nhân tạo tự động hỗ trợ khách hàng thông qua phân tích khuôn mặt, gợi ý kiểu tóc và chatbot tư vấn.
+    \item AI System: Hệ thống trí tuệ nhân tạo tự động hỗ trợ khách hàng thông qua phân tích khuôn mặt, gợi ý kiểu tóc và chatbot tư vấn.
 \end{itemize}
 %----------------------------------------------------------------Đăng nhập đăng ký---------------
-\subsection{Sơ đồ use case chi tiết về xử lý đăng nhập đăng ký}
+\subsection{Use case Diagram chi tiết về xử lý đăng nhập đăng ký}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/usecase_authen.jpg}
-    \caption{Sơ đồ use case người dùng đăng nhập đăng ký}
+    \caption{Use case Diagram người dùng đăng nhập đăng ký}
     \label{fig:usecase_user}
 \end{figure}
 Dưới đây là các đặc tả use case của người dùng đăng nhập đăng ký.
@@ -499,15 +392,15 @@ Dưới đây là các đặc tả use case của người dùng đăng nhập �
 \textbf{Tiền điều kiện} & Chưa có tài khoản \\
 \hline
 \textbf{Luồng chính} & 
-1. Nhập thông tin (email/SĐT, mật khẩu, họ tên) \newline
+1. Nhập thông tin (email, mật khẩu, họ tên) \newline
 2. Hệ thống xác thực thông tin \newline
-3. Gửi mã OTP qua email/SMS \newline
-4. Nhập mã OTP \newline
+3. Gửi xác thực qua email \newline
+4. Ấn xác nhận qua link email nhận được \newline
 5. Tạo tài khoản thành công \\
 \hline
 \textbf{Luồng phụ} & 
 2a. Thông tin không hợp lệ $\rightarrow$ Hiển thị lỗi \newline
-4a. OTP sai/hết hạn $\rightarrow$ Gửi lại OTP \\
+4a. Link sai/hết hạn $\rightarrow$ Gửi lại email \\
 \hline
 \textbf{Hậu điều kiện} & Tài khoản được tạo và kích hoạt \\
 \hline
@@ -529,15 +422,14 @@ Dưới đây là các đặc tả use case của người dùng đăng nhập �
 \textbf{Tiền điều kiện} & Có tài khoản hợp lệ \\
 \hline
 \textbf{Luồng chính} & 
-1. Nhập email/SĐT và mật khẩu \newline
+1. Nhập email và mật khẩu \newline
 2. Hệ thống xác thực \newline
 3. Cấp token truy cập \newline
 4. Chuyển đến màn hình chính \\
 \hline
 \textbf{Luồng phụ} & 
 2a. Sai thông tin đăng nhập $\rightarrow$ Thông báo lỗi \newline
-2b. Tài khoản bị khóa $\rightarrow$ Thông báo liên hệ admin \newline
-Extend: Đăng nhập bằng sinh trắc học, mạng xã hội \\
+2b. Tài khoản bị khóa $\rightarrow$ Thông báo liên hệ admin \\
 \hline
 \textbf{Hậu điều kiện} & Người dùng truy cập được hệ thống \\
 \hline
@@ -586,7 +478,7 @@ Extend: Đăng nhập bằng sinh trắc học, mạng xã hội \\
 5. Hệ thống cập nhật thành công \\
 \hline
 \textbf{Luồng phụ} & 
-Extend: Cập nhật số điện thoại (yêu cầu xác thực OTP) \newline
+Extend: Cập nhật số điện thoại \newline
 Extend: Đổi mật khẩu (yêu cầu mật khẩu cũ) \newline
 Extend: Cập nhật ảnh đại diện \\
 \hline
@@ -594,12 +486,12 @@ Extend: Cập nhật ảnh đại diện \\
 \hline
 \end{tabular}
 \end{table}
-\subsection{Sơ đồ use case chi tiết về xử lý người dùng đặt lịch}
+\subsection{Use case Diagram chi tiết về xử lý người dùng đặt lịch}
 %----------------------------------------------------------------booking---------------
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/usecase_booking.jpg}
-    \caption{Sơ đồ use case người dùng đặt lịch}
+    \caption{Use case Diagram người dùng đặt lịch}
     \label{fig:usecase_booking}
 \end{figure}
 Dưới đây là các đặc tả use case của người dùng đặt lịch cắt tóc.
@@ -621,7 +513,7 @@ Dưới đây là các đặc tả use case của người dùng đặt lịch c
 \hline
 \textbf{Luồng phụ} & 
 Include: Xem khung giờ trống \newline
-Lọc theo trạng thái, ngày, salon \\
+Lọc theo trạng thái, ngày, cửa tiệm \\
 \hline
 \textbf{Hậu điều kiện} & Không có \\
 \hline
@@ -642,10 +534,10 @@ Lọc theo trạng thái, ngày, salon \\
 \textbf{Tiền điều kiện} & Đã đăng nhập \\
 \hline
 \textbf{Luồng chính} & 
-1. Chọn salon và thợ cắt tóc \newline
-2. Include: Xem khung giờ trống \newline
-3. Include: Chọn khung giờ \newline
-4. Include: Chọn dịch vụ \newline
+1. Chọn cửa tiệm và thợ cắt tóc \newline
+2. Include: Chọn dịch vụ \newline
+3. Include: Xem khung giờ trống \newline
+4. Include: Chọn khung giờ \newline
 5. Include: Tính tổng chi phí \newline
 6. Xác nhận đặt lịch \newline
 7. Hệ thống tạo lịch hẹn và thông báo cho barber \\
@@ -654,7 +546,7 @@ Lọc theo trạng thái, ngày, salon \\
 2a. Không có khung giờ trống $\rightarrow$ Chọn ngày khác \newline
 6a. Hủy đặt lịch \\
 \hline
-\textbf{Hậu điều kiện} & Lịch hẹn được tạo, trạng thái ``Chờ xác nhận'' \\
+\textbf{Hậu điều kiện} & Lịch hẹn được tạo, trạng thái ``Xác nhận'' \\
 \hline
 \end{tabular}
 \end{table}
@@ -678,9 +570,6 @@ Lọc theo trạng thái, ngày, salon \\
 3. Xác nhận hủy \newline
 4. Hệ thống cập nhật trạng thái ``Đã hủy'' \newline
 5. Thông báo cho barber owner \\
-\hline
-\textbf{Luồng phụ} & 
-3a. Hủy quá muộn $\rightarrow$ Áp dụng phí hủy lịch \\
 \hline
 \textbf{Hậu điều kiện} & Lịch hẹn bị hủy, khung giờ được giải phóng \\
 \hline
@@ -724,7 +613,7 @@ Lọc theo trạng thái, ngày, salon \\
 \hline
 \textbf{Actor} & Barber Owner \\
 \hline
-\textbf{Mô tả} & Thiết lập lịch làm việc cho salon \\
+\textbf{Mô tả} & Thiết lập lịch làm việc cho cửa tiệm \\
 \hline
 \textbf{Luồng chính} & 
 1. Truy cập quản lý khung giờ \newline
@@ -736,12 +625,12 @@ Lọc theo trạng thái, ngày, salon \\
 \hline
 \end{tabular}
 \end{table}
-\subsection{Sơ đồ use case chi tiết về người dùng sử dụng dịch vụ AI}
+\subsection{Use case Diagram chi tiết về người dùng sử dụng dịch vụ AI}
 %----------------------------------------------------------------AI---------------
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{figures/usecase_AI.jpg}
-    \caption{Sơ đồ use case người dùng sử dụng dịch vụ AI}
+    \caption{Use case Diagram người dùng sử dụng dịch vụ AI}
     \label{fig:usecase_AI}
 \end{figure}
 Dưới đây là các đặc tả use case của người dùng sử dụng dịch vụ AI phân tích khuôn mặt, gợi ý kiểu tóc và hỏi đáp.
@@ -767,7 +656,7 @@ Dưới đây là các đặc tả use case của người dùng sử dụng d�
 5. Include: Phân tích tình trạng mụn (loại, vị trí, mức độ) \newline
 6. Hiển thị kết quả và đề xuất chăm sóc \\
 \hline
-\textbf{Hậu điều kiện} & Kết quả được lưu vào hồ sơ \\
+\textbf{Hậu điều kiện} & Kết quả được lưu vào máy\\
 \hline
 \end{tabular}
 \end{table}
@@ -789,13 +678,9 @@ Dưới đây là các đặc tả use case của người dùng sử dụng d�
 2. Include: Chọn kiểu tóc \newline
 3. Hiển thị danh sách kiểu tóc phù hợp \newline
 4. Customer chọn kiểu tóc yêu thích \newline
-5. Extend: Nhận gợi ý/tư vấn \newline
-6. Include: Tạo ảnh xem trước (AR) \\
+5. AI tạo ảnh xem trước với kiểu tóc đã chọn \\
 \hline
-\textbf{Luồng phụ} & 
-Include: Đặt câu hỏi với chatbot về kiểu tóc \\
-\hline
-\textbf{Hậu điều kiện} & Kiểu tóc được lưu, có thể dùng khi đặt lịch \\
+\textbf{Hậu điều kiện} & Kiểu tóc có thể lưu về máy, có thể dùng khi đặt lịch \\
 \hline
 \end{tabular}
 \end{table}
@@ -814,21 +699,20 @@ Include: Đặt câu hỏi với chatbot về kiểu tóc \\
 \textbf{Luồng chính} & 
 1. Mở chatbot \newline
 2. Extend: Nhận gợi ý/tư vấn \newline
-3. Include: Tạo ảnh xem trước (nếu hỏi về kiểu tóc) \newline
-4. Include: Đặt câu hỏi \newline
-5. AI trả lời dựa trên Knowledge Base \newline
-6. Lưu lịch sử hội thoại \\
+3. Include: Đặt câu hỏi \newline
+4. AI trả lời dựa trên Knowledge Base \newline
+5. Lưu lịch sử hội thoại \\
 \hline
 \textbf{Hậu điều kiện} & Phiên tư vấn được lưu \\
 \hline
 \end{tabular}
 \end{table}
 %----------------------------------------------------------------Tiệm tóc quản lý---------------
-\subsection{Sơ đồ use case chi tiết về tiệm tóc quản lý}
+\subsection{Use case Diagram chi tiết về tiệm tóc quản lý}
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{figures/usecase_manager.jpg}
-    \caption{Sơ đồ use case người thợ cắt tóc quản lý cửa hàng và đặt lịch}
+    \caption{Use case Diagram người thợ cắt tóc quản lý cửa hàng và đặt lịch}
     \label{fig:usecase_manager}
 \end{figure}
 
@@ -842,10 +726,10 @@ Dưới đây là các đặc tả use case của người thợ cắt tóc qu�
 \hline
 \textbf{Actor} & Customer \\
 \hline
-\textbf{Mô tả} & Xem thông tin salon \\
+\textbf{Mô tả} & Xem thông tin cửa tiệm \\
 \hline
 \textbf{Luồng chính} & 
-1. Chọn salon \newline
+1. Chọn cửa tiệm \newline
 2. Hiển thị thông tin (địa chỉ, giờ làm, dịch vụ, đánh giá, hình ảnh) \newline
 3. Xem danh sách thợ cắt tóc \\
 \hline
@@ -863,7 +747,7 @@ Dưới đây là các đặc tả use case của người thợ cắt tóc qu�
 \hline
 \textbf{Actor} & Customer \\
 \hline
-\textbf{Mô tả} & Tìm salon theo tiêu chí \\
+\textbf{Mô tả} & Tìm cửa tiệm theo tiêu chí \\
 \hline
 \textbf{Luồng chính} & 
 1. Nhập từ khóa tìm kiếm \newline
@@ -884,19 +768,20 @@ Dưới đây là các đặc tả use case của người thợ cắt tóc qu�
 \label{tab:uc12}
 \begin{tabular}{|p{4cm}|p{11cm}|}
 \hline
-\textbf{Actor} & Barber Owner \\
+\textbf{Actor} & Admin \\
 \hline
-\textbf{Mô tả} & Đăng ký salon mới \\
+\textbf{Mô tả} & Đăng ký cửa tiệm mới \\
 \hline
 \textbf{Tiền điều kiện} & Đã đăng nhập với vai trò Barber Owner \\
 \hline
 \textbf{Luồng chính} & 
-1. Nhập thông tin salon (tên, địa chỉ, SĐT, giấy phép KD) \newline
-2. Upload hình ảnh salon \newline
-3. Gửi yêu cầu đến Admin \newline
-4. Chờ phê duyệt \\
+1. Include: Khách hàng gửi yêu cầu hợp tác \newline
+2. Include: Admin duyệt yêu cầu hợp tác \newline
+3. Nhập thông tin cửa tiệm (tên tiệm, địa chỉ, SĐT) \newline
+4. Tạo sau khi nhập xong thông tin cơ bản \newline
+5. Gửi thông báo tạo tiệm thành công \\
 \hline
-\textbf{Hậu điều kiện} & Yêu cầu tạo salon được gửi \\
+\textbf{Hậu điều kiện} & Yêu cầu tạo cửa tiệm được gửi đến khách hàng \\
 \hline
 \end{tabular}
 \end{table}
@@ -910,7 +795,7 @@ Dưới đây là các đặc tả use case của người thợ cắt tóc qu�
 \hline
 \textbf{Actor} & Barber Owner \\
 \hline
-\textbf{Mô tả} & Chỉnh sửa thông tin salon \\
+\textbf{Mô tả} & Chỉnh sửa thông tin cửa tiệm \\
 \hline
 \textbf{Luồng chính} & 
 1. Truy cập quản lý tiệm \newline
@@ -918,7 +803,7 @@ Dưới đây là các đặc tả use case của người thợ cắt tóc qu�
 3. Extend: Cập nhật dịch vụ (thêm/xóa/sửa) \newline
 4. Lưu thay đổi \\
 \hline
-\textbf{Hậu điều kiện} & Thông tin salon được cập nhật \\
+\textbf{Hậu điều kiện} & Thông tin cửa tiệm được cập nhật \\
 \hline
 \end{tabular}
 \end{table}
@@ -932,7 +817,7 @@ Dưới đây là các đặc tả use case của người thợ cắt tóc qu�
 \hline
 \textbf{Actor} & Barber Owner \\
 \hline
-\textbf{Mô tả} & Quản lý danh sách dịch vụ của salon \\
+\textbf{Mô tả} & Quản lý danh sách dịch vụ của cửa tiệm \\
 \hline
 \textbf{Luồng chính} & 
 1. Truy cập quản lý dịch vụ \newline
@@ -965,11 +850,11 @@ Dưới đây là các đặc tả use case của người thợ cắt tóc qu�
 \end{tabular}
 \end{table}
 %----------------------------------------------------------------Hợp tác---------------
-\subsection{Sơ đồ use case chi tiết về đăng ký hợp tác}
+\subsection{Use case Diagram chi tiết về đăng ký hợp tác}
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{figures/usecase_hoptac.jpg}
-    \caption{Sơ đồ use case đăng ký hợp tác}
+    \caption{Use case Diagram đăng ký hợp tác}
     \label{fig:usecase_hoptac}
 \end{figure}
 
@@ -1039,85 +924,112 @@ Dưới đây là các đặc tả use case của thợ cắt tóc và admin h�
 \end{table}
 
 %----------------------------------------------------------------Admin---------------
-\subsection{Sơ đồ use case chi tiết về admin quản lý hệ thống}
+\subsection{Use case Diagram chi tiết về admin quản lý hệ thống}
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{figures/usecase_admin.jpg}
-    \caption{Sơ đồ use case admin quản lý hệ thống}
+    \caption{Use case Diagram admin quản lý hệ thống}
     \label{fig:usecase_admin}
 \end{figure}
 Dưới đây là các đặc tả use case của admin quản lý hệ thống.
-
 \begin{table}[H]
 \centering
-\caption{Đặc tả Use Case UC-22: Quản lý người dùng}
-\label{tab:uc22}
+\caption{Đặc tả Use Case UC-28: Quản lý người dùng}
+\label{tab:uc28}
 \begin{tabular}{|p{4cm}|p{11cm}|}
 \hline
 \textbf{Actor} & Admin \\
 \hline
-\textbf{Mô tả} & Quản lý tài khoản người dùng \\
+\textbf{Mô tả} & Quản lý tài khoản người dùng trong hệ thống \\
+\hline
+\textbf{Tiền điều kiện} & Admin đã đăng nhập vào hệ thống \\
 \hline
 \textbf{Luồng chính} & 
-1. Include: Xem danh sách người dùng \newline
-2. Extend: Kích hoạt / Vô hiệu hóa người dùng \newline
-3. Extend: Chỉnh sửa thông tin người dùng \\
+1. Admin truy cập module quản lý người dùng \newline
+2. Include: Xem danh sách người dùng \newline
+3. Extend: Kích hoạt / Vô hiệu hóa người dùng \\
 \hline
-\textbf{Hậu điều kiện} & Thông tin người dùng được cập nhật \\
+\textbf{Hậu điều kiện} & Thông tin người dùng được cập nhật trong hệ thống \\
 \hline
 \end{tabular}
 \end{table}
 
-
 \begin{table}[H]
 \centering
-\caption{Đặc tả Use Case UC-23: Xem thống kê}
-\label{tab:uc23}
+\caption{Đặc tả Use Case UC-29: Xem thống kê}
+\label{tab:uc29}
 \begin{tabular}{|p{4cm}|p{11cm}|}
 \hline
 \textbf{Actor} & Admin \\
 \hline
-\textbf{Mô tả} & Xem báo cáo và thống kê hệ thống \\
+\textbf{Mô tả} & Xem các báo cáo thống kê của hệ thống \\
+\hline
+\textbf{Tiền điều kiện} & Admin đã đăng nhập vào hệ thống \\
 \hline
 \textbf{Luồng chính} & 
-1. Chọn loại báo cáo \newline
+1. Admin truy cập module thống kê \newline
 2. Extend: Thống kê người dùng \newline
-3. Extend: Thống kê đặt lịch \newline
-4. Xuất báo cáo (PDF / Excel) \\
+3. Extend: Thống kê cửa hàng \newline
+4. Hệ thống hiển thị báo cáo dưới dạng biểu đồ và bảng số liệu \\
 \hline
-\textbf{Hậu điều kiện} & Không có \\
+\textbf{Hậu điều kiện} & Báo cáo thống kê được hiển thị \\
 \hline
 \end{tabular}
 \end{table}
 
-
 \begin{table}[H]
 \centering
-\caption{Đặc tả Use Case UC-24: Quản lý tất cả lịch hẹn}
-\label{tab:uc24}
+\caption{Đặc tả Use Case UC-30: Quản lý Knowledge Base}
+\label{tab:uc30}
 \begin{tabular}{|p{4cm}|p{11cm}|}
 \hline
 \textbf{Actor} & Admin \\
 \hline
-\textbf{Mô tả} & Giám sát và quản lý toàn bộ lịch hẹn trong hệ thống \\
+\textbf{Mô tả} & Quản lý cơ sở tri thức cho RAG chatbot \\
+\hline
+\textbf{Tiền điều kiện} & Admin đã đăng nhập vào hệ thống \\
 \hline
 \textbf{Luồng chính} & 
-1. Include: Xem tất cả lịch hẹn \newline
-2. Extend: Cập nhật trạng thái lịch hẹn \newline
-3. Xử lý các vấn đề phát sinh \\
+1. Admin truy cập module quản lý Knowledge Base \newline
+2. Include: Thêm/Sửa/Xóa tài liệu \newline
+3. Extend: Cập nhật embeddings \newline
+4. Hệ thống lưu trữ và đồng bộ dữ liệu vào vector database \\
 \hline
-\textbf{Hậu điều kiện} & Lịch hẹn được quản lý \\
+\textbf{Hậu điều kiện} & Knowledge Base được cập nhật, chatbot sử dụng thông tin mới \\
 \hline
 \end{tabular}
 \end{table}
 
-\subsection{Sơ đồ use case chi tiết về xử lý thông báo}
+\begin{table}[H]
+\centering
+\caption{Đặc tả Use Case UC-31: Quản lý hợp tác}
+\label{tab:uc31}
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Actor} & Admin \\
+\hline
+\textbf{Mô tả} & Quản lý yêu cầu hợp tác từ người dùng \\
+\hline
+\textbf{Tiền điều kiện} & Admin đã đăng nhập vào hệ thống \\
+\hline
+\textbf{Luồng chính} & 
+1. Admin truy cập module quản lý hợp tác \newline
+2. Include: Duyệt yêu cầu hợp tác \newline
+3. Include: Chấp nhận / Từ chối hợp tác \newline
+4. Hệ thống gửi thông báo kết quả cho người gửi yêu cầu \\
+\hline
+\textbf{Hậu điều kiện} & Yêu cầu hợp tác được xử lý, trạng thái được cập nhật \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Use case Diagram chi tiết về xử lý thông báo}
 
 %---------------------------------------------------------------Thông báo---------------
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{figures/usecase_thongbao.jpg}
-    \caption{Sơ đồ use case xử lý thông báo}
+    \caption{Use case Diagram xử lý thông báo}
     \label{fig:usecase_thongbao}
 \end{figure}
 Dưới đây là các đặc tả use case của hệ thống xử lý thông báo.
@@ -1159,7 +1071,7 @@ Dưới đây là các đặc tả use case của hệ thống xử lý thông b
 2. Tạo nội dung thông báo \newline
 3. Extend: Thông báo hủy lịch hẹn \newline
 4. Extend: Thông báo xác nhận lịch hẹn \newline
-5. Gửi thông báo qua Push Notification / Email / SMS \\
+5. Gửi thông báo qua Push Notification\\
 \hline
 \textbf{Hậu điều kiện} & Thông báo được gửi đến người dùng \\
 \hline
@@ -1182,10 +1094,9 @@ Dưới đây là các đặc tả use case của hệ thống xử lý thông b
 2. Đọc nội dung thông báo \newline
 3. Mở ứng dụng để xem chi tiết lịch hẹn \\
 \hline
-\textbf{Hậu điều kiện} & Thông báo được đánh dấu là đã đọc \\
-\hline
 \end{tabular}
 \end{table}
 
 \include{chapters/chapter3/activity}
+include{chapters/chapter3/classd}
 \include{chapters/chapter3/giaodien}
