@@ -305,199 +305,39 @@ RAG (Retrieval-Augmented Generation) là kỹ thuật kết hợp giữa hệ th
 Hệ thống RAG chatbot bao gồm 3 thành phần chính:
 
 \begin{enumerate}
-    \item \textbf{Embedding Model (Text Encoding):}
-    \begin{itemize}
-        \item Model: Google text-embedding-004.
-        \item Input: Câu hỏi của user hoặc document content.
-        \item Output: Vector 768 chiều.
-        \item Task type: "retrieval\_document" hoặc "retrieval\_query".
-    \end{itemize}
-
-    \item \textbf{Vector Database (Knowledge Store):}
-    \begin{itemize}
-        \item Database: Supabase PostgreSQL + pgvector extension.
-        \item Table: documents (id, content, embedding, metadata).
-        \item Embedding column: vector(768) type.
-        \item Similarity function: Cosine similarity.
-        \item Index: IVFFlat hoặc HNSW cho tìm kiếm nhanh.
-    \end{itemize}
-
-    \item \textbf{Generative Model (Answer Generation):}
-    \begin{itemize}
-        \item Model: Google Gemini 2.0 Flash.
-        \item Input: User query + Retrieved contexts.
-        \item Output: Natural language answer.
-        \item Temperature: 0.7 (cân bằng creativity và accuracy).
-    \end{itemize}
+    \item \textbf{Embedding Model}: Google text-embedding-004, chuyển văn bản thành vector 768 chiều.
+    
+    \item \textbf{Vector Database}: Supabase PostgreSQL + pgvector extension, lưu trữ embeddings và tìm kiếm semantic với cosine similarity.
+    
+    \item \textbf{Generative Model}: Google Gemini 2.0 Flash, sinh câu trả lời tự nhiên từ context.
 \end{enumerate}
 
-\subsubsection{Pipeline RAG Chatbot}
-
-\begin{itemize}
-    \item Bước 1 – User Input:
-    \begin{itemize}
-        \item Người dùng nhập câu hỏi (ví dụ: "Làm thế nào để đặt lịch cắt tóc?").
-        \item System lưu vào chat\_messages table.
-    \end{itemize}
-
-    \item Bước 2 – Question Classification:
-    \begin{itemize}
-        \item Phân loại câu hỏi:
-        \begin{itemize}
-            \item \texttt{barbergo\_specific}: Về chức năng app (đặt lịch, hủy lịch, thanh toán).
-            \item \texttt{beauty\_related}: Về làm đẹp, chăm sóc tóc, da.
-            \item \texttt{greeting}: Chào hỏi, xã giao.
-            \item \texttt{off\_topic}: Ngoài phạm vi hệ thống.
-        \end{itemize}
-        \item Dựa vào keywords matching.
-    \end{itemize}
-
-    \item Bước 3 – Query Embedding:
-    \begin{itemize}
-        \item Generate embedding vector cho câu hỏi.
-        \item Call: \texttt{genai.embed\_content(model, text, task\_type)}.
-        \item Output: 768-dim vector.
-    \end{itemize}
-
-    \item Bước 4 – Semantic Search:
-    \begin{itemize}
-        \item Call Supabase RPC function: \texttt{match\_documents}.
-        \item SQL query with cosine similarity:
-        \begin{verbatim}
-SELECT id, content, metadata, 
-       1 - (embedding <=> query_embedding) AS similarity
-FROM documents
-WHERE 1 - (embedding <=> query_embedding) > threshold
-ORDER BY similarity DESC
-LIMIT top_k;
-        \end{verbatim}
-        \item Parameters:
-        \begin{itemize}
-            \item \texttt{query\_embedding}: Vector từ bước 3.
-            \item \texttt{top\_k}: 3-5 documents.
-            \item \texttt{threshold}: 0.5 (similarity score minimum).
-        \end{itemize}
-    \end{itemize}
-
-    \item Bước 5 – Context Preparation:
-    \begin{itemize}
-        \item Trích xuất nội dung từ top-k documents.
-        \item Format context:
-        \begin{verbatim}
-Thông tin 1: {doc1.metadata.output}
-Thông tin 2: {doc2.metadata.output}
-        \end{verbatim}
-    \end{itemize}
-
-    \item Bước 6 – Prompt Engineering:
-    \begin{itemize}
-        \item Tạo prompt cho Gemini:
-        \begin{verbatim}
-Bạn là trợ lý ảo thông minh của BarberGo.
-
-THÔNG TIN TỪ KNOWLEDGE BASE:
-{context}
-
-CÂU HỎI CỦA KHÁCH HÀNG:
-{question}
-
-HƯỚNG DẪN TRẢ LỜI:
-1. Dựa vào thông tin từ knowledge base
-2. Trả lời ngắn gọn, rõ ràng (2-4 câu)
-3. Giọng điệu thân thiện, chuyên nghiệp
-4. Không nói "Dựa vào thông tin..."
-
-CÂU TRẢ LỜI:
-        \end{verbatim}
-    \end{itemize}
-
-    \item Bước 7 – Answer Generation:
-    \begin{itemize}
-        \item Call Gemini API: \texttt{generate\_content(prompt)}.
-        \item Gemini sinh câu trả lời tự nhiên dựa trên context.
-        \item Rate limiting: 0.5s delay giữa các requests.
-    \end{itemize}
-
-    \item Bước 8 – Confidence Scoring:
-    \begin{itemize}
-        \item Dựa vào similarity score của documents:
-        \begin{itemize}
-            \item High confidence: similarity > 0.6.
-            \item Medium confidence: 0.45 < similarity ≤ 0.6.
-            \item Low confidence: similarity ≤ 0.45.
-        \end{itemize}
-    \end{itemize}
-
-    \item Bước 9 – Fallback Handling:
-    \begin{itemize}
-        \item Nếu không tìm thấy context phù hợp (similarity < threshold):
-        \begin{itemize}
-            \item Greeting → Trả lời thân thiện, giới thiệu chức năng.
-            \item Beauty-related → Tư vấn chung + gợi ý đặt lịch.
-            \item BarberGo-specific → Hướng dẫn liên hệ support.
-            \item Off-topic → Từ chối lịch sự.
-        \end{itemize}
-        \item Gemini sinh câu trả lời phù hợp với từng loại.
-    \end{itemize}
-
-    \item Bước 10 – Response Storage:
-    \begin{itemize}
-        \item Lưu câu trả lời vào \texttt{chat\_messages}.
-        \item Update \texttt{chat\_sessions} với timestamp.
-        \item Tracking: confidence, sources used.
-    \end{itemize}
-
-    \item Bước 11 – Return to User:
-    \begin{itemize}
-        \item Response structure:
-        \begin{verbatim}
-{
-  "session_id": "uuid",
-  "answer": "Câu trả lời...",
-  "confidence": "high",
-  "sources": [...]  // optional
-}
-        \end{verbatim}
-    \end{itemize}
-\end{itemize}
-
-\subsubsection{Document Management}
-
-Knowledge base được quản lý thông qua CRUD operations:
-
-\begin{itemize}
-    \item \textbf{Create Document:}
-    \begin{itemize}
-        \item Input: content (câu hỏi), output (câu trả lời).
-        \item Generate embedding cho content.
-        \item Insert vào \texttt{documents} table với metadata JSON.
-    \end{itemize}
-
-    \item \textbf{Update Document:}
-    \begin{itemize}
-        \item Nếu content thay đổi → re-generate embedding.
-        \item Nếu chỉ output thay đổi → update metadata.
-    \end{itemize}
-
-    \item \textbf{Search Documents:}
-    \begin{itemize}
-        \item By keyword: ILIKE search trên content.
-        \item By semantic: Vector similarity search.
-    \end{itemize}
-
-    \item \textbf{Delete Document:}
-    \begin{itemize}
-        \item Hard delete từ database.
-    \end{itemize}
-\end{itemize}
+\textbf{Quy trình chi tiết:}
+\begin{enumerate}
+    \item Người dùng nhập câu hỏi.
+    \item Hệ thống tạo embedding vector (768-dim) cho câu hỏi.
+    \item Tìm kiếm top-K documents tương tự nhất trong vector database (cosine similarity > 0.5).
+    \item Trích xuất context từ documents và kết hợp với câu hỏi.
+    \item Gemini API sinh câu trả lời dựa trên context.
+    \item Đánh giá confidence (high/medium/low) dựa trên similarity score.
+    \item Trả kết quả cho người dùng và lưu vào chat history.
+\end{enumerate}
 
 \textbf{Ưu điểm của RAG:}
 \begin{itemize}
-    \item Câu trả lời chính xác dựa trên knowledge base riêng.
-    \item Tránh hallucination (bịa đặt thông tin).
-    \item Dễ dàng cập nhật tri thức mới (thêm documents).
-    \item Context-aware (hiểu ngữ cảnh câu hỏi).
+    \item Câu trả lời chính xác dựa trên knowledge base riêng của BarberGo.
+    \item Tránh hallucination (bịa đặt thông tin sai).
+    \item Dễ dàng cập nhật tri thức mới (CRUD documents).
+    \item Context-aware, hiểu ngữ cảnh câu hỏi.
     \item Có thể audit sources (biết câu trả lời từ đâu).
+\end{itemize}
+
+\textbf{Ứng dụng trong BarberGo:}
+\begin{itemize}
+    \item Tư vấn dịch vụ cắt tóc, chăm sóc da.
+    \item Hướng dẫn sử dụng app (đặt lịch, hủy lịch, hợp tác).
+    \item Giải đáp thắc mắc về salon, giá cả, thời gian.
+    \item Hỗ trợ khách hàng 24/7 tự động.
 \end{itemize}
 
 
@@ -512,7 +352,7 @@ Python là ngôn ngữ lập trình bậc cao, thông dịch, đa mục đích, 
     \item Cú pháp gần với ngôn ngữ tự nhiên, dễ học và sử dụng.
     \item Ngôn ngữ động (dynamically typed), không cần khai báo kiểu dữ liệu trước.
     \item Đa nền tảng, chạy trên Windows, macOS, Linux.
-    \item Thư viện chuẩn phong phú (batteries included).
+    \item Thư viện chuẩn phong phú.
     \item Cộng đồng lớn mạnh, nhiều tài liệu và thư viện bên thứ ba.
     \item Hỗ trợ lập trình hướng đối tượng, functional và procedural.
 \end{itemize}
@@ -530,11 +370,10 @@ Python là ngôn ngữ phổ biến nhất cho AI/Machine Learning nhờ các ư
         \item \textbf{Data Science}: NumPy, Pandas, Matplotlib.
     \end{itemize}
     \item Tốc độ phát triển nhanh nhờ cú pháp đơn giản.
-    \item Tích hợp dễ dàng với C/C++ để tối ưu performance.
     \item Jupyter Notebook hỗ trợ prototyping và visualization.
 \end{itemize}
 
-\subsubsection{Thư viện sử dụng trong BarberGo Backend}
+\subsubsection{Thư viện chính trong BarberGo Backend}
 
 \begin{itemize}
     \item \textbf{Diffusers (HuggingFace)}:
@@ -625,28 +464,6 @@ FastAPI là web framework hiện đại, hiệu năng cao cho Python, được p
     \item Compatible với ML libraries (PyTorch, Diffusers).
 \end{itemize}
 
-\textbf{Ví dụ API endpoint:}
-\begin{verbatim}
-from fastapi import FastAPI, UploadFile
-from pydantic import BaseModel
-
-app = FastAPI()
-
-class HairstyleRequest(BaseModel):
-    style: str
-    seed: int = None
-
-@app.post("/api/v1/hairstyle/generate")
-async def generate_hairstyle(
-    request: HairstyleRequest,
-    image: UploadFile
-):
-    # Process image and generate hairstyle
-    result = await hairstyle_service.generate(image, request.style)
-    return {"result_url": result}
-\end{verbatim}
-
-
 \subsection{Pydantic}
 
 Pydantic là thư viện data validation và serialization cho Python, sử dụng type hints để define schemas. Trong FastAPI, Pydantic được sử dụng để:
@@ -657,37 +474,6 @@ Pydantic là thư viện data validation và serialization cho Python, sử dụ
     \item Generate JSON schemas.
     \item Type checking và IDE autocomplete.
 \end{itemize}
-
-\textbf{Ví dụ schema trong BarberGo:}
-\begin{verbatim}
-from pydantic import BaseModel, EmailStr, validator
-from typing import List
-from decimal import Decimal
-
-class BarberCreate(BaseModel):
-    name: str
-    user_id: UUID
-    phone: str
-    email: EmailStr
-
-    @validator('phone')
-    def validate_phone(cls, v):
-        if not v.startswith('0') or len(v) != 10:
-            raise ValueError('Invalid phone number')
-        return v
-
-class BookingCreate(BaseModel):
-    user_id: str
-    time_slot_id: int
-    service_ids: List[int]
-    total_price: Decimal
-
-    @validator('service_ids')
-    def validate_services(cls, v):
-        if len(v) == 0:
-            raise ValueError('Must select at least 1 service')
-        return v
-\end{verbatim}
 
 
 \section{Công nghệ Frontend}
@@ -714,18 +500,6 @@ Flutter là bộ công cụ phát triển giao diện người dùng (UI toolkit
     \item Package ecosystem phong phú (HTTP, image picker, maps).
     \item Hot reload tăng tốc development cycle.
 \end{itemize}
-
-\textbf{Packages chính sử dụng:}
-\begin{itemize}
-    \item \texttt{http / dio}: HTTP client để call FastAPI.
-    \item \texttt{image\_picker}: Chọn ảnh từ gallery/camera.
-    \item \texttt{google\_maps\_flutter}: Hiển thị bản đồ, markers.
-    \item \texttt{provider / riverpod}: State management.
-    \item \texttt{google\_sign\_in}: OAuth Google authentication.
-    \item \texttt{firebase\_messaging}: Push notifications.
-    \item \texttt{cached\_network\_image}: Cache và hiển thị ảnh từ URL.
-\end{itemize}
-
 
 \subsection{Vue.js 3}
 
@@ -760,7 +534,7 @@ Vue.js là progressive JavaScript framework cho xây dựng user interfaces và 
     \item \textbf{TailwindCSS / Element Plus}: UI styling.
 \end{itemize}
 \subsection{Figma}
-Figma là công cụ thiết kế UI/UX cloud-based, hỗ trợ collaboration thời gian thực. Trong BarberGo, Figma được sử dụng để thiết kế wireframes, mockups cho mobile app và admin dashboard, xây dựng design system (colors, typography, components), tạo interactive prototypes và export assets cho developers. Workflow: Wireframe → UI Design → Prototype → Developer Handoff.
+Figma là công cụ thiết kế UI/UX cloud-based, hỗ trợ collaboration thời gian thực. Trong BarberGo, Figma được sử dụng để thiết kế wireframes, mockups cho mobile app và admin dashboard, xây dựng design system (colors, typography, components), tạo interactive prototypes và export assets cho developers.
 
 
 \section{Cơ sở dữ liệu}
@@ -803,7 +577,7 @@ Supabase là Backend-as-a-Service (BaaS) mã nguồn mở, được gọi là "o
         \item Row Level Security (RLS) cho authorization.
     \end{itemize}
 
-    \item \textbf{Authentication (GoTrue):}
+    \item \textbf{Authentication:}
     \begin{itemize}
         \item Email/password authentication.
         \item OAuth providers: Google, Facebook, GitHub.
@@ -824,12 +598,6 @@ Supabase là Backend-as-a-Service (BaaS) mã nguồn mở, được gọi là "o
         \item RESTful API tự động từ database schema.
         \item CRUD operations qua HTTP.
         \item Filtering, sorting, pagination.
-    \end{itemize}
-
-    \item \textbf{Real-time subscriptions:}
-    \begin{itemize}
-        \item WebSocket subscriptions.
-        \item Listen to database changes real-time.
     \end{itemize}
 
     \item \textbf{Edge Functions:}
@@ -854,68 +622,6 @@ Supabase là Backend-as-a-Service (BaaS) mã nguồn mở, được gọi là "o
 
 pgvector là PostgreSQL extension cho vector similarity search, được sử dụng chủ yếu cho Retrieval-Augmented Generation (RAG) và semantic search.
 
-\textbf{Chức năng chính:}
-\begin{itemize}
-    \item Lưu trữ embeddings dưới dạng vector columns.
-    \item Similarity search với các distance functions:
-    \begin{itemize}
-        \item Cosine distance: \texttt{<=>}
-        \item Euclidean distance (L2): \texttt{<->}
-        \item Inner product: \texttt{<\#>}
-    \end{itemize}
-    \item Indexing: IVFFlat, HNSW.
-\end{itemize}
-
-\textbf{Sử dụng trong BarberGo:}
-
-1. Table schema:
-\begin{verbatim}
-CREATE TABLE documents (
-  id SERIAL PRIMARY KEY,
-  content TEXT NOT NULL,
-  embedding vector(768),
-  metadata JSONB
-);
-\end{verbatim}
-
-2. RPC function cho similarity search:
-\begin{verbatim}
-CREATE OR REPLACE FUNCTION match_documents(
-  query_embedding vector(768),
-  match_count INT DEFAULT 5
-)
-RETURNS TABLE (
-  id INT,
-  content TEXT,
-  metadata JSONB,
-  similarity FLOAT
-)
-AS $$
-BEGIN
-  RETURN QUERY
-  SELECT 
-    documents.id,
-    documents.content,
-    documents.metadata,
-    1 - (documents.embedding <=> query_embedding) AS similarity
-  FROM documents
-  WHERE 1 - (documents.embedding <=> query_embedding) > 0.5
-  ORDER BY similarity DESC
-  LIMIT match_count;
-END;
-$$ LANGUAGE plpgsql;
-\end{verbatim}
-
-3. Call từ Python:
-\begin{verbatim}
-result = supabase.rpc(
-    "match_documents",
-    {
-        "query_embedding": query_vector,
-        "match_count": 5
-    }
-).execute()
-\end{verbatim}
 
 
 \section{Cloud Services}
@@ -942,18 +648,12 @@ Google Cloud Platform (GCP) là dịch vụ cloud computing của Google, cung c
         \item Topics, device groups.
         \item Delivery reports, analytics.
     \end{itemize}
-
-    \item \textbf{Firebase Authentication:}
-    \begin{itemize}
-        \item Google Sign-In (OAuth 2.0).
-        \item ID tokens cho backend verification.
-    \end{itemize}
 \end{enumerate}
 
 
 \subsection{Supabase Storage}
 
-Supabase Storage là object storage service tương tự S3, được tích hợp sẵn trong Supabase.
+Supabase Storage được tích hợp sẵn trong Supabase.
 
 \textbf{Chức năng:}
 \begin{itemize}
@@ -963,36 +663,6 @@ Supabase Storage là object storage service tương tự S3, được tích hợ
     \item Row Level Security (RLS) cho access control.
     \item Image transformations (resize, crop).
 \end{itemize}
-
-\textbf{Buckets trong BarberGo:}
-
-1. \textbf{imgBarber bucket:}
-\begin{itemize}
-    \item Lưu ảnh barber shops.
-    \item Path: \texttt{barbers/\{barber\_id\}\_\{uuid\}.jpg}
-    \item Public access.
-    \item Max file size: 5MB.
-\end{itemize}
-
-2. \textbf{avatars bucket:}
-\begin{itemize}
-    \item Avatar người dùng.
-    \item Path: \texttt{users/\{user\_id\}\_avatar.jpg}
-    \item Private, chỉ owner access.
-\end{itemize}
-
-\textbf{Upload workflow:}
-\begin{verbatim}
-# Python (FastAPI)
-file_path = f"barbers/{barber_id}_{uuid4()}.jpg"
-response = supabase.storage.from_("imgBarber").upload(
-    path=file_path,
-    file=file_content,
-    file_options={"content-type": "image/jpeg"}
-)
-public_url = supabase.storage.from_("imgBarber").get_public_url(file_path)
-\end{verbatim}
-
 
 \section{Kiến trúc hệ thống (Design Architecture)}
 
@@ -1034,36 +704,6 @@ User interaction → View → ViewModel → Model (API) \\
 Model (API) → ViewModel → View (auto re-render)
 \end{center}
 
-\textbf{Ví dụ trong Vue.js:}
-\begin{verbatim}
-<!-- View -->
-<template>
-  <div>
-    <h1>{{ title }}</h1>
-    <input v-model="searchQuery" @input="handleSearch" />
-    <BarberList :barbers="filteredBarbers" />
-  </div>
-</template>
-
-<script setup>
-// ViewModel
-import { ref, computed } from 'vue'
-import { useBarberStore } from '@/store/barberStore'
-
-const barberStore = useBarberStore() // Access Model
-const searchQuery = ref('')
-
-const filteredBarbers = computed(() => {
-  return barberStore.barbers.filter(b => 
-    b.name.includes(searchQuery.value)
-  )
-})
-
-const handleSearch = () => {
-  // Logic xử lý search
-}
-</script>
-\end{verbatim}
 
 \textbf{Ưu điểm:}
 \begin{itemize}
@@ -1081,7 +721,7 @@ Backend của BarberGo sử dụng kiến trúc phân lớp 3 tầng (Three-Tier
 \textbf{Các tầng:}
 
 \begin{enumerate}
-    \item \textbf{Presentation Layer (API/Routers):}
+    \item \textbf{Presentation Layer:}
     \begin{itemize}
         \item FastAPI routers, HTTP endpoints.
         \item Request/response handling.
@@ -1090,16 +730,8 @@ Backend của BarberGo sử dụng kiến trúc phân lớp 3 tầng (Three-Tier
         \item Error handling, HTTP status codes.
     \end{itemize}
     
-    Thư mục: \texttt{app/api/}, \texttt{app/routers/}
-    
-    Ví dụ:
-    \begin{verbatim}
-@router.post("/barbers", response_model=BarberResponse)
-async def create_barber(data: BarberCreate):
-    return await barber_service.create_barber(data)
-    \end{verbatim}
 
-    \item \textbf{Business Logic Layer (Services):}
+    \item \textbf{Business Logic Layer:}
     \begin{itemize}
         \item Core business logic.
         \item Use cases, workflows.
@@ -1107,60 +739,34 @@ async def create_barber(data: BarberCreate):
         \item Không phụ thuộc HTTP hay Database cụ thể.
         \item Reusable across different interfaces.
     \end{itemize}
-    
-    Thư mục: \texttt{app/services/}
-    
-    Services chính:
-    \begin{itemize}
-        \item \texttt{user\_service.py}: Authentication, user management.
-        \item \texttt{barber\_service.py}: Barber CRUD, geocoding.
-        \item \texttt{booking\_service.py}: Booking logic, validation.
-        \item \texttt{rating\_service.py}: Rating, auto-update barber rank.
-        \item \texttt{acne\_detection.py}: AI acne detection.
-        \item \texttt{hairstyle\_service.py}: AI hairstyle generation.
-        \item \texttt{chatbot\_service.py}: RAG chatbot.
-    \end{itemize}
 
-    \item \textbf{Data Access Layer (Database):}
+    \item \textbf{Data Access Layer:}
     \begin{itemize}
         \item Database connections (Supabase client).
         \item CRUD operations.
         \item SQL queries, ORM.
         \item Data persistence.
     \end{itemize}
-    
-    Thư mục: \texttt{app/database/}
-    
-    Ví dụ:
-    \begin{verbatim}
-# database/supabase_client.py
-from supabase import create_client
-
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-# service layer sử dụng
-response = supabase.table("barbers").select("*").execute()
-    \end{verbatim}
 \end{enumerate}
 
 \textbf{Supporting Layers:}
 
 \begin{itemize}
-    \item \textbf{Schemas (DTOs):} \texttt{app/schemas/}
+    \item \textbf{Schemas (DTOs):} 
     \begin{itemize}
         \item Pydantic models cho validation.
         \item Request/Response contracts.
         \item Type safety.
     \end{itemize}
 
-    \item \textbf{Core Utilities:} \texttt{app/core/}
+    \item \textbf{Core Utilities:} 
     \begin{itemize}
         \item Constants, configurations.
         \item Security: JWT handling.
         \item Custom exceptions.
     \end{itemize}
 
-    \item \textbf{Utils:} \texttt{app/utils/}
+    \item \textbf{Utils:} 
     \begin{itemize}
         \item Helper functions.
         \item Image processing, geocoding.
@@ -1196,35 +802,6 @@ Geocoding là quá trình chuyển đổi địa chỉ văn bản thành tọa �
     \item Rate limit: 1 request/second.
 \end{itemize}
 
-\textbf{Sử dụng trong BarberGo:}
-
-1. \textbf{Reverse Geocoding (Lat/Lng → Address):}
-\begin{verbatim}
-from geopy.geocoders import Nominatim
-
-geolocator = Nominatim(user_agent="barbergo_v1")
-location = geolocator.reverse(f"{lat}, {lng}", language='vi')
-
-address = location.address  # Full address
-city = location.raw['address'].get('city')
-district = location.raw['address'].get('city_district')
-\end{verbatim}
-
-Workflow:
-\begin{itemize}
-    \item User chọn location trên map (lat, lng).
-    \item Backend call Nominatim API.
-    \item Parse address components.
-    \item Auto-fill address và area fields.
-\end{itemize}
-
-2. \textbf{Forward Geocoding (Address → Lat/Lng):}
-\begin{verbatim}
-location = geolocator.geocode("30 Tạ Quang Bửu, Linh Trung, Thủ Đức")
-lat, lng = location.latitude, location.longitude
-\end{verbatim}
-
-
 \subsection{PostGIS Extension}
 
 PostGIS là extension cho PostgreSQL, thêm hỗ trợ cho geographic data và spatial queries.
@@ -1236,78 +813,6 @@ PostGIS là extension cho PostgreSQL, thêm hỗ trợ cho geographic data và s
     \item Spatial indexing: GiST indexes.
     \item Coordinate transformations (SRID).
 \end{itemize}
-
-\textbf{Sử dụng trong BarberGo:}
-
-1. Table schema:
-\begin{verbatim}
-CREATE TABLE barbers (
-  id UUID PRIMARY KEY,
-  name VARCHAR(255),
-  location GEOGRAPHY(POINT, 4326),  -- WGS84
-  address TEXT,
-  area VARCHAR(100)
-);
-
--- Create spatial index
-CREATE INDEX idx_barbers_location ON barbers USING GIST(location);
-\end{verbatim}
-
-2. Insert location:
-\begin{verbatim}
-INSERT INTO barbers (id, name, location)
-VALUES (
-  'uuid',
-  'Barber Shop Name',
-  ST_SetSRID(ST_MakePoint(lng, lat), 4326)
-);
-\end{verbatim}
-
-3. Find nearby barbers:
-\begin{verbatim}
-SELECT id, name, address,
-       ST_Distance(location, ST_MakePoint(user_lng, user_lat)::geography) AS distance
-FROM barbers
-WHERE ST_DWithin(
-  location,
-  ST_MakePoint(user_lng, user_lat)::geography,
-  5000  -- 5km radius
-)
-ORDER BY distance;
-\end{verbatim}
-
-4. Supabase RPC function:
-\begin{verbatim}
-CREATE OR REPLACE FUNCTION get_nearby_barbers(
-  user_lat FLOAT,
-  user_lng FLOAT,
-  radius_meters INT DEFAULT 5000
-)
-RETURNS TABLE (
-  id UUID,
-  name VARCHAR,
-  distance_meters FLOAT
-)
-AS $$
-BEGIN
-  RETURN QUERY
-  SELECT 
-    b.id,
-    b.name,
-    ST_Distance(
-      b.location,
-      ST_SetSRID(ST_MakePoint(user_lng, user_lat), 4326)::geography
-    ) AS distance_meters
-  FROM barbers b
-  WHERE ST_DWithin(
-    b.location,
-    ST_SetSRID(ST_MakePoint(user_lng, user_lat), 4326)::geography,
-    radius_meters
-  )
-  ORDER BY distance_meters;
-END;
-$$ LANGUAGE plpgsql;
-\end{verbatim}
 
 \textbf{Ưu điểm:}
 \begin{itemize}
@@ -1362,26 +867,3 @@ Hệ thống hỗ trợ 3 thuật toán tìm đường đi:
     Ứng dụng: Xử lý các trường hợp đặc biệt (ít dùng trong BarberGo).
 \end{enumerate}
 
-\textbf{Integration với Flutter:}
-\begin{verbatim}
-// Google Maps Flutter package
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-// Display route polyline
-Polyline(
-  polylineId: PolylineId('route'),
-  points: routePoints,  // List<LatLng>
-  color: Colors.blue,
-  width: 5,
-)
-\end{verbatim}
-
-\textbf{Workflow chỉ đường:}
-\begin{enumerate}
-    \item User chọn barber shop trên map.
-    \item App lấy vị trí hiện tại (GPS).
-    \item Backend call routing API với A* algorithm.
-    \item Trả về danh sách tọa độ (polyline).
-    \item Flutter hiển thị route trên Google Maps.
-    \item Turn-by-turn directions (tùy chọn).
-\end{enumerate}
