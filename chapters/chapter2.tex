@@ -822,31 +822,32 @@ PostGIS là extension cho PostgreSQL, thêm hỗ trợ cho geographic data và s
     \item Tích hợp sẵn trong PostgreSQL.
 \end{itemize}
 
-
 \subsection{OpenStreetMap và Routing}
 
 OpenStreetMap (OSM) là bản đồ mã nguồn mở, cộng đồng đóng góp. BarberGo sử dụng OSM data cho routing và directions.
 
 \textbf{Routing Algorithms:}
 
-Hệ thống hỗ trợ 3 thuật toán tìm đường đi:
+Hệ thống hỗ trợ 3 thuật toán tìm đường đi và tự động lựa chọn thuật toán phù hợp dựa trên khoảng cách giữa vị trí hiện tại và barber shop đích:
 
 \begin{enumerate}
-    \item \textbf{Dijkstra Algorithm:}
+    \item \textbf{Dijkstra Algorithm (Khoảng cách ngắn):}
     \begin{itemize}
         \item Tìm đường đi ngắn nhất từ điểm xuất phát đến tất cả điểm.
         \item Hoạt động với đồ thị có trọng số không âm.
         \item Độ phức tạp: $O((V + E) \log V)$ với priority queue.
+        \item Phù hợp cho khoảng cách dưới 5km.
     \end{itemize}
     
-    Ứng dụng: Tìm barber shop gần nhất từ vị trí hiện tại.
+    Ứng dụng: Tìm đường đến barber shop trong khu vực gần (< 5km).
 
-    \item \textbf{A* (A-star) Algorithm:}
+    \item \textbf{A* (A-star) Algorithm (Khoảng cách trung bình):}
     \begin{itemize}
         \item Mở rộng Dijkstra với heuristic function.
         \item Ước lượng chi phí còn lại đến đích.
         \item Nhanh hơn Dijkstra khi có thông tin heuristic tốt.
         \item Heuristic: Haversine distance (khoảng cách trực tiếp).
+        \item Phù hợp cho khoảng cách từ 5km đến 15km.
     \end{itemize}
     
     Công thức:
@@ -855,15 +856,28 @@ Hệ thống hỗ trợ 3 thuật toán tìm đường đi:
     \end{equation}
     Trong đó: $g(n)$ = chi phí từ start, $h(n)$ = heuristic đến goal.
     
-    Ứng dụng: Chỉ đường tối ưu từ vị trí hiện tại đến barber shop.
+    Ứng dụng: Chỉ đường tối ưu đến barber shop trong khu vực trung bình (5-15km).
 
-    \item \textbf{Bellman-Ford Algorithm:}
+    \item \textbf{Bellman-Ford Algorithm (Khoảng cách xa):}
     \begin{itemize}
         \item Tìm đường đi ngắn nhất trong đồ thị có trọng số âm.
         \item Phát hiện chu trình âm.
-        \item Chậm hơn Dijkstra: $O(VE)$.
+        \item Độ phức tạp: $O(VE)$.
+        \item Xử lý tốt các trường hợp phức tạp với nhiều nút.
+        \item Phù hợp cho khoảng cách trên 15km.
     \end{itemize}
     
-    Ứng dụng: Xử lý các trường hợp đặc biệt (ít dùng trong BarberGo).
+    Ứng dụng: Tìm đường đến barber shop ở khu vực xa (> 15km).
 \end{enumerate}
+
+\textbf{Chiến lược lựa chọn thuật toán:}
+
+Hệ thống tự động chọn thuật toán dựa trên khoảng cách Haversine giữa vị trí người dùng và barber shop:
+\begin{itemize}
+    \item Khoảng cách < 5km: Dijkstra Algorithm
+    \item Khoảng cách từ 5km đến 15km: A* Algorithm
+    \item Khoảng cách > 15km: Bellman-Ford Algorithm
+\end{itemize}
+
+Điều này đảm bảo hiệu suất tối ưu cho mọi trường hợp sử dụng.
 
