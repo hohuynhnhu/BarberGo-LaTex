@@ -1,4 +1,5 @@
 \section{Giao diện người dùng}
+
 \subsection{Giao diện bắt đầu}
 \begin{figure}[H]
     \centering
@@ -6,8 +7,7 @@
     \caption{Giao diện bắt đầu}
     \label{fig:intro}
 \end{figure}
-
-
+Màn hình này xuất hiện khi người dùng mở ứng dụng lần đầu tiên, giúp người dùng nắm bắt các thông tin cơ bản về ứng dụng BarberGO, đồng thời tạo cảm giác thân thiện và dễ tiếp cận. Ở cuối màn hình có khu vực cho phép đăng xuất tài khoản admin.
 
 \subsection{Giao diện đăng ký}
 \begin{figure}[H]
@@ -16,6 +16,16 @@
     \caption{Giao diện đăng ký}
     \label{fig:dk}
 \end{figure}
+Giao diện đăng ký cho phép người dùng tạo tài khoản mới để sử dụng các dịch vụ của ứng dụng BarberGO. Người dùng có thể nhập các thông tin cá nhân như tên, email, mật khẩu và xác nhận lại mật khẩu, đồng thời có thể ẩn hoặc hiện mật khẩu khi nhập. Sau khi đăng ký, hệ thống sẽ gửi email chứa đường link xác nhận tài khoản. Ngoài ra, giao diện còn có nút \textbf{Đăng nhập} dành cho người dùng đã có tài khoản để chuyển sang giao diện đăng nhập.
+
+\subsection{Giao diện đăng nhập}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/login.jpg}
+    \caption{Giao diện đăng nhập}
+    \label{fig:dn}
+\end{figure}
+Giao diện đăng nhập cho phép người dùng đã có tài khoản truy cập vào ứng dụng bằng email và mật khẩu đã đăng ký trước đó, sau khi xác nhận qua đường link email được gửi về. Giao diện cũng cung cấp tùy chọn \textbf{Quên mật khẩu} để người dùng khôi phục mật khẩu khi cần. Ngoài ra, người dùng có thể đăng nhập bằng tài khoản Google; nếu chưa có tài khoản, hệ thống sẽ tự động tạo tài khoản mới dựa trên thông tin Google, còn nếu đã đăng ký thì sẽ đăng nhập trực tiếp. Nút \textbf{Đăng ký} được cung cấp cho người dùng chưa có tài khoản và muốn chuyển sang giao diện đăng ký.
 
 \subsection{Giao diện trang chủ}
 \begin{figure}[H]
@@ -24,32 +34,7 @@
     \caption{Giao diện trang chủ}
     \label{fig:home}
 \end{figure}
-
-
-\subsection{Giao diện lịch}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/lich.jpg}
-    \caption{Giao diện lịch}
-    \label{fig:lich}
-\end{figure}
-
-
-\subsection{Giao diện lịch sử }
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/lich_su.jpg}
-    \caption{Giao diện lịch sử}
-    \label{fig:lich_su}
-\end{figure}
-
-\subsection{Giao diện trang cá nhân}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/profile.jpg}
-    \caption{Giao diện trang cá nhân}
-    \label{fig:profile}
-\end{figure}
+Giao diện trang chủ hiển thị các chức năng chính của ứng dụng BarberGO. Người dùng có thể xem gợi ý top 2 cửa hàng nổi bật với đánh giá cao và nhấn xem chi tiết để chuyển đến trang thông tin cửa hàng. Ngoài ra, giao diện tích hợp ba chức năng AI gồm chatbot hỗ trợ tư vấn thông tin hệ thống, gợi ý kiểu tóc dựa trên khuôn mặt và tư vấn chăm sóc da mặt. Phía dưới là các chức năng chính như \textbf{Lịch}, \textbf{Lịch sử} và \textbf{Trang cá nhân}.
 
 \subsection{Giao diện gợi ý kiểu tóc}
 \begin{figure}[H]
@@ -58,6 +43,7 @@
     \caption{Giao diện gợi ý kiểu tóc}
     \label{fig:hair}
 \end{figure}
+Giao diện gợi ý kiểu tóc cho phép người dùng tải lên ảnh khuôn mặt để nhận các gợi ý kiểu tóc phù hợp. Hệ thống sử dụng công nghệ nhận diện khuôn mặt để phân tích đặc điểm và đề xuất kiểu tóc tương ứng.
 
 \subsection{Giao diện tư vấn chăm sóc da}
 \begin{figure}[H]
@@ -66,6 +52,7 @@
     \caption{Giao diện tư vấn chăm sóc da}
     \label{fig:mun}
 \end{figure}
+Giao diện tư vấn chăm sóc da cho phép người dùng tải lên ảnh khuôn mặt để nhận các lời khuyên và hướng dẫn chăm sóc da. Hệ thống phân tích tình trạng da và đề xuất biện pháp chăm sóc phù hợp.
 
 \subsection{Giao diện chatbot}
 \begin{figure}[H]
@@ -74,9 +61,37 @@
     \caption{Giao diện chatbot}
     \label{fig:chat}
 \end{figure}
+Giao diện chatbot cho phép người dùng trò chuyện với trợ lý ảo nhằm nhận hỗ trợ và giải đáp các thắc mắc liên quan đến ứng dụng BarberGO.
 
+\subsection{Giao diện đặt lịch}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/lich.jpg}
+    \caption{Giao diện đặt lịch}
+    \label{fig:lich}
+\end{figure}
+Giao diện đặt lịch cho phép người dùng chọn ngày, giờ và dịch vụ để đặt lịch cắt tóc tại tiệm, đồng thời xác nhận thông tin đặt lịch.
+
+\subsection{Giao diện lịch sử}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/lich_su.jpg}
+    \caption{Giao diện lịch sử}
+    \label{fig:lich_su}
+\end{figure}
+Giao diện lịch sử hiển thị danh sách các lần đặt lịch trong quá khứ, hiện tại và tương lai của người dùng, bao gồm thông tin về tiệm, ngày giờ và dịch vụ đã sử dụng.
+
+\subsection{Giao diện trang cá nhân}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/profile.jpg}
+    \caption{Giao diện trang cá nhân}
+    \label{fig:profile}
+\end{figure}
+Giao diện trang cá nhân cho phép người dùng xem và chỉnh sửa thông tin cá nhân, thay đổi mật khẩu, đăng ký hợp tác, xem đánh giá, sử dụng bản đồ để xác định vị trí và đăng xuất khỏi ứng dụng.
 
 \section{Giao diện chủ tiệm}
+
 \subsection{Giao diện trang chủ tiệm cắt tóc}
 \begin{figure}[H]
     \centering
@@ -84,14 +99,16 @@
     \caption{Giao diện trang chủ tiệm cắt tóc}
     \label{fig:home_tiem}
 \end{figure}
+Giao diện hiển thị các chức năng quản lý chính như lịch hẹn, thống kê slot, lịch sắp diễn ra và lịch trình trong ngày.
 
 \subsection{Giao diện lịch tiệm}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/lich_tien.jpg}
-    \caption{Giao diện lịch tiệm }
+    \caption{Giao diện lịch tiệm}
     \label{fig:lich_tien}
 \end{figure}
+Giao diện cho phép chủ tiệm quản lý các slot đặt lịch, tạo mới, sao chép, chỉnh sửa hoặc khóa slot, đồng thời xem số lượng slot còn trống.
 
 \subsection{Giao diện lịch sử tiệm}
 \begin{figure}[H]
@@ -100,32 +117,46 @@
     \caption{Giao diện lịch sử tiệm}
     \label{fig:lich_su_tiem}
 \end{figure}
+Giao diện cho phép chủ tiệm xem thông tin khách hàng và lịch sử đặt lịch.
 
-\subsection{Giao diện trang hồ sơ tiệm}
+\subsection{Giao diện trang cửa tiệm}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/profile_tiem.jpg}
-    \caption{Giao diện trang cá nhân của tiệm}
+    \caption{Giao diện trang cửa tiệm}
     \label{fig:profile_tiem}
 \end{figure}
+Giao diện cho phép chủ tiệm chỉnh sửa thông tin tiệm và quản lý các dịch vụ cung cấp.
 
-\subsection{Giao diện trang cá nhân của tiệm}
+\subsection{Giao diện trang cá nhân}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/ca_nhan_tiem.jpg}
-    \caption{Giao diện trang cá nhân của tiệm}
+    \caption{Giao diện trang cá nhân}
     \label{fig:ca_nhan_tiem}
 \end{figure}
+Giao diện cho phép chủ tiệm quản lý thông tin cá nhân, xem đánh giá, theo dõi trạng thái hồ sơ, sử dụng bản đồ và đăng xuất.
 
-
-\subsection{Giao diện hiện vị trí chủ tiệm}
+\subsection{Giao diện hiển thị vị trí chủ tiệm}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/ggmap.jpg}
-    \caption{Giao diện hiện vị trí chủ tiệm}
+    \caption{Giao diện hiển thị vị trí chủ tiệm}
     \label{fig:ggmap}
 \end{figure}
+Giao diện giúp chủ tiệm xác định vị trí trên bản đồ và hiển thị địa chỉ tiệm để khách hàng dễ tìm kiếm.
+
 \section{Giao diện web admin}
+
+\subsection{Giao diện đăng nhập admin}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/admin_login.jpg}
+    \caption{Giao diện đăng nhập admin}
+    \label{fig:admin_login}
+\end{figure}
+Giao diện cho phép quản trị viên đăng nhập vào hệ thống quản trị với quyền truy cập được phân quyền.
+
 \subsection{Giao diện trang chủ admin}
 \begin{figure}[H]
     \centering
@@ -133,38 +164,43 @@
     \caption{Giao diện trang chủ admin}
     \label{fig:home_admin}
 \end{figure}
+Giao diện hiển thị các chức năng quản lý người dùng, tiệm cắt tóc và yêu cầu hợp tác.
 
-\subsection{Giao diện lịch hoạt động các tiệm cắt tóc của admin}
+\subsection{Giao diện hồ sơ yêu cầu hợp tác}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/lich_admin.jpg}
-    \caption{Giao diện  lịch hoạt động các tiệm cắt tóc của admin}
+    \caption{Giao diện hồ sơ yêu cầu hợp tác}
     \label{fig:lich_admin}
 \end{figure}
+Giao diện hiển thị danh sách yêu cầu hợp tác cùng trạng thái xử lý và bộ lọc.
 
-\subsection{Giao diện thống kê tiệm cắt tóc của admin}
+\subsection{Giao diện thống kê tiệm cắt tóc}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/barber_admin.jpg}
-    \caption{Giao diện thống kê tiệm cắt tóc của admin}
+    \caption{Giao diện thống kê tiệm cắt tóc}
     \label{fig:barber_admin}
 \end{figure}
+Giao diện cho phép quản trị viên quản lý thông tin và trạng thái hoạt động của các tiệm.
 
-\subsection{Giao diện thống kê người dùng của admin}
+\subsection{Giao diện thống kê người dùng}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/admin_user.jpg}
-    \caption{Giao diện thống kê người dùng của admin}
+    \caption{Giao diện thống kê người dùng}
     \label{fig:admin_user}
 \end{figure}
+Giao diện hỗ trợ quản trị viên quản lý thông tin và trạng thái tài khoản người dùng.
 
-\subsection{Giao diện thêm promt cho chatbot}
+\subsection{Giao diện Knowledge Base}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/add_promt.jpg}
-    \caption{Giao diện thêm promt cho chatbot}
-    \label{fig:add_promt}
+    \caption{Giao diện Knowledge Base}
+    \label{fig:kb_admin}
 \end{figure}
+Giao diện cho phép quản trị viên quản lý cơ sở tri thức của chatbot AI.
 
 \subsection{Giao diện testing chat}
 \begin{figure}[H]
@@ -173,4 +209,4 @@
     \caption{Giao diện testing chat}
     \label{fig:test_chat}
 \end{figure}
-
+Giao diện hỗ trợ quản trị viên kiểm tra và đánh giá phản hồi của chatbot AI.
