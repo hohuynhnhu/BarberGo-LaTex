@@ -15,43 +15,43 @@ Cơ sở dữ liệu BarberGo được thiết kế dựa trên PostgreSQL với
 
 \subsubsection{Nhóm quản lý người dùng}
 
-\textbf{Bảng users:} Lưu trữ thông tin tài khoản với các trường chính: \texttt{id} (uuid, PK), \texttt{email} (text, UK), \texttt{full\_name}, \texttt{avatar\_url}, \texttt{role} (customer/barber/admin), \texttt{phone}, \texttt{created\_at}, \texttt{status} (boolean), \texttt{fcm\_token} (cho push notification). Bảng có quan hệ 1-N với appointments, barbers, bookings, chat\_sessions và ratings.
+\textbf{Bảng users:} Lưu trữ thông tin tài khoản với các trường chính: id (uuid, PK), email (text, UK), full name, avatar url, role (customer/barber/admin), phone, created at, status (boolean), fcm token (cho push notification). Bảng có quan hệ 1-N với appointments, barbers, bookings, chat sessions và ratings.
 
 \subsubsection{Nhóm quản lý barber shop}
 
-\textbf{Bảng barbers:} Quản lý thông tin tiệm cắt tóc với các trường: \texttt{id} (uuid, PK), \texttt{name}, \texttt{address}, \texttt{rank} (numeric - điểm trung bình), \texttt{imagepath}, \texttt{user\_id} (FK → users.id), \texttt{status}, \texttt{area}, \texttt{opening\_time}, \texttt{closing\_time}, \texttt{working\_days} (jsonb), \texttt{location} (geography POINT). Có quan hệ N-1 với users và 1-N với services, time\_slots, ratings.
+\textbf{Bảng barbers:} Quản lý thông tin tiệm cắt tóc với các trường: id (uuid, PK), name, address, rank (numeric - điểm trung bình), imagepath, user id (FK → users.id), status, area, opening time, closing time, working days (jsonb), location (geography POINT). Có quan hệ N-1 với users và 1-N với services, time slots, ratings.
 
-\textbf{Bảng services:} Lưu dịch vụ của từng barber shop: \texttt{id} (int, PK), \texttt{barber\_id} (FK), \texttt{service\_name}, \texttt{price}, \texttt{duration\_min}, \texttt{status}. Quan hệ N-1 với barbers và 1-N với booking\_services.
+\textbf{Bảng services:} Lưu dịch vụ của từng barber shop: id (int, PK), barber id (FK), service name, price, duration min, status. Quan hệ N-1 với barbers và 1-N với booking services.
 
 \subsubsection{Nhóm quản lý đặt lịch}
 
-\textbf{Bảng time\_slots:} Quản lý khung giờ làm việc: \texttt{id} (int, PK), \texttt{start\_time}, \texttt{end\_time}, \texttt{is\_available}, \texttt{barber\_id} (FK), \texttt{slot\_date}. Quan hệ N-1 với barbers và 1-1 với bookings.
+\textbf{Bảng time slots:} Quản lý khung giờ làm việc: id (int, PK), start time, end time, is available, barber id (FK), slot date. Quan hệ N-1 với barbers và 1-1 với bookings.
 
-\textbf{Bảng bookings:} Lưu lịch hẹn: \texttt{id} (int, PK), \texttt{user\_id} (FK), \texttt{status} (pending/confirmed/rejected/completed), \texttt{time\_slot\_id} (FK), \texttt{total\_duration\_min}, \texttt{total\_price}. Quan hệ N-1 với users và time\_slots, 1-N với booking\_services.
+\textbf{Bảng bookings:} Lưu lịch hẹn: id (int, PK), user id (FK), status (pending/confirmed/rejected/completed), time slot id (FK), total duration min, total price. Quan hệ N-1 với users và time slots, 1-N với booking services.
 
-\textbf{Bảng booking\_services:} Bảng trung gian many-to-many giữa bookings và services: \texttt{id} (int, PK), \texttt{booking\_id} (FK), \texttt{service\_id} (FK), \texttt{created\_at}.
+\textbf{Bảng booking services:} Bảng trung gian many-to-many giữa bookings và services: id (int, PK), booking id (FK), service id (FK), created at.
 
-\textbf{Bảng ratings:} Đánh giá từ khách hàng: \texttt{id} (int, PK), \texttt{barber\_id} (FK), \texttt{user\_id} (FK), \texttt{score} (1-5 sao), \texttt{comment}, \texttt{created\_at}. Quan hệ N-1 với cả barbers và users.
+\textbf{Bảng ratings:} Đánh giá từ khách hàng: id (int, PK), barber id (FK), user id (FK), score (1-5 sao), comment, created at. Quan hệ N-1 với cả barbers và users.
 
 \subsubsection{Nhóm hệ thống AI}
 
-\textbf{Bảng chat\_sessions:} Quản lý phiên chat: \texttt{id} (uuid, PK), \texttt{user\_id} (FK), \texttt{title}, \texttt{created\_at}. Quan hệ N-1 với users và 1-N với chat\_messages.
+\textbf{Bảng chat sessions:} Quản lý phiên chat: id (uuid, PK), user id (FK), title, created at. Quan hệ N-1 với users và 1-N với chat messages.
 
-\textbf{Bảng chat\_messages:} Lưu tin nhắn chat: \texttt{id} (uuid, PK), \texttt{session\_id} (FK), \texttt{role} (user/assistant), \texttt{content}, \texttt{confidence} (high/medium/low), \texttt{created\_at}. Quan hệ N-1 với chat\_sessions.
+\textbf{Bảng chat messages:} Lưu tin nhắn chat: id (uuid, PK), session id (FK), role (user/assistant), content, confidence (high/medium/low), created at. Quan hệ N-1 với chat sessions.
 
-\textbf{Bảng documents:} Knowledge base cho RAG chatbot: \texttt{id} (bigint, PK), \texttt{content}, \texttt{metadata} (jsonb), \texttt{embedding} (vector(768)). Sử dụng pgvector extension và Google text-embedding-004 model, hỗ trợ cosine similarity search.
+\textbf{Bảng documents:} Knowledge base cho RAG chatbot: id (bigint, PK), content, metadata (jsonb), embedding (vector(768)). Sử dụng pgvector extension và Google text-embedding-004 model, hỗ trợ cosine similarity search.
 
 \subsubsection{Nhóm quản lý hợp tác}
 
-\textbf{Bảng appointments:} Yêu cầu hợp tác mở barber shop: \texttt{id} (uuid, PK), \texttt{user\_id} (FK), \texttt{name\_barber}, \texttt{email}, \texttt{phone}, \texttt{status} (pending/approved/rejected), \texttt{created\_at}, \texttt{updated\_at}, \texttt{admin\_note}, \texttt{admin\_id} (FK → users.id). Có hai quan hệ N-1 với users (user\_id cho người gửi, admin\_id cho admin xử lý).
+\textbf{Bảng appointments:} Yêu cầu hợp tác mở barber shop: id (uuid, PK), user id (FK), name barber, email, phone, status (pending/approved/rejected), created at, updated at, admin note, admin id (FK → users.id). Có hai quan hệ N-1 với users (user id cho người gửi, admin id cho admin xử lý).
 
 \subsection{Ràng buộc và tối ưu hóa}
 
 \subsubsection{Các ràng buộc dữ liệu}
 
-\textbf{Primary Keys:} Bảng sử dụng uuid (users, barbers, appointments, chat\_sessions, chat\_messages) và int/bigint (services, bookings, time\_slots, ratings, booking\_services, documents).
+\textbf{Primary Keys:} Bảng sử dụng uuid (users, barbers, appointments, chat sessions, chat messages) và int/bigint (services, bookings, time slots, ratings, booking services, documents).
 
-\textbf{Foreign Keys:} 13 ràng buộc khóa ngoại đảm bảo tính toàn vẹn tham chiếu, bao gồm barbers.user\_id, services.barber\_id, bookings.user\_id, bookings.time\_slot\_id, và các quan hệ khác.
+\textbf{Foreign Keys:} 13 ràng buộc khóa ngoại đảm bảo tính toàn vẹn tham chiếu, bao gồm barbers.user id, services.barber id, bookings.user id, bookings.time slot id, và các quan hệ khác.
 
 \subsubsection{Chỉ mục và hiệu suất}
 
@@ -60,15 +60,15 @@ Hệ thống sử dụng nhiều loại index để tối ưu truy vấn:
     \item \textbf{Unique index:} users.email đảm bảo email duy nhất
     \item \textbf{GiST index:} barbers.location tối ưu spatial queries (tìm tiệm gần nhất)
     \item \textbf{IVFFlat index:} documents.embedding tối ưu vector similarity search cho RAG
-    \item \textbf{B-tree indexes:} Trên các foreign keys, created\_at và status fields
+    \item \textbf{B-tree indexes:} Trên các foreign keys, created at và status fields
 \end{itemize}
 
 \subsubsection{Bảo mật và trigger}
 
 \textbf{Row Level Security (RLS):} Supabase RLS kiểm soát quyền truy cập - user chỉ xem bookings/ratings của mình, barber owner chỉ quản lý shop của mình, admin có full access.
 
-\textbf{Database Triggers:} Tự động cập nhật barbers.rank khi có đánh giá mới, tự động set updated\_at timestamp, validate business rules (không đặt lịch quá khứ).
+\textbf{Database Triggers:} Tự động cập nhật barbers.rank khi có đánh giá mới, tự động set updated at timestamp, validate business rules (không đặt lịch quá khứ).
 
 \subsection{Kết luận}
 
-Thiết kế database BarberGo tuân thủ chuẩn hóa 3NF, đảm bảo tính nhất quán và khả năng mở rộng. Việc tích hợp pgvector và PostGIS extensions cho phép hệ thống hỗ trợ hiệu quả các tính năng AI (RAG chatbot, vector search) và geographic queries (tìm tiệm gần nhất, tính khoảng cách). Row Level Security và indexing strategy đảm bảo cả bảo mật lẫn hiệu suất cho hệ thống production.\section{Sơ đồ ERD (Entity Relationship Diagram)}  
+Thiết kế database BarberGo tuân thủ chuẩn hóa 3NF, đảm bảo tính nhất quán và khả năng mở rộng. Việc tích hợp pgvector và PostGIS extensions cho phép hệ thống hỗ trợ hiệu quả các tính năng AI (RAG chatbot, vector search) và geographic queries (tìm tiệm gần nhất, tính khoảng cách). Row Level Security và indexing strategy đảm bảo cả bảo mật lẫn hiệu suất cho hệ thống production.

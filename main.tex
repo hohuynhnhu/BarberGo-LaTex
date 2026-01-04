@@ -17,6 +17,9 @@
 
 \usepackage{indentfirst}% thụt đầu dòng đoạn đầu tiên
 
+
+
+
 \usepackage{titlesec}
 \usepackage{float}
 
@@ -35,6 +38,15 @@
 \usepackage{enumitem}
 \usepackage{amsmath, amssymb}
 
+%định dạng tài liệu tham khảo
+\usepackage{hyperref}
+\urlstyle{same}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
+}
 
 % ===== MỤC LỤC =====
 \usepackage{tocloft}
@@ -62,13 +74,17 @@
 
 % ===== HYPERLINK (ĐẶT CUỐI) =====
 \usepackage{hyperref}
-\hypersetup{
+\urlstyle{same}
+
+\AtBeginDocument{
+  \hypersetup{
     colorlinks=true,
     linkcolor=black,
-    filecolor=black,
-    urlcolor=blue,
-    citecolor=black
+    citecolor=black,
+    urlcolor=black
+  }
 }
+
 
 % ===== CUSTOM TÊN =====
 % ===== CUSTOM TÊN =====
@@ -230,30 +246,37 @@
 
 % 15. TÀI LIỆU THAM KHẢO
 \clearpage
-\begin{thebibliography}{99}
+  \begin{thebibliography}{99}
 \addcontentsline{toc}{chapter}{TÀI LIỆU THAM KHẢO}
 
-\bibitem{siamese_gfg}
-GeeksforGeeks, ``Siamese neural network in deep learning,'' \textit{GeeksforGeeks}, 2024. [Online]. Available: https://www.geeksforgeeks.org/nlp/siamese-neural-network-in-deep-learning/. Accessed: Dec. 20, 2024.
-
-\bibitem{yolov8_ultralytics}
-Ultralytics, ``YOLOv8 models,'' \textit{Ultralytics Documentation}, 2024. [Online]. Available: https://docs.ultralytics.com/vi/models/yolov8/. Accessed: Dec. 20, 2024.
-
-\bibitem{siamese_hackernoon}
-A. Rosebrock, ``One-shot learning with siamese networks in PyTorch,'' \textit{HackerNoon}, 2021. [Online]. Available: https://hackernoon.com/one-shot-learning-with-siamese-networks-in-pytorch-8ddaab10340e. Accessed: Dec. 20, 2024.
-
 \bibitem{cnn_linkedin}
-LinkedIn Learning, ``How can you train a convolutional neural network,'' \textit{LinkedIn}, 2023. [Online]. Available: https://www.linkedin.com/advice/3/how-can-you-train-convolutional-neural-network-dtcye. Accessed: Dec. 20, 2024.
+LinkedIn Learning, ``How can you train a convolutional neural network,'' \textit{LinkedIn}, 2023. [Online]. Available: \url{https://www.linkedin.com/advice/3/how-can-you-train-convolutional-neural-network-dtcye}. Accessed: Dec. 20, 2024.
 
-\bibitem{deepface_viso}
-Viso.ai, ``DeepFace: Face recognition with deep learning,'' \textit{Viso.ai Computer Vision Blog}, 2023. [Online]. Available: https://viso.ai/computer-vision/deepface/. Accessed: Dec. 20, 2024.
+\bibitem{stable_diffusion_15}
+CompVis, ``Stable Diffusion v1.5,'' \textit{Hugging Face}, 2022. [Online]. Available: \url{https://huggingface.co/runwayml/stable-diffusion-v1-5}. Accessed: Dec. 22, 2024.
 
-\bibitem{jetpack_compose_mvvm}
-T. Gis, ``Creating lists in Android Jetpack Compose using MVVM with ViewModel in Kotlin,'' \textit{Medium}, Aug. 2023. [Online]. Available: https://tomasgis.com/creating-lists-in-android-jetpack-compose-using-mvvm-with-viewmodel-in-kotlin-dcfc76945ae7. Accessed: Dec. 20, 2024.
+\bibitem{genai_sd_tutorial}
+Hugging Face, ``Diffusers: Stable Diffusion tutorial,'' \textit{Hugging Face Documentation}, 2023. [Online]. Available: \url{https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion}. Accessed: Dec. 22, 2024.
 
-\bibitem{flask_restful_api}
-Auth0, ``Developing RESTful APIs with Python and Flask,'' \textit{Auth0 Blog}, 2023. [Online]. Available: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/. Accessed: Dec. 20, 2024.
+\bibitem{flutter_mvvm}
+FilledStacks, ``Flutter MVVM Architecture,'' \textit{FilledStacks}, 2023. [Online]. Available: \url{https://www.filledstacks.com/post/flutter-architecture-my-provider-implementation-guide/}. Accessed: Dec. 21, 2024.
+
+\bibitem{flutter_mvvm_official}
+Google Developers, ``State management in Flutter,'' \textit{Flutter Documentation}, 2023. [Online]. Available: \url{https://docs.flutter.dev/data-and-backend/state-mgmt}. Accessed: Dec. 21, 2024.
+
+\bibitem{acne_dataset}
+R. L. Oxley, ``Acne Detection Dataset,'' \textit{Kaggle}, 2022. [Online]. Available: \url{https://www.kaggle.com/datasets/rutviklathiya/acne-detection-dataset}. Accessed: Dec. 23, 2024.
+
+\bibitem{openstreetmap_api}
+OpenStreetMap Contributors, ``OpenStreetMap API Documentation,'' \textit{OpenStreetMap Wiki}, 2023. [Online]. Available: \url{https://wiki.openstreetmap.org/wiki/API}. Accessed: Dec. 22, 2024.
+
+\bibitem{openstreetmap_nominatim}
+OpenStreetMap Contributors, ``Nominatim: Search and Geocoding,'' \textit{OpenStreetMap Wiki}, 2023. [Online]. Available: \url{https://nominatim.org/release-docs/latest/api/Overview/}. Accessed: Dec. 22, 2024.
+
+\bibitem{firebase_fcm}
+Google Developers, ``Firebase Cloud Messaging Documentation,'' \textit{Firebase Documentation}, 2024. [Online]. Available: \url{https://firebase.google.com/docs/cloud-messaging}. Accessed: Jan. 05, 2026.
 
 \end{thebibliography}
+
 
 \end{document}
