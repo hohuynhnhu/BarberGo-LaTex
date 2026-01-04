@@ -15,21 +15,21 @@ Các lớp Schema đại diện cho các thực thể trong cơ sở dữ liệu
 
 \subsubsection{Core Schemas}
 
-\textbf{User:} Đại diện cho người dùng hệ thống với các thuộc tính \texttt{id} (str), \texttt{email} (str), \texttt{full\_name} (str), \texttt{role} (str: customer/barber/admin). Có quan hệ 1-N với Barber, Booking, Rating, Appointment và ChatSession.
+\textbf{User:} Đại diện cho người dùng hệ thống với các thuộc tính id (str), email (str), full name (str), role (str: customer/barber/admin). Có quan hệ 1-N với Barber, Booking, Rating, Appointment và ChatSession.
 
-\textbf{Barber:} Thông tin barber shop với \texttt{id} (UUID), \texttt{name} (str), \texttt{address} (str), \texttt{rank} (Decimal), \texttt{user\_id} (UUID). Quan hệ N-1 với User, 1-N với Service, TimeSlot và Rating.
+\textbf{Barber:} Thông tin barber shop với id (UUID), name (str), address (str), rank (Decimal), user id (UUID). Quan hệ N-1 với User, 1-N với Service, TimeSlot và Rating.
 
-\textbf{Service:} Dịch vụ cung cấp với \texttt{id} (int), \texttt{barber\_id} (str), \texttt{service\_name} (str), \texttt{price} (int), \texttt{duration\_min} (int). Quan hệ N-1 với Barber và M-N với Booking.
+\textbf{Service:} Dịch vụ cung cấp với id (int), barber id (str), service name (str), price (int), duration min (int). Quan hệ N-1 với Barber và M-N với Booking.
 
-\textbf{TimeSlot:} Khung giờ làm việc với \texttt{id} (int), \texttt{barber\_id} (str), \texttt{slot\_date} (date), \texttt{start\_time} (time), \texttt{end\_time} (time), \texttt{is\_available} (bool). Quan hệ N-1 với Barber và 1-1 với Booking.
+\textbf{TimeSlot:} Khung giờ làm việc với id (int), barber id (str), slot date (date), start time (time), end time (time), is available (bool). Quan hệ N-1 với Barber và 1-1 với Booking.
 
-\textbf{Booking:} Lịch hẹn với \texttt{id} (int), \texttt{user\_id} (str), \texttt{time\_slot\_id} (int), \texttt{total\_price} (int), \texttt{status} (str: pending/confirmed/rejected/completed). Quan hệ N-1 với User, 1-1 với TimeSlot, M-N với Service.
+\textbf{Booking:} Lịch hẹn với id (int), user id (str), time slot id (int), total price (int), status (str: pending/confirmed/rejected/completed). Quan hệ N-1 với User, 1-1 với TimeSlot, M-N với Service.
 
-\textbf{Rating:} Đánh giá với \texttt{id} (int), \texttt{barber\_id} (str), \texttt{user\_id} (str), \texttt{score} (Decimal: 1-5). Quan hệ N-1 với cả User và Barber.
+\textbf{Rating:} Đánh giá với id (int), barber id (str), user id (str), score (Decimal: 1-5). Quan hệ N-1 với cả User và Barber.
 
-\textbf{Appointment:} Yêu cầu hợp tác với \texttt{id} (str), \texttt{user\_id} (str), \texttt{name\_barber} (str), \texttt{status} (str: pending/approved/rejected). Quan hệ N-1 với User.
+\textbf{Appointment:} Yêu cầu hợp tác với id (str), user id (str), name barber (str), status (str: pending/approved/rejected). Quan hệ N-1 với User.
 
-\textbf{ChatSession:} Phiên chat với \texttt{id} (str), \texttt{user\_id} (str), \texttt{title} (str). Quan hệ N-1 với User.
+\textbf{ChatSession:} Phiên chat với id (str), user id (str), title (str). Quan hệ N-1 với User.
 
 \subsection{Nhóm lớp Service (Business Logic)}
 
@@ -39,38 +39,38 @@ Các lớp Service chứa business logic và orchestrate operations trên data m
 
 \textbf{UserService:} Quản lý user lifecycle với các methods:
 \begin{itemize}
-    \item \texttt{register\_user()}: Đăng ký tài khoản mới, validate email uniqueness
-    \item \texttt{login\_user()}: Xác thực người dùng, tạo session
-    \item \texttt{update\_user()}: Cập nhật thông tin profile (avatar, phone, password)
+    \item register user(): Đăng ký tài khoản mới, validate email uniqueness
+    \item login user(): Xác thực người dùng, tạo session
+    \item update user(): Cập nhật thông tin profile (avatar, phone, password)
 \end{itemize}
 
 \textbf{BarberService:} Quản lý barber shops với các methods:
 \begin{itemize}
-    \item \texttt{create\_barber()}: Tạo barber shop mới, validate owner
-    \item \texttt{get\_barber\_by\_id()}: Lấy thông tin chi tiết barber
-    \item \texttt{update\_barber()}: Cập nhật thông tin, services, working hours
-    \item \texttt{get\_top\_barbers()}: Lấy danh sách barbers theo rank và location
+    \item create barber(): Tạo barber shop mới, validate owner
+    \item get barber by id(): Lấy thông tin chi tiết barber
+    \item update barber(): Cập nhật thông tin, services, working hours
+    \item get top barbers(): Lấy danh sách barbers theo rank và location
 \end{itemize}
 
 \textbf{TimeSlotService:} Quản lý khung giờ với các methods:
 \begin{itemize}
-    \item \texttt{create\_time\_slot()}: Tạo khung giờ mới cho barber
-    \item \texttt{get\_available\_time\_slots()}: Lấy danh sách khung giờ trống theo ngày và barber
+    \item create time slot(): Tạo khung giờ mới cho barber
+    \item get available time slots(): Lấy danh sách khung giờ trống theo ngày và barber
 \end{itemize}
 
 \textbf{BookingService:} Xử lý đặt lịch với các methods:
 \begin{itemize}
-    \item \texttt{create\_booking()}: Tạo booking mới, lock time slot, tính total price
-    \item \texttt{get\_bookings\_by\_user()}: Lấy lịch sử bookings của user
-    \item \texttt{cancel\_booking()}: Hủy booking, release time slot
+    \item create booking(): Tạo booking mới, lock time slot, tính total price
+    \item get bookings by user(): Lấy lịch sử bookings của user
+    \item cancel booking(): Hủy booking, release time slot
 \end{itemize}
 Dependency: TimeSlotService (kiểm tra availability trước khi book)
 
 \textbf{RatingService:} Quản lý đánh giá với các methods:
 \begin{itemize}
-    \item \texttt{create\_rating()}: Tạo rating mới, validate booking completed
-    \item \texttt{get\_ratings\_by\_barber()}: Lấy danh sách ratings của barber
-    \item \texttt{update\_barber\_rank()}: Tính lại rank trung bình, trigger sau mỗi rating
+    \item create rating(): Tạo rating mới, validate booking completed
+    \item get ratings by barber(): Lấy danh sách ratings của barber
+    \item update barber rank(): Tính lại rank trung bình, trigger sau mỗi rating
 \end{itemize}
 Dependency: BarberService (cập nhật rank)
 
@@ -78,23 +78,23 @@ Dependency: BarberService (cập nhật rank)
 
 \textbf{RAGService:} Xử lý chatbot RAG với các methods:
 \begin{itemize}
-    \item \texttt{query()}: Xử lý query từ user, semantic search documents, generate response
-    \item \texttt{create\_chat\_session()}: Tạo session mới cho user
-    \item \texttt{generate\_embedding()}: Convert text thành vector embedding (768-dim)
+    \item query(): Xử lý query từ user, semantic search documents, generate response
+    \item create chat session(): Tạo session mới cho user
+    \item generate embedding(): Convert text thành vector embedding (768-dim)
 \end{itemize}
 Technologies: Google text-embedding-004, Gemini 2.0 Flash, pgvector cosine similarity
 
 \textbf{AcneDetectionService:} Phát hiện mụn với các methods:
 \begin{itemize}
-    \item \texttt{process\_image()}: Pipeline chính - preprocess, detect, analyze
-    \item \texttt{detect\_acne\_in\_region()}: Detect mụn trong vùng face sử dụng YOLOv8 + CNN
+    \item process image(): Pipeline chính - preprocess, detect, analyze
+    \item detect acne in region(): Detect mụn trong vùng face sử dụng YOLOv8 + CNN
 \end{itemize}
 Technologies: MediaPipe Face Mesh, YOLOv8, MobileNetV2 CNN
 
 \textbf{HairStyleGenerator:} Tạo kiểu tóc với các methods:
 \begin{itemize}
-    \item \texttt{generate\_single\_style()}: Generate hairstyle sử dụng Stable Diffusion
-    \item \texttt{preprocess\_image()}: Face detection, segmentation, mask preparation
+    \item generate single style(): Generate hairstyle sử dụng Stable Diffusion
+    \item preprocess image(): Face detection, segmentation, mask preparation
 \end{itemize}
 Technologies: Stable Diffusion 1.5 Inpainting, MediaPipe Face Mesh
 
