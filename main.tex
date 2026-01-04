@@ -2,7 +2,7 @@
 
 % ===== ĐỊNH DẠNG =====
 \usepackage[a4paper,
-  top=3.5cm,
+  top=3cm,
   bottom=3cm,
   left=3.5cm,
   right=2cm]{geometry}
@@ -110,13 +110,13 @@
 % \titlespacing*{\chapter}{0pt}{0pt}{20pt}
 \titlespacing*{\chapter}{0pt}{-10pt}{20pt}
 
-
 \titleformat{\chapter}[block]
-  {\bfseries\fontsize{14pt}{18pt}\selectfont\centering} % chapter 14pt, dòng cách 18pt
-  {CHƯƠNG \thechapter}
+  {\bfseries\fontsize{14pt}{18pt}\selectfont}
+  {\centering CHƯƠNG \thechapter}
   {0.5em}
-  {\MakeUppercase}
+  {\centering\MakeUppercase}
 
+  
 \titleformat{\section}
   {\bfseries\fontsize{13pt}{16pt}\selectfont}            % section 13pt, dòng cách 16pt
   {\thesection}
@@ -225,6 +225,8 @@
 
 % 14. chương 4
 \input{chapters/chapter4/main}
+% 15. chương 5
+\input{chapters/chapter5/main}
 
 % 15. TÀI LIỆU THAM KHẢO
 \clearpage
