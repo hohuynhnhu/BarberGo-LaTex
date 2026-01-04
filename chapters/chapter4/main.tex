@@ -25,7 +25,8 @@
 \subsubsection{Web Admin}
 \begin{itemize}
     \item Quản lý chủ tiệm và người dùng
-    \item Chỉnh sửa prompt chatbot
+    \item Quản lý Knowledge Base cho Chatbot
+    \item Quản lý yêu cầu hợp tác từ chủ tiệm
 \end{itemize}
 
 \subsection{Phương pháp kiểm thử}
@@ -242,7 +243,7 @@ Response time (Chatbot) & $\leq$ 2s \\
 \subsection{Môi trường kiểm thử}
 \begin{itemize}
     \item Mobile: Flutter 3.x (Android 10+, iOS 14+)
-    \item Backend: Python Flask
+    \item Backend: Python FastAPI
     \item Web Admin: Nuxt.js 3.x
     \item Database: Supabase PostgreSQL
     \item AI Models: Stable Diffusion 1.5, MobileNetV2, Mediapipe
@@ -263,50 +264,41 @@ Kết quả kiểm thử cho thấy:
 
 \section{Cài đặt và Triển khai}
 
+Hệ thống BarberGo trong phạm vi đồ án được \textbf{cài đặt và trình diễn dưới dạng demo trong môi trường development/testing local}. 
+Mục tiêu của việc triển khai này nhằm minh họa kiến trúc hệ thống, luồng xử lý nghiệp vụ và khả năng tích hợp các thành phần AI, 
+chưa hướng tới triển khai production quy mô lớn.
+\subsection{Môi trường triển khai (Development/Testing Local)}
 
-\subsection{Môi trường triển khai}
-
-Hệ thống BarberGo được triển khai theo mô hình client-server, bao gồm Backend API, Web Admin và Mobile App. Môi trường triển khai được tóm tắt trong Bảng~\ref{tab:environment}.
+Môi trường triển khai hệ thống BarberGo được thiết lập trên máy tính cá nhân phục vụ cho mục đích phát triển và kiểm thử.
 
 \begin{table}[H]
 \centering
-\caption{Môi trường triển khai hệ thống}
+\caption{Môi trường triển khai hệ thống (Local)}
 \label{tab:environment}
 \begin{tabular}{|p{4cm}|p{9.5cm}|}
 \hline
 \textbf{Thành phần} & \textbf{Mô tả} \\
 \hline
-Server &
-Ubuntu 22.04 LTS, CPU từ 4 cores, RAM 8GB (khuyến nghị 16GB), SSD 50GB, GPU NVIDIA hỗ trợ CUDA cho AI inference \\
+Máy phát triển &
+Máy tính cá nhân, CPU đa nhân, RAM tối thiểu 8GB, GPU hỗ trợ CUDA (nếu có) để tăng tốc inference AI \\
 \hline
 Backend &
-Flask API (Python 3.10+), triển khai với Gunicorn và Nginx \\
+FastAPI (Python 3.10+), chạy local thông qua Uvicorn \\
 \hline
 Web Admin &
-Ứng dụng web quản trị, build và deploy trên nền tảng CDN (Vercel/Netlify) \\
+Ứng dụng Nuxt.js 3.x, chạy local bằng Node.js \\
 \hline
 Mobile App &
-Ứng dụng Flutter, hỗ trợ Android và iOS \\
+Ứng dụng Flutter, chạy trên Android Emulator hoặc thiết bị thật \\
 \hline
 Database &
-Supabase PostgreSQL, áp dụng Row Level Security (RLS) \\
+Supabase PostgreSQL (môi trường development) \\
 \hline
 AI Models &
-Stable Diffusion 1.5 và mô hình CNN phát hiện mụn \\
+Stable Diffusion 1.5 và mô hình CNN phát hiện mụn, chạy inference local \\
 \hline
 \end{tabular}
 \end{table}
-
-\subsection{Triển khai hệ thống}
-
-Backend API được triển khai trên server sử dụng Nginx làm reverse proxy nhằm tăng cường khả năng bảo mật và xử lý đồng thời. Các AI models được load khi hệ thống khởi động để phục vụ inference theo yêu cầu.
-
-Web Admin được build thành static files và triển khai trên nền tảng CDN nhằm tối ưu tốc độ truy cập. Mobile App được build bản release và phân phối thông qua Google Play Store và Apple App Store.
-
-\subsection{Bảo mật và vận hành}
-
-Hệ thống áp dụng các biện pháp bảo mật bao gồm HTTPS với SSL/TLS, xác thực người dùng bằng JWT, giới hạn tần suất truy cập API và cấu hình firewall. Cơ chế backup và monitoring được thiết lập nhằm đảm bảo khả năng phục hồi và giám sát trạng thái hệ thống.
-
 
 \section{Kiểm thử hệ thống}
 
@@ -349,4 +341,6 @@ Logging và monitoring & Đạt \\
 
 \subsection{Đánh giá}
 
-Kết quả kiểm thử cho thấy hệ thống BarberGo đáp ứng đầy đủ các yêu cầu chức năng và phi chức năng đã đề ra. Hệ thống hoạt động ổn định, đảm bảo tính bảo mật và sẵn sàng cho môi trường production.
+Kết quả kiểm thử cho thấy hệ thống BarberGo đáp ứng đầy đủ các yêu cầu chức năng và phi chức năng trong phạm vi đồ án. 
+Hệ thống hoạt động ổn định trong môi trường development/testing local, 
+đảm bảo khả năng mở rộng và là tiền đề cho việc triển khai production trong tương lai.
