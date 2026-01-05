@@ -1,0 +1,118 @@
+
+\section{Kiến trúc bảo mật tổng quan}
+
+Hệ thống BarberGo áp dụng mô hình defense-in-depth với 4 lớp bảo mật chính:
+
+\subsection{Authentication \& Authorization}
+
+\begin{table}[H]
+\centering
+\caption{Cơ chế xác thực}
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Component} & \textbf{Công nghệ} & \textbf{Mô tả} \\
+\hline
+Auth Provider & Supabase Auth & Email/Password, OAuth (Google) \\
+\hline
+Token Format & JWT (RS256) & Stateless authentication \\
+\hline
+Token Lifetime & 3600s (1 hour) & Giảm rủi ro token theft \\
+\hline
+Role-based & customer/barber/admin & Phân quyền theo vai trò \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Luồng xác thực:}
+\begin{enumerate}
+    \item User login → Supabase Auth verify credentials
+    \item Generate JWT: \{user\_id, role, exp\}
+    \item Client lưu JWT trong secure storage (iOS Keychain/Android Keystore)
+    \item Mọi API request gửi kèm: Authorization: Bearer <token>
+    \item Backend verify JWT signature trước khi xử lý
+\end{enumerate}
+
+\subsection{Row Level Security (RLS)}
+
+\textbf{Công nghệ:} PostgreSQL Row Level Security
+
+\textbf{Cơ chế:} RLS tự động kiểm tra JWT token ở tầng database, không cần code logic trong backend.
+
+\begin{table}[H]
+\centering
+\caption{RLS Policies chính}
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Bảng} & \textbf{Policy} & \textbf{Điều kiện} \\
+\hline
+documents & Public read & SELECT: true \\
+& Admin write & INSERT/UPDATE/DELETE: role='admin' \\
+\hline
+bookings & User own data & SELECT: user\_id = auth.uid() \\
+\hline
+barbers & Owner manage & UPDATE: user\_id = auth.uid() \\
+\hline
+chat\_sessions & User own sessions & SELECT: user\_id = auth.uid() \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Ưu điểm:}
+\begin{itemize}
+    \item Bảo mật ở tầng database (không thể bypass)
+    \item Tự động áp dụng cho mọi query
+    \item Latency thêm < 5ms
+\end{itemize}
+
+\subsection{Data Protection}
+
+\begin{table}[H]
+\centering
+\caption{Mã hóa dữ liệu}
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Layer} & \textbf{Công nghệ} & \textbf{Chi tiết} \\
+\hline
+In Transit & TLS 1.3 & Mã hóa mọi API calls, WebSocket \\
+\hline
+At Rest & AES-256 & Supabase PostgreSQL tự động mã hóa disk \\
+\hline
+Backups & AES-256 & Encrypted backups, key rotation tự động \\
+\hline
+API Keys & Environment Variables & Load từ .env, không commit Git \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Bảo vệ API keys:}
+\begin{itemize}
+    \item Lưu trong .env file (local development)
+    \item .gitignore ngăn commit keys lên Git
+    \item Không hardcode keys trong source code
+\end{itemize}
+
+\subsection{Input Validation \& Rate Limiting}
+
+\begin{table}[H]
+\centering
+\caption{Validation và rate limiting}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Biện pháp} & \textbf{Cấu hình} \\
+\hline
+Input validation & Pydantic: Max length 5000 chars \\
+\hline
+SQL injection & Prepared statements (Supabase client) \\
+\hline
+Rate limiting & slowapi: Tùy vào vai trò và dịch vụ \\
+\hline
+Request timeout & FastAPI timeout: 30s per request \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Kết luận}
+
+Hệ thống BarberGo triển khai bảo mật theo mô hình defense-in-depth với 4 lớp: 
+Authentication (JWT), Authorization (RLS), Data Protection (TLS + AES-256), 
+và Input Validation. Kết quả kiểm thử cho thấy các biện pháp bảo mật hoạt động hiệu quả.
