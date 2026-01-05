@@ -291,61 +291,6 @@
     \end{itemize}
 \end{itemize}
 
-\section{Yêu cầu Phi chức năng}
-\subsection{Hiệu năng (Performance)}
-\begin{itemize}
-    \item Thời gian phản hồi thao tác thông thường: 2-3 giây
-    \item Thời gian xử lý AI tạo kiểu tóc: 10-15 giây
-    \item Thời gian xử lý AI phân tích mụn: 3-5 giây
-    \item Thời gian phản hồi chatbot RAG: 2-4 giây
-    \item Thời gian load danh sách và báo cáo: 2-5 giây
-\end{itemize}
-
-\subsection{Khả năng mở rộng (Scalability)}
-\begin{itemize}
-    \item Kiến trúc phân lớp Three-Tier cho phép mở rộng độc lập từng tầng
-    \item Backend services tách biệt theo chức năng
-    \item Database schema thiết kế hỗ trợ mở rộng features
-    \item Component-based architecture cho frontend
-    \item API RESTful chuẩn hóa, dễ tích hợp
-\end{itemize}
-
-\subsection{Bảo mật (Security)}
-\begin{itemize}
-    \item Xác thực qua Supabase Authentication (Email/Password, Google OAuth)
-    \item JWT tokens tự động quản lý bởi Supabase
-    \item Row Level Security (RLS) kiểm soát quyền truy cập dữ liệu
-    \item Pydantic schemas validation cho input
-    \item Environment variables cho API keys
-\end{itemize}
-
-\textbf{Lưu ý:} Sản phẩm demo chạy môi trường local, chưa triển khai các biện pháp bảo mật nâng cao cho production.
-
-\subsection{Tính khả dụng (Availability)}
-\begin{itemize}
-    \item Xử lý lỗi với try-catch và error logging
-    \item Thông báo lỗi user-friendly
-    \item Cache dữ liệu cơ bản trên mobile app
-    \item Retry mechanism cho API calls thất bại
-\end{itemize}
-
-\subsection{Khả năng bảo trì (Maintainability)}
-\begin{itemize}
-    \item Code tuân thủ coding standards (PEP 8, Dart style guide, Vue.js style guide)
-    \item Kiến trúc phân lớp rõ ràng
-    \item Comments và docstrings cho code quan trọng
-    \item Version control với Git
-    \item Separation of concerns, reusable components
-\end{itemize}
-
-\subsection{Khả năng kiểm thử (Testability)}
-\begin{itemize}
-    \item Manual testing cho chức năng chính
-    \item Postman collection để test APIs
-    \item Test cases cho user flows quan trọng
-    \item Mock data cho UI/UX testing
-\end{itemize}
-
 \include{chapters/chapter3/erd}
 
 \include{chapters/chapter3/dfd}
@@ -1099,4 +1044,4 @@ Dưới đây là các đặc tả use case của hệ thống xử lý thông b
 
 \include{chapters/chapter3/activity}
 \include{chapters/chapter3/classd}
-\include{chapters/chapter3/giaodien}
+\include{chapters/chapter3/sequence}

@@ -9,66 +9,348 @@
     \label{fig:erd}
 \end{figure}
 
-Cơ sở dữ liệu BarberGo được thiết kế dựa trên PostgreSQL với Supabase làm Database-as-a-Service. Hệ thống bao gồm 11 bảng chính được tổ chức theo 5 nhóm chức năng: quản lý người dùng, quản lý barber shop, quản lý đặt lịch, hệ thống AI chatbot, và quản lý hợp tác. Thiết kế tuân thủ nguyên tắc chuẩn hóa (3NF) và sử dụng các PostgreSQL extensions như pgvector (vector similarity search) và PostGIS (geographic queries).
+Cơ sở dữ liệu BarberGo được thiết kế trên PostgreSQL với Supabase, 
+bao gồm 11 bảng được tổ chức theo 5 nhóm chức năng. 
+Thiết kế tuân thủ chuẩn hóa 3NF và sử dụng extensions: 
+pgvector (vector search cho RAG) và PostGIS (spatial queries).
 
 \subsection{Các bảng dữ liệu chính}
 
 \subsubsection{Nhóm quản lý người dùng}
 
-\textbf{Bảng users:} Lưu trữ thông tin tài khoản với các trường chính: id (uuid, PK), email (text, UK), full name, avatar url, role (customer/barber/admin), phone, created at, status (boolean), fcm token (cho push notification). Bảng có quan hệ 1-N với appointments, barbers, bookings, chat sessions và ratings.
+\textbf{Mục đích:} Quản lý tài khoản và phân quyền (customer/barber/admin)
+
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng users}
+\begin{tabular}{|l|l|l|p{5cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
+\hline
+id & uuid & PK & Định danh người dùng \\
+\hline
+email & text & UK, NOT NULL & Email đăng nhập \\
+\hline
+full\_name & text & - & Họ tên \\
+\hline
+role & text & NOT NULL & customer/barber/admin \\
+\hline
+phone & text & - & Số điện thoại \\
+\hline
+avatar\_url & text & - & Ảnh đại diện \\
+\hline
+fcm\_token & text & - & Push notification \\
+\hline
+status & boolean & DEFAULT true & Active/Inactive \\
+\hline
+created\_at & timestamptz & DEFAULT NOW() & Ngày tạo \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Quan hệ bảng users:} 1-N với barbers, bookings, chat\_sessions, ratings, appointments
+
+\vspace{0.5cm}
 
 \subsubsection{Nhóm quản lý barber shop}
 
-\textbf{Bảng barbers:} Quản lý thông tin tiệm cắt tóc với các trường: id (uuid, PK), name, address, rank (numeric - điểm trung bình), imagepath, user id (FK → users.id), status, area, opening time, closing time, working days (jsonb), location (geography POINT). Có quan hệ N-1 với users và 1-N với services, time slots, ratings.
+\textbf{Mục đích:} Lưu thông tin salon, dịch vụ và vị trí địa lý
 
-\textbf{Bảng services:} Lưu dịch vụ của từng barber shop: id (int, PK), barber id (FK), service name, price, duration min, status. Quan hệ N-1 với barbers và 1-N với booking services.
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng barbers}
+\begin{tabular}{|l|l|l|p{4.5cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
+\hline
+id & uuid & PK & Định danh salon \\
+\hline
+user\_id & uuid & FK → users.id & Chủ salon \\
+\hline
+name & text & NOT NULL & Tên salon \\
+\hline
+address & text & - & Địa chỉ \\
+\hline
+location & geography(POINT) & - & Tọa độ GPS \\
+\hline
+rank & numeric & DEFAULT 0 & Điểm đánh giá TB \\
+\hline
+opening\_time & time & - & Giờ mở cửa \\
+\hline
+closing\_time & time & - & Giờ đóng cửa \\
+\hline
+working\_days & jsonb & - & [1,2,3,4,5,6,0] \\
+\hline
+status & boolean & DEFAULT true & Hoạt động/Đóng cửa \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Quan hệ bảng barbers:} N-1 với users; 1-N với services, time\_slots, ratings
+
+\vspace{0.3cm}
+
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng services}
+\begin{tabular}{|l|l|l|p{5cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
+\hline
+id & int & PK & Định danh dịch vụ \\
+\hline
+barber\_id & uuid & FK → barbers.id & Salon cung cấp \\
+\hline
+service\_name & text & NOT NULL & Tên dịch vụ \\
+\hline
+price & numeric & NOT NULL & Giá (VND) \\
+\hline
+duration\_min & int & NOT NULL & Thời lượng (phút) \\
+\hline
+status & boolean & DEFAULT true & Còn cung cấp \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Quan hệ bảng services:} N-1 với barbers; 1-N với booking\_services
+
+\vspace{0.5cm}
 
 \subsubsection{Nhóm quản lý đặt lịch}
 
-\textbf{Bảng time slots:} Quản lý khung giờ làm việc: id (int, PK), start time, end time, is available, barber id (FK), slot date. Quan hệ N-1 với barbers và 1-1 với bookings.
+\textbf{Mục đích:} Quản lý khung giờ, booking và đánh giá
 
-\textbf{Bảng bookings:} Lưu lịch hẹn: id (int, PK), user id (FK), status (pending/confirmed/rejected/completed), time slot id (FK), total duration min, total price. Quan hệ N-1 với users và time slots, 1-N với booking services.
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng bookings}
+\begin{tabular}{|l|l|l|p{4.5cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
+\hline
+id & int & PK & Định danh booking \\
+\hline
+user\_id & uuid & FK → users.id & Khách đặt \\
+\hline
+time\_slot\_id & int & FK → time\_slots.id & Khung giờ \\
+\hline
+status & text & NOT NULL & pending/confirmed/rejected/completed \\
+\hline
+total\_price & numeric & - & Tổng tiền \\
+\hline
+total\_duration\_min & int & - & Tổng thời gian \\
+\hline
+created\_at & timestamptz & DEFAULT NOW() & Ngày đặt \\
+\hline
+\end{tabular}
+\end{table}
 
-\textbf{Bảng booking services:} Bảng trung gian many-to-many giữa bookings và services: id (int, PK), booking id (FK), service id (FK), created at.
+\noindent\textbf{Quan hệ bảng bookings:} N-1 với users, time\_slots; 1-N với booking\_services
 
-\textbf{Bảng ratings:} Đánh giá từ khách hàng: id (int, PK), barber id (FK), user id (FK), score (1-5 sao), comment, created at. Quan hệ N-1 với cả barbers và users.
+\vspace{0.3cm}
 
-\subsubsection{Nhóm hệ thống AI}
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng ratings}
+\begin{tabular}{|l|l|l|p{5cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
+\hline
+id & int & PK & Định danh đánh giá \\
+\hline
+barber\_id & uuid & FK → barbers.id & Salon được đánh giá \\
+\hline
+user\_id & uuid & FK → users.id & Người đánh giá \\
+\hline
+score & int & 1-5 & Số sao \\
+\hline
+comment & text & - & Nhận xét \\
+\hline
+created\_at & timestamptz & DEFAULT NOW() & Thời điểm \\
+\hline
+\end{tabular}
+\end{table}
 
-\textbf{Bảng chat sessions:} Quản lý phiên chat: id (uuid, PK), user id (FK), title, created at. Quan hệ N-1 với users và 1-N với chat messages.
+\noindent\textbf{Quan hệ bảng ratings:} N-1 với barbers, users
 
-\textbf{Bảng chat messages:} Lưu tin nhắn chat: id (uuid, PK), session id (FK), role (user/assistant), content, confidence (high/medium/low), created at. Quan hệ N-1 với chat sessions.
+\vspace{0.5cm}
 
-\textbf{Bảng documents:} Knowledge base cho RAG chatbot: id (bigint, PK), content, metadata (jsonb), embedding (vector(768)). Sử dụng pgvector extension và Google text-embedding-004 model, hỗ trợ cosine similarity search.
+\subsubsection{Nhóm RAG Knowledge Base và Chat History}
+
+\textbf{Mục đích:} Tổ chức tri thức và lịch sử hội thoại để tăng cường tạo sinh
+
+Nhóm này gồm 3 bảng được thiết kế đặc biệt để hỗ trợ 
+Retrieval-Augmented Generation (RAG). Cấu trúc tách biệt giữa 
+tri thức tĩnh (documents) và lịch sử động (chat\_sessions, chat\_messages) 
+cho phép LLM truy xuất context chính xác và theo dõi cuộc hội thoại.
+
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng documents}
+\begin{tabular}{|l|l|l|p{4cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Vai trò trong RAG} \\
+\hline
+id & bigint & PK & Định danh document \\
+\hline
+content & text & NOT NULL & Câu hỏi/keywords để tạo embedding \\
+\hline
+metadata & jsonb & - & Context cho LLM để tạo câu trả lời \\
+\hline
+embedding & vector(768) & - & Vector ngữ nghĩa từ text-embedding-004 \\
+\hline
+created\_at & timestamptz & DEFAULT NOW() & Thời điểm tạo \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Đặc điểm bảng documents:} Bảng độc lập (không có FK), sử dụng IVFFlat index
+
+\textbf{Cơ chế tăng cường tạo sinh:}
+\begin{enumerate}
+    \item \textbf{Tách riêng input/output:} Trường content chứa câu hỏi ngắn 
+    để tạo embedding. Trường metadata.output chứa câu trả lời 
+    chi tiết làm context cho LLM.
+    
+    \item \textbf{Vector embedding 768-dim:} Mỗi document được chuyển thành vector ngữ nghĩa, 
+    cho phép tìm kiếm theo ý nghĩa thay vì từ khóa. Query "làm đẹp" có thể tìm được 
+    "cắt tóc", "nhuộm tóc" nhờ cosine similarity.
+\end{enumerate}
+
+\vspace{0.3cm}
+
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng chat\_sessions}
+\begin{tabular}{|l|l|l|p{5cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
+\hline
+id & uuid & PK & Định danh phiên chat \\
+\hline
+user\_id & uuid & FK → users.id & Người dùng \\
+\hline
+title & text & - & Tiêu đề (từ câu hỏi đầu) \\
+\hline
+created\_at & timestamptz & DEFAULT NOW() & Thời điểm bắt đầu \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Quan hệ bảng chat\_sessions:} N-1 với users; 1-N với chat\_messages
+
+\vspace{0.3cm}
+
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng chat\_messages}
+\begin{tabular}{|l|l|l|p{4cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
+\hline
+id & uuid & PK & Định danh tin nhắn \\
+\hline
+session\_id & uuid & FK → chat\_sessions.id & Phiên chat \\
+\hline
+role & text & NOT NULL & user/assistant \\
+\hline
+content & text & NOT NULL & Nội dung tin nhắn \\
+\hline
+confidence & text & - & high/medium/low (chỉ assistant) \\
+\hline
+created\_at & timestamptz & DEFAULT NOW() & Thời điểm gửi \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Quan hệ bảng chat\_messages:} N-1 với chat\_sessions
+
+\vspace{0.5cm}
 
 \subsubsection{Nhóm quản lý hợp tác}
 
-\textbf{Bảng appointments:} Yêu cầu hợp tác mở barber shop: id (uuid, PK), user id (FK), name barber, email, phone, status (pending/approved/rejected), created at, updated at, admin note, admin id (FK → users.id). Có hai quan hệ N-1 với users (user id cho người gửi, admin id cho admin xử lý).
+\textbf{Mục đích:} Xử lý yêu cầu đăng ký mở salon từ chủ tiệm
 
-\subsection{Ràng buộc và tối ưu hóa}
+\begin{table}[H]
+\centering
+\caption{Cấu trúc bảng appointments}
+\begin{tabular}{|l|l|l|p{4.5cm}|}
+\hline
+\textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
+\hline
+id & uuid & PK & Định danh yêu cầu \\
+\hline
+user\_id & uuid & FK → users.id & Người gửi \\
+\hline
+name\_barber & text & NOT NULL & Tên salon dự kiến \\
+\hline
+email & text & NOT NULL & Email liên hệ \\
+\hline
+phone & text & NOT NULL & SĐT liên hệ \\
+\hline
+status & text & DEFAULT 'pending' & pending/approved/rejected \\
+\hline
+admin\_id & uuid & FK → users.id & Admin xử lý \\
+\hline
+admin\_note & text & - & Ghi chú từ admin \\
+\hline
+created\_at & timestamptz & DEFAULT NOW() & Ngày gửi \\
+\hline
+updated\_at & timestamptz & - & Ngày xử lý \\
+\hline
+\end{tabular}
+\end{table}
 
-\subsubsection{Các ràng buộc dữ liệu}
+\noindent\textbf{Quan hệ bảng appointments:} N-1 với users (2 FK: user\_id, admin\_id)
 
-\textbf{Primary Keys:} Bảng sử dụng uuid (users, barbers, appointments, chat sessions, chat messages) và int/bigint (services, bookings, time slots, ratings, booking services, documents).
+\vspace{0.5cm}
 
-\textbf{Foreign Keys:} 13 ràng buộc khóa ngoại đảm bảo tính toàn vẹn tham chiếu, bao gồm barbers.user id, services.barber id, bookings.user id, bookings.time slot id, và các quan hệ khác.
+\subsection{Tối ưu hóa và bảo mật}
 
-\subsubsection{Chỉ mục và hiệu suất}
+\subsubsection{Chỉ mục}
 
-Hệ thống sử dụng nhiều loại index để tối ưu truy vấn:
+\begin{table}[H]
+\centering
+\caption{Các loại index trong hệ thống}
+\begin{tabular}{|l|l|l|p{5cm}|}
+\hline
+\textbf{Loại} & \textbf{Bảng} & \textbf{Trường} & \textbf{Mục đích} \\
+\hline
+Unique & users & email & Đảm bảo email duy nhất \\
+\hline
+GiST & barbers & location & Tìm salon gần nhất (PostGIS spatial) \\
+\hline
+\textbf{IVFFlat} & \textbf{documents} & \textbf{embedding} & \textbf{Vector similarity search (RAG)} \\
+\hline
+B-tree & * & FK, status, created\_at & Truy vấn nhanh \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{IVFFlat index cho RAG:}
 \begin{itemize}
-    \item \textbf{Unique index:} users.email đảm bảo email duy nhất
-    \item \textbf{GiST index:} barbers.location tối ưu spatial queries (tìm tiệm gần nhất)
-    \item \textbf{IVFFlat index:} documents.embedding tối ưu vector similarity search cho RAG
-    \item \textbf{B-tree indexes:} Trên các foreign keys, created at và status fields
+    \item Tăng tốc cosine similarity search 10-100 lần
+    \item Giảm độ phức tạp từ O(n) xuống O(log n)
+    \item Trade-off: 95-98\% recall vs 100\% accuracy
 \end{itemize}
 
-\subsubsection{Bảo mật và trigger}
+\subsubsection{Bảo mật}
 
-\textbf{Row Level Security (RLS):} Supabase RLS kiểm soát quyền truy cập - user chỉ xem bookings/ratings của mình, barber owner chỉ quản lý shop của mình, admin có full access.
+\textbf{Row Level Security (RLS):}
+\begin{itemize}
+    \item User: Chỉ xem bookings/ratings/chat\_sessions của mình
+    \item Barber owner: Chỉ quản lý salon của mình
+    \item Admin: Full access, quản lý documents (knowledge base)
+\end{itemize}
 
-\textbf{Database Triggers:} Tự động cập nhật barbers.rank khi có đánh giá mới, tự động set updated at timestamp, validate business rules (không đặt lịch quá khứ).
+\textbf{Database Triggers:}
+\begin{itemize}
+    \item Auto-update barbers.rank khi có rating mới
+    \item Auto-set updated\_at timestamp
+    \item Validate: Không đặt lịch quá khứ
+\end{itemize}
 
 \subsection{Kết luận}
 
-Thiết kế database BarberGo tuân thủ chuẩn hóa 3NF, đảm bảo tính nhất quán và khả năng mở rộng. Việc tích hợp pgvector và PostGIS extensions cho phép hệ thống hỗ trợ hiệu quả các tính năng AI (RAG chatbot, vector search) và geographic queries (tìm tiệm gần nhất, tính khoảng cách). Row Level Security và indexing strategy đảm bảo cả bảo mật lẫn hiệu suất cho hệ thống production.
+Thiết kế tuân thủ 3NF, đảm bảo nhất quán và mở rộng. 
+Tích hợp pgvector cho RAG chatbot và PostGIS cho spatial queries. 
+RLS và indexing đảm bảo bảo mật và hiệu suất production.

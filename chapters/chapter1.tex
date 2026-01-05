@@ -5,20 +5,21 @@
 
 
 \section{ Lý do chọn đề tài}
-Trong bối cảnh đời sống con người hiện nay ở Việt Nam thì nhu cầu làm đẹp và chăm sóc cá nhân, đặc biệt là dịch vụ cắt tóc và làm đẹp ngày càng gia tăng, nhất là tại các đô thị lớn. Tuy nhiên, phần lớn các tiệm cắt tóc hiện nay vẫn quản lý lịch hẹn theo phương thức thủ công như ghi chép sổ sách, nhắn tin hoặc nhận đặt lịch trực tiếp. Điều này dẫn đến nhiều hạn chế như trùng lịch hẹn, khó kiểm soát số lượng khách, mất nhiều thời gian chờ đợi, gây ảnh hưởng đến trải nghiệm của khách hàng cũng như hiệu quả vận hành của cửa tiệm.
+Hiện nay, nhu cầu dịch vụ cắt tóc tại các đô thị lớn Việt Nam tăng mạnh. Tuy nhiên, phần lớn các tiệm cắt tóc hiện nay vẫn quản lý lịch hẹn theo phương thức thủ công như ghi chép sổ sách, nhắn tin hoặc nhận đặt lịch trực tiếp.
+ Cách làm này gây trùng lịch hẹn, mất thời gian và ảnh hưởng trải nghiệm khách hàng.
 
-Bên cạnh đó, sự phát triển mạnh mẽ của công nghệ thông tin và AI đã tạo điều kiện thuận lợi cho việc xây dựng các hệ thống dịch vụ thông minh, tự động hóa và cá nhân hóa trải nghiệm người dùng. Đặc biệt, AI có khả năng hỗ trợ gợi ý kiểu tóc phù hợp dựa trên khuôn mặt, sở thích và lịch sử sử dụng dịch vụ, góp phần nâng cao chất lượng phục vụ và sự hài lòng của khách hàng.
-
+Các ứng dụng đặt lịch hiện có (Booksy, Fresha,...) chủ yếu quản lý lịch hẹn, chưa tích hợp chatbot tư vấn thông minh.
 Xuất phát từ những vấn đề thực tiễn, đề tài \textbf{``Xây dựng hệ thống đặt lịch và quản lý tiệm tóc BarberGo''} được lựa chọn nhằm nghiên cứu và phát triển một hệ thống hỗ trợ đặt lịch trực tuyến, quản lý khách hàng và ứng dụng AI trong tư vấn kiểu tóc, góp phần hiện đại hóa hoạt động quản lý tiệm cắt tóc và nâng cao trải nghiệm người dùng.
+Đặc biệt, để nâng cao trải nghiệm người dùng thì đề tài kết hợp ứng dụng công nghệ RAG kết hợp với LLM để xây dựng chatbot tư vấn thông minh.
 
 \section{ Tình hình nghiên cứu}
-Trong những năm gần đây, nhiều nền tảng đặt lịch trực tuyến đã được phát triển và ứng dụng trong các lĩnh vực như y tế, làm đẹp và dịch vụ cá nhân. Một số hệ thống cho phép khách hàng đặt lịch qua website hoặc ứng dụng di động, giúp giảm tải công việc quản lý thủ công cho cửa hàng.
-
-Tuy nhiên, phần lớn các phần mềm hiện có chủ yếu tập trung vào chức năng đặt lịch cơ bản, chưa tích hợp sâu các công nghệ AI. Việc tư vấn kiểu tóc vẫn phụ thuộc hoàn toàn vào kinh nghiệm của thợ cắt tóc, chưa tận dụng dữ liệu khuôn mặt, sở thích cá nhân và lịch sử sử dụng dịch vụ của khách hàng.
-
-Tại Việt Nam, nhiều tiệm cắt tóc nhỏ lẻ chưa có hệ thống quản lý lịch hẹn chuyên nghiệp, trong khi nhu cầu đặt lịch online ngày càng tăng, đặc biệt là từ nhóm khách hàng trẻ. Điều này cho thấy vẫn còn nhiều tiềm năng để phát triển một phần mềm đặt lịch cắt tóc thông minh, tích hợp AI với chi phí hợp lý, phù hợp với điều kiện thực tế trong nước.
-
-Vì vậy, việc xây dựng và phát triển phần mềm đặt lịch cắt tóc tích hợp AI là cần thiết, có ý nghĩa cả về mặt khoa học lẫn thực tiễn.
+Một số ứng dụng đặt lịch phổ biến như Booksy, Fresha, StyleSeat (nước ngoài) 
+và 30Shine (Việt Nam).
+Tuy nhiên, các ứng dụng này chủ yếu quản lý lịch hẹn, chưa có chatbot tư vấn. 
+Khách vẫn phải gọi điện hoặc đến trực tiếp để hỏi về dịch vụ, giá cả.
+Tại Việt Nam, nhiều tiệm cắt tóc nhỏ lẻ chưa có hệ thống quản lý lịch hẹn chuyên nghiệp, trong khi nhu cầu đặt lịch online ngày càng tăng, đặc biệt là từ nhóm khách hàng trẻ.
+ BarberGo khác biệt ở chỗ tích hợp RAG chatbot để tư vấn tự động 24/7, 
+giảm tải cho nhân viên. Thay thế hoàn toàn việc tư vấn thủ công, nâng cao trải nghiệm khách hàng.
 
 \section{ Nhiệm vụ nghiên cứu}
 Để đạt được mục tiêu đề ra, đề tài tập trung thực hiện các nhiệm vụ sau:
@@ -32,7 +33,7 @@ Vì vậy, việc xây dựng và phát triển phần mềm đặt lịch cắt
 \end{itemize}
 
 \section{Phương pháp nghiên cứu}
-Trong quá trình thực hiện đề tài, các phương pháp nghiên cứu sau được sử dụng:
+Quá trình thực hiện đề tài, các phương pháp nghiên cứu sau được sử dụng:
 \begin{itemize}
     \item Phương pháp nghiên cứu tài liệu: Thu thập và phân tích các tài liệu, bài báo khoa học liên quan đến đặt lịch trực tuyến, quản lý dịch vụ và AI.
     \item Phương pháp phân tích và thiết kế hệ thống: Phân tích yêu cầu, xây dựng mô hình hệ thống, sơ đồ UML và thiết kế cơ sở dữ liệu.
@@ -40,7 +41,8 @@ Trong quá trình thực hiện đề tài, các phương pháp nghiên cứu sa
 \end{itemize}
 
 \section{Các kết quả đạt được}
-Kết quả của đề tài là xây dựng được một phần mềm đặt lịch cắt tóc tích hợp AI đáp ứng các yêu cầu đề ra. Hệ thống cho phép khách hàng đặt lịch trực tuyến, quản lý thông tin cá nhân, xem lịch sử cắt tóc và nhận gợi ý kiểu tóc phù hợp thông qua AI.
+Hệ thống đã xây dựng thành công bao gồm: 
+Hệ thống cho phép khách hàng đặt lịch trực tuyến, quản lý thông tin cá nhân, xem lịch sử cắt tóc và nhận gợi ý kiểu tóc phù hợp thông qua AI, xây dựng chatbot tư vấn thông minh.
 
-Đối với cửa hàng, phần mềm hỗ trợ quản lý lịch hẹn, khách hàng, nhân viên và thống kê hoạt động kinh doanh một cách hiệu quả. Ngoài ra, đề tài còn giúp em vận dụng kiến thức đã học về lập trình, cơ sở dữ liệu và phân tích thiết kế hệ thống vào thực tế, đồng thời nâng cao kỹ năng nghiên cứu và triển khai các công nghệ mới.
+Đối với cửa hàng, phần mềm hỗ trợ quản lý lịch hẹn, khách hàng, nhân viên và thống kê hoạt động kinh doanh một cách hiệu quả.
 
