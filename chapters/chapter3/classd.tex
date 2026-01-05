@@ -26,19 +26,19 @@ Thiết kế tuân theo SOLID principles với 8 Schema classes và 8 Service cl
 \hline
 User & Base model cho authentication và authorization \\
 \hline
-Barber & Thông tin salon và vị trí địa lý (PostGIS) \\
+Barber & Thông tin tiệm tóc và vị trí địa lý (PostGIS) \\
 \hline
-Service & Dịch vụ của từng salon \\
+Service & Dịch vụ của từng tiệm tóc \\
 \hline
 TimeSlot & Khung giờ làm việc và trạng thái available \\
 \hline
 Booking & Lịch hẹn và trạng thái (pending/confirmed/completed) \\
 \hline
-Rating & Đánh giá salon (1-5 sao) \\
+Rating & Đánh giá tiệm tóc (1-5 sao) \\
 \hline
 ChatSession & Phiên chat với RAG bot \\
 \hline
-Appointment & Yêu cầu hợp tác mở salon \\
+Appointment & Yêu cầu hợp tác mở tiệm tóc \\
 \hline
 \end{tabular}
 \end{table}
@@ -66,8 +66,8 @@ register\_user(): Đăng ký, validate email uniqueness \\
 & update\_user(): Cập nhật profile \\
 \hline
 BarberService & 
-create\_barber(): Tạo salon, validate owner \\
-& get\_top\_barbers(): Lấy salons theo rank và location (PostGIS) \\
+create\_barber(): Tạo tiệm tóc, validate owner \\
+& get\_top\_barbers(): Lấy tiệm tócs theo rank và location (PostGIS) \\
 & update\_barber(): Cập nhật services, working hours \\
 \hline
 TimeSlotService & 

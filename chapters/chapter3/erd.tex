@@ -54,7 +54,7 @@ created\_at & timestamptz & DEFAULT NOW() & Ngày tạo \\
 
 \subsubsection{Nhóm quản lý barber shop}
 
-\textbf{Mục đích:} Lưu thông tin salon, dịch vụ và vị trí địa lý
+\textbf{Mục đích:} Lưu thông tin tiệm tóc, dịch vụ và vị trí địa lý
 
 \begin{table}[H]
 \centering
@@ -63,11 +63,11 @@ created\_at & timestamptz & DEFAULT NOW() & Ngày tạo \\
 \hline
 \textbf{Trường} & \textbf{Kiểu} & \textbf{Ràng buộc} & \textbf{Mô tả} \\
 \hline
-id & uuid & PK & Định danh salon \\
+id & uuid & PK & Định danh tiệm tóc \\
 \hline
-user\_id & uuid & FK → users.id & Chủ salon \\
+user\_id & uuid & FK → users.id & Chủ tiệm tóc \\
 \hline
-name & text & NOT NULL & Tên salon \\
+name & text & NOT NULL & Tên tiệm tóc \\
 \hline
 address & text & - & Địa chỉ \\
 \hline
@@ -99,7 +99,7 @@ status & boolean & DEFAULT true & Hoạt động/Đóng cửa \\
 \hline
 id & int & PK & Định danh dịch vụ \\
 \hline
-barber\_id & uuid & FK → barbers.id & Salon cung cấp \\
+barber\_id & uuid & FK → barbers.id & tiệm tóc cung cấp \\
 \hline
 service\_name & text & NOT NULL & Tên dịch vụ \\
 \hline
@@ -157,7 +157,7 @@ created\_at & timestamptz & DEFAULT NOW() & Ngày đặt \\
 \hline
 id & int & PK & Định danh đánh giá \\
 \hline
-barber\_id & uuid & FK → barbers.id & Salon được đánh giá \\
+barber\_id & uuid & FK → barbers.id & tiệm tóc được đánh giá \\
 \hline
 user\_id & uuid & FK → users.id & Người đánh giá \\
 \hline
@@ -268,7 +268,7 @@ created\_at & timestamptz & DEFAULT NOW() & Thời điểm gửi \\
 
 \subsubsection{Nhóm quản lý hợp tác}
 
-\textbf{Mục đích:} Xử lý yêu cầu đăng ký mở salon từ chủ tiệm
+\textbf{Mục đích:} Xử lý yêu cầu đăng ký mở tiệm tóc từ chủ tiệm
 
 \begin{table}[H]
 \centering
@@ -281,7 +281,7 @@ id & uuid & PK & Định danh yêu cầu \\
 \hline
 user\_id & uuid & FK → users.id & Người gửi \\
 \hline
-name\_barber & text & NOT NULL & Tên salon dự kiến \\
+name\_barber & text & NOT NULL & Tên tiệm tóc dự kiến \\
 \hline
 email & text & NOT NULL & Email liên hệ \\
 \hline
@@ -317,7 +317,7 @@ updated\_at & timestamptz & - & Ngày xử lý \\
 \hline
 Unique & users & email & Đảm bảo email duy nhất \\
 \hline
-GiST & barbers & location & Tìm salon gần nhất (PostGIS spatial) \\
+GiST & barbers & location & Tìm tiệm tóc gần nhất (PostGIS spatial) \\
 \hline
 \textbf{IVFFlat} & \textbf{documents} & \textbf{embedding} & \textbf{Vector similarity search (RAG)} \\
 \hline
@@ -338,7 +338,7 @@ B-tree & * & FK, status, created\_at & Truy vấn nhanh \\
 \textbf{Row Level Security (RLS):}
 \begin{itemize}
     \item User: Chỉ xem bookings/ratings/chat\_sessions của mình
-    \item Barber owner: Chỉ quản lý salon của mình
+    \item Barber owner: Chỉ quản lý tiệm tóc của mình
     \item Admin: Full access, quản lý documents (knowledge base)
 \end{itemize}
 

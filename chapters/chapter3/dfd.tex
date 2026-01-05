@@ -37,7 +37,7 @@ DFD cấp 0 phân rã hệ thống BarberGo thành các tiến trình chức nă
 Các tiến trình chính trong hệ thống:
 \begin{itemize}
     \item \textbf{1.0 Quản lý Xác thực:} Xử lý đăng ký, đăng nhập, quản lý hồ sơ và đăng xuất
-    \item \textbf{2.0 Quản lý Barber:} Quản lý thông tin tiệm cắt tóc, dịch vụ và giờ làm việc
+    \item \textbf{2.0 Quản lý Barber:} Quản lý thông tin tiệm tóc, dịch vụ và giờ làm việc
     \item \textbf{3.0 Quản lý Đặt lịch:} Xử lý đặt lịch, quản lý khung giờ và xác nhận/hủy lịch hẹn
     \item \textbf{4.0 Quản lý Đánh giá:} Thu thập và hiển thị đánh giá từ khách hàng
     \item \textbf{5.0 Xử lý Tính năng AI:} Tích hợp phát hiện mụn, tạo kiểu tóc và chatbot RAG
@@ -48,7 +48,7 @@ Các tiến trình chính trong hệ thống:
 Các kho dữ liệu chính:
 \begin{itemize}
     \item \textbf{D1: Users} - Lưu trữ thông tin người dùng (khách hàng, barber owner, admin)
-    \item \textbf{D2: Barbers} - Thông tin tiệm cắt tóc
+    \item \textbf{D2: Barbers} - Thông tin tiệm tóc
     \item \textbf{D3: Services} - Dịch vụ và giá cả
     \item \textbf{D4: Bookings} - Lịch hẹn đã đặt
     \item \textbf{D5: Time Slots} - Khung giờ làm việc
@@ -79,7 +79,7 @@ Các tiến trình con:
 
 \subsection{DFD Cấp 1 - Quản lý cửa tiệm}
 
-DFD cấp 1 cho module Quản lý Barber chi tiết hóa các tiến trình liên quan đến quản lý thông tin tiệm cắt tóc và dịch vụ.
+DFD cấp 1 cho module Quản lý Barber chi tiết hóa các tiến trình liên quan đến quản lý thông tin tiệm tóc và dịch vụ.
 
 \begin{figure}[H]
     \centering
@@ -90,7 +90,7 @@ DFD cấp 1 cho module Quản lý Barber chi tiết hóa các tiến trình liê
 
 Các tiến trình con:
 \begin{itemize}
-    \item \textbf{2.1 Tìm kiếm \& Xem Barber:} Khách hàng tìm kiếm tiệm cắt tóc theo khu vực, tên hoặc xếp hạng. Tiến trình truy vấn D2: Barbers và D6: Ratings để trả về kết quả phù hợp
+    \item \textbf{2.1 Tìm kiếm \& Xem Barber:} Khách hàng tìm kiếm tiệm tóc theo khu vực, tên hoặc xếp hạng. Tiến trình truy vấn D2: Barbers và D6: Ratings để trả về kết quả phù hợp
     \item \textbf{2.2 Tạo Tiệm Barber:} Barber owner tạo tiệm mới với thông tin tên, địa chỉ, giờ làm việc. Hệ thống lấy ID người dùng từ D1: Users và tạo bản ghi mới trong D2: Barbers
     \item \textbf{2.3 Cập nhật Thông tin Barber:} Cho phép barber owner chỉnh sửa thông tin tiệm (địa chỉ, số điện thoại, mô tả, hình ảnh)
     \item \textbf{2.4 Quản lý Dịch vụ:} Barber owner thêm, sửa, xóa dịch vụ với thông tin tên, giá và thời gian thực hiện. Dữ liệu được lưu vào D3: Services và liên kết với barber ID từ D2: Barbers
