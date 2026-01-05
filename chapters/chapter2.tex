@@ -1,188 +1,56 @@
 \chapter{CƠ SỞ LÝ THUYẾT}
 
-\section{Công nghệ AI và Deep Learning}
+\section{Công nghệ AI và DL}
 
-\subsection{Giới thiệu về Deep Learning}
+\subsection{Giới thiệu về DL}
 
-Deep Learning là một nhánh quan trọng của Machine Learning, sử dụng các mạng nơ-ron nhân tạo nhiều lớp để tự động học và trích xuất đặc trưng từ dữ liệu. Với khả năng xử lý dữ liệu lớn và phức tạp, Deep Learning đã đạt được nhiều thành tựu nổi bật trong các lĩnh vực như thị giác máy tính, xử lý ngôn ngữ tự nhiên, nhận dạng giọng nói và các hệ thống tư vấn thông minh.
-
-Trong lĩnh vực thị giác máy tính, Deep Learning cho phép máy tính phân tích và hiểu nội dung hình ảnh, từ đó thực hiện các nhiệm vụ như nhận diện khuôn mặt, phân vùng ảnh, phân loại đặc trưng và sinh ảnh mới. Đây là nền tảng quan trọng cho các ứng dụng tạo kiểu tóc, phân tích tình trạng da mặt và cá nhân hóa trải nghiệm người dùng trong hệ thống BarberGo.
-
-Quá trình huấn luyện mô hình Deep Learning bao gồm các bước chính sau:
+DL là một nhánh quan trọng của Machine Learning, sử dụng các mạng nơ-ron nhân tạo nhiều lớp để tự động học và trích xuất đặc trưng từ dữ liệu. 
+Trong BarberGo, DL được áp dụng cho:
 \begin{itemize}
-    \item Chuẩn bị dữ liệu: Thu thập, tiền xử lý và gán nhãn dữ liệu huấn luyện.
-    \item Xây dựng mô hình: Thiết kế kiến trúc mạng nơ-ron và khởi tạo tham số.
-    \item Lan truyền xuôi (Forward propagation): Tính toán đầu ra dự đoán.
-    \item Tính toán hàm mất mát (Loss function): Đánh giá sai lệch giữa dự đoán và nhãn thực.
-    \item Lan truyền ngược (Backpropagation): Cập nhật trọng số thông qua thuật toán tối ưu.
-    \item Đánh giá và tinh chỉnh mô hình: Đánh giá hiệu suất và điều chỉnh siêu tham số.
+    \item CNN: Phân loại mụn (MobileNetV2)
+    \item Diffusion Models: Tạo kiểu tóc (SD1.5)
 \end{itemize}
 
-Pipeline Deep Learning tổng quát được áp dụng xuyên suốt cho các mô hình học sâu trong hệ thống, bao gồm các bước chính như sau:
+\subsection{Mô hình sinh ảnh Generative AI – SD1.5}
 
-\begin{center}
-Dữ liệu đầu vào
-$\rightarrow$ Tiền xử lý dữ liệu
-$\rightarrow$ Trích xuất đặc trưng
-$\rightarrow$ Huấn luyện mô hình
-$\rightarrow$ Dự đoán / Sinh kết quả
-$\rightarrow$ Hậu xử lý
-$\rightarrow$ Trả kết quả cho người dùng
-\end{center}
+SD1.5 là một mô hình Generative AI dựa trên Diffusion Model, có khả năng sinh ảnh từ mô tả văn bản (text-to-image) và chỉnh sửa ảnh (image inpainting). Mô hình hoạt động bằng cách dần loại bỏ nhiễu khỏi dữ liệu ngẫu nhiên để tạo ra hình ảnh phù hợp với prompt đầu vào.
 
-
-\subsection{Mô hình sinh ảnh Generative AI – Stable Diffusion 1.5}
-
-Stable Diffusion 1.5 là một mô hình Generative AI dựa trên Diffusion Model, có khả năng sinh ảnh từ mô tả văn bản (text-to-image) và chỉnh sửa ảnh (image inpainting). Mô hình hoạt động bằng cách dần loại bỏ nhiễu khỏi dữ liệu ngẫu nhiên để tạo ra hình ảnh phù hợp với prompt đầu vào.
-
-Kiến trúc của Stable Diffusion 1.5 bao gồm các thành phần chính:
+Kiến trúc của SD1.5 bao gồm các thành phần chính:
 \begin{itemize}
     \item Text Encoder (CLIP): Chuyển đổi prompt văn bản thành vector đặc trưng ngữ nghĩa.
     \item U-Net: Thực hiện quá trình khử nhiễu trong không gian tiềm ẩn (latent space).
     \item Variational Autoencoder (VAE): Mã hóa ảnh vào latent space và giải mã thành ảnh output.
 \end{itemize}
 
-\subsubsection{SD1.5 Inpainting trong hệ thống BarberGo}
+\subsubsection{SD1.5 Inpainting trong BarberGo}
 
-Trong hệ thống BarberGo, Stable Diffusion 1.5 Inpainting được sử dụng để tạo kiểu tóc AI cho khách hàng. Pipeline bao gồm các bước sau:
+Pipeline xử lý:
+\begin{enumerate}
+    \item \textbf{Phát hiện khuôn mặt:} MediaPipe tạo hair mask và face protection mask.
+    \item \textbf{Inpainting:} U-Net thay đổi vùng tóc theo prompt, bảo vệ khuôn mặt. 
+          Số bước: 30-40 steps, guidance scale: 7.5-8.0.
+    \item \textbf{Output:} VAE Decoder sinh ảnh 512×512, thời gian ~10-15 giây/ảnh.
+\end{enumerate}
 
-\begin{itemize}
-    \item Bước 1 – Nhập dữ liệu:
-    \begin{itemize}
-        \item Ảnh khuôn mặt khách hàng.
-        \item Prompt văn bản mô tả kiểu tóc (ví dụ: "man bun hairstyle", "blue hair").
-        \item Negative prompt để tránh các đặc trưng không mong muốn.
-    \end{itemize}
-
-    \item Bước 2 – Phát hiện khuôn mặt và tạo mask:
-    \begin{itemize}
-        \item MediaPipe Face Detection xác định vùng khuôn mặt.
-        \item MediaPipe Face Mesh (468 landmarks) xác định đường chân tóc.
-        \item Tạo hair mask (vùng tóc cần thay đổi).
-        \item Tạo face protection mask (bảo vệ khuôn mặt không bị thay đổi).
-    \end{itemize}
-
-    \item Bước 3 – Tiền xử lý ảnh:
-    \begin{itemize}
-        \item Resize ảnh về 512×512 (chuẩn SD1.5).
-        \item Padding để giữ tỷ lệ gốc.
-        \item Normalize giá trị pixel về [0, 1].
-    \end{itemize}
-
-    \item Bước 4 – Mã hóa:
-    \begin{itemize}
-        \item Text Encoder: Chuyển prompt thành conditioning vector.
-        \item VAE Encoder: Nén ảnh gốc vào latent space (64×64×4).
-    \end{itemize}
-
-    \item Bước 5 – Quá trình Inpainting:
-    \begin{itemize}
-        \item U-Net thực hiện denoising trong latent space.
-        \item Chỉ thay đổi vùng được mask (tóc).
-        \item Bảo vệ vùng mặt bằng mask.
-        \item Số bước denoising: 30-40 steps.
-        \item Guidance scale: 7.5-8.0 để cân bằng chất lượng và độ chính xác.
-    \end{itemize}
-
-    \item Bước 6 – Giải mã:
-    \begin{itemize}
-        \item VAE Decoder chuyển latent vector thành ảnh 512×512.
-    \end{itemize}
-
-    \item Bước 7 – Hậu xử lý:
-    \begin{itemize}
-        \item Crop về kích thước gốc.
-        \item Blend edges để mượt mà hơn.
-        \item Color correction nếu cần.
-    \end{itemize}
-
-    \item Bước 8 – Xuất kết quả:
-    \begin{itemize}
-        \item Hiển thị ảnh kiểu tóc mới cho khách hàng tham khảo.
-        \item Lưu ảnh vào storage để xem lại sau.
-    \end{itemize}
-\end{itemize}
-
-Ưu điểm của SD1.5 Inpainting:
-\begin{itemize}
-    \item Chỉ thay đổi vùng tóc, giữ nguyên khuôn mặt và đặc điểm cá nhân.
-    \item Linh hoạt với nhiều kiểu tóc khác nhau thông qua prompt.
-    \item Kết quả tự nhiên, chất lượng cao.
-    \item Tốc độ xử lý nhanh (10-15 giây trên GPU).
-\end{itemize}
-
+Ưu điểm: Chỉ thay đổi tóc, giữ nguyên mặt; linh hoạt với nhiều prompt; kết quả tự nhiên.
 
 \subsection{MediaPipe trong nhận diện và phân vùng khuôn mặt}
 
 MediaPipe là thư viện mã nguồn mở do Google phát triển, hỗ trợ xây dựng các pipeline xử lý hình ảnh và video theo thời gian thực. MediaPipe Face Mesh cung cấp 468 điểm mốc (landmarks) trên khuôn mặt với độ chính xác cao, cho phép xác định chính xác các vùng như trán, má, cằm, mắt, mũi và miệng.
 
-\subsubsection{Pipeline MediaPipe trong hệ thống}
+\subsection{MediaPipe}
 
-MediaPipe được sử dụng làm bước tiền xử lý quan trọng cho cả hai tính năng AI trong BarberGo:
-
+MediaPipe Face Mesh cung cấp 468 landmarks để:
 \begin{itemize}
-    \item Bước 1 – Nhập ảnh từ camera hoặc gallery.
-    
-    \item Bước 2 – Face Detection:
-    \begin{itemize}
-        \item Phát hiện khuôn mặt trong ảnh.
-        \item Trả về bounding box: [x, y, width, height].
-        \item Confidence score để đảm bảo chất lượng.
-    \end{itemize}
-    
-    \item Bước 3 – Face Mesh Landmarks:
-    \begin{itemize}
-        \item Trích xuất 468 điểm mốc 3D trên khuôn mặt.
-        \item Xác định các vùng quan trọng:
-        \begin{itemize}
-            \item Forehead (trán): landmarks 10, 151
-            \item Cheeks (má): landmarks trái và phải
-            \item Nose (mũi): landmarks giữa mặt
-            \item Chin (cằm): landmarks dưới cùng
-            \item Hairline (đường chân tóc): dựa trên landmarks trán
-        \end{itemize}
-    \end{itemize}
-    
-    \item Bước 4 – Region of Interest (ROI) Extraction:
-    \begin{itemize}
-        \item Phân chia khuôn mặt thành 5 vùng:
-        \begin{itemize}
-            \item Forehead (Trán)
-            \item Left Cheek (Má trái)
-            \item Right Cheek (Má phải)
-            \item Nose (Mũi)
-            \item Chin (Cằm)
-        \end{itemize}
-        \item Crop từng vùng thành ảnh riêng biệt.
-    \end{itemize}
-    
-    \item Bước 5 – Mask Generation:
-    \begin{itemize}
-        \item Hair Mask: Vùng từ đỉnh đầu đến đường chân tóc.
-        \item Face Protection Mask: Vùng từ chân tóc xuống cằm.
-        \item Binary mask: 255 (white) = thay đổi, 0 (black) = bảo vệ.
-    \end{itemize}
-    
-    \item Bước 6 – Output cho các mô hình AI:
-    \begin{itemize}
-        \item Đối với Acne Detection: 5 ROI images của các vùng da.
-        \item Đối với Hairstyle Generation: Hair mask và Face protection mask.
-    \end{itemize}
+    \item Phân vùng da: 5 vùng (trán, má trái/phải, mũi, cằm) cho Acne Detection
+    \item Tạo hair mask cho Hairstyle Generation
 \end{itemize}
 
-Ưu điểm của MediaPipe:
-\begin{itemize}
-    \item Tốc độ xử lý nhanh, hoạt động real-time.
-    \item Độ chính xác cao với 468 landmarks.
-    \item Cross-platform (Android, iOS, Web, Python).
-    \item Lightweight, phù hợp mobile devices.
-    \item Không cần GPU, chạy tốt trên CPU.
-\end{itemize}
+Ưu điểm: Nhanh (<100ms), chạy trên CPU, độ chính xác cao.
 
+\subsection{CNN}
 
-\subsection{Mạng nơ-ron tích chập (CNN)}
-
-CNN (Convolutional Neural Network) là kiến trúc mạng nơ-ron chuyên xử lý dữ liệu dạng lưới như hình ảnh. CNN có khả năng tự động trích xuất đặc trưng quan trọng thông qua các lớp tích chập (convolution) và gộp (pooling), giúp giảm số lượng tham số và tăng hiệu quả học.
+CNN là kiến trúc mạng nơ-ron chuyên xử lý dữ liệu dạng lưới như hình ảnh. CNN có khả năng tự động trích xuất đặc trưng quan trọng thông qua các lớp tích chập (convolution) và gộp (pooling), giúp giảm số lượng tham số và tăng hiệu quả học.
 
 \subsubsection{Kiến trúc cơ bản}
 
@@ -213,106 +81,34 @@ P(y=k) = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}
 \mathcal{L} = -\frac{1}{N} \sum_{i=1}^{N} \left[y_i \log(\hat{y}_i) + (1-y_i) \log(1-\hat{y}_i)\right]
 \end{equation}
 
-\subsubsection{CNN cho Acne Detection trong BarberGo}
+\subsection{CNN cho Acne Detection}
 
-Hệ thống sử dụng CNN để phân loại nhị phân (binary classification) các vùng da:
+Model: MobileNetV2 (pretrained) với binary classification (có mụn / không mụn)
 \begin{itemize}
-    \item Class 0: Không có mụn (Clear skin)
-    \item Class 1: Có mụn (Acne)
+    \item Input: 224×224 RGB (5 vùng da từ MediaPipe)
+    \item Preprocessing: Resize, normalize, Gaussian Blur (bỏ lỗ chân lông)
+    \item Training: Binary Cross-Entropy, Adam optimizer, 50 epochs
+    \item Output: Confidence score [0,1], phân loại severity (mild/moderate/severe)
 \end{itemize}
 
-\textbf{Kiến trúc mô hình:}
+\subsection{RAG và Chatbot}
 
-Base Model: MobileNetV2 (pretrained trên ImageNet)
-\begin{itemize}
-    \item Input: 224×224×3 (RGB image)
-    \item MobileNetV2 backbone (frozen hoặc fine-tuned)
-    \item Global Average Pooling
-    \item Dense(128) + ReLU + Dropout(0.5)
-    \item Dense(1) + Sigmoid (binary classification)
-\end{itemize}
-
-\textbf{Pipeline huấn luyện và dự đoán:}
-
-\begin{itemize}
-    \item Bước 1 – Thu thập dữ liệu:
-    \begin{itemize}
-        \item Dataset: Ảnh các vùng da (forehead, cheeks, nose, chin).
-        \item Labels: 0 (không mụn), 1 (có mụn).
-        \item Split: 80\% train, 10\% validation, 10\% test.
-    \end{itemize}
-
-    \item Bước 2 – Data Preprocessing:
-    \begin{itemize}
-        \item Resize về 224×224.
-        \item Normalize: pixel values [0, 255] → [0, 1].
-        \item Data Augmentation:
-        \begin{itemize}
-            \item Random flip (horizontal).
-            \item Random rotation (±15°).
-            \item Random brightness (±20\%).
-            \item Random zoom (±10\%).
-        \end{itemize}
-    \end{itemize}
-
-    \item Bước 3 – Pore Removal (tiền xử lý đặc biệt):
-    \begin{itemize}
-        \item Áp dụng Gaussian Blur để giảm nhiễu lỗ chân lông.
-        \item Tránh nhầm lẫn giữa pores và acne.
-        \item Kernel size: 5×5, sigma: 1.5.
-    \end{itemize}
-
-    \item Bước 4 – Model Training:
-    \begin{itemize}
-        \item Loss function: Binary Cross-Entropy.
-        \item Optimizer: Adam (learning rate: 0.001).
-        \item Batch size: 32.
-        \item Epochs: 50 (với early stopping).
-        \item Metrics: Accuracy, Precision, Recall, F1-score.
-    \end{itemize}
-
-    \item Bước 5 – Inference (Dự đoán):
-    \begin{itemize}
-        \item Input: ROI image từ MediaPipe (1 trong 5 vùng).
-        \item Preprocess: resize, normalize, pore removal.
-        \item Forward pass qua model.
-        \item Output: Confidence score [0, 1].
-        \item Threshold: 0.5 (có thể điều chỉnh).
-    \end{itemize}
-
-    \item Bước 6 – Severity Classification:
-    \begin{itemize}
-        \item Confidence < 0.35: Mild (nhẹ).
-        \item 0.35 ≤ Confidence < 0.65: Moderate (trung bình).
-        \item Confidence ≥ 0.65: Severe (nghiêm trọng).
-    \end{itemize}
-
-    \item Bước 7 – Aggregation:
-    \begin{itemize}
-        \item Tổng hợp kết quả từ 5 vùng.
-        \item Tính overall severity dựa trên số vùng có mụn.
-        \item Generate advice (lời khuyên chăm sóc da).
-    \end{itemize}
-\end{itemize}
-
-
-\subsection{Retrieval-Augmented Generation (RAG) và Chatbot}
-
-RAG (Retrieval-Augmented Generation) là kỹ thuật kết hợp giữa hệ thống truy xuất thông tin (Information Retrieval) và mô hình sinh ngôn ngữ tự nhiên (Natural Language Generation). RAG cho phép chatbot truy xuất tri thức từ cơ sở dữ liệu trước khi sinh câu trả lời, giúp tăng độ chính xác, giảm hallucination (bịa đặt thông tin) và cập nhật tri thức linh hoạt.
+RAG là kỹ thuật kết hợp giữa hệ thống truy xuất thông tin (Information Retrieval) và mô hình NLG. 
+RAG cho phép chatbot truy xuất tri thức từ cơ sở dữ liệu trước khi sinh câu trả lời, giúp tăng độ chính xác, giảm hallucination (bịa đặt thông tin) và kiến thức lõi thời.
 
 \subsubsection{Kiến trúc RAG trong BarberGo}
 
 Hệ thống RAG chatbot bao gồm 3 thành phần chính:
 
 \begin{enumerate}
-    \item \textbf{Embedding Model}: Google text-embedding-004, chuyển văn bản thành vector 768 chiều.
-    
-    \item \textbf{Vector Database}: Supabase PostgreSQL + pgvector extension, lưu trữ embeddings và tìm kiếm semantic với cosine similarity.
-    
-    \item \textbf{Generative Model}: Google Gemini 2.0 Flash, sinh câu trả lời tự nhiên từ context.
+    \item \textbf{Embedding Model}: Google text-embedding-004, chuyển văn bản thành vector 768 chiều với mục đích trích xuất đặc trưng ngữ nghĩa.
+
+    \item \textbf{Vector Database}: Supabase PostgreSQL + pgvector extension, lưu trữ embeddings và tìm kiếm semantic với cosine similarity với mục đích truy xuất tri thức mà BarberGo có.
+
+    \item \textbf{Generative Model}: Google Gemini 2.0 Flash là Multimodel LLM cung cấp qua Generative AI API, sinh câu trả lời dựa trên context trích xuất từ vector database.
 \end{enumerate}
 
-\textbf{Quy trình chi tiết:}
+\textbf{Quy trình chi tiết gồm 3 phần chính:}
 \begin{enumerate}
     \item Người dùng nhập câu hỏi.
     \item Hệ thống tạo embedding vector (768-dim) cho câu hỏi.
@@ -322,16 +118,6 @@ Hệ thống RAG chatbot bao gồm 3 thành phần chính:
     \item Đánh giá confidence (high/medium/low) dựa trên similarity score.
     \item Trả kết quả cho người dùng và lưu vào chat history.
 \end{enumerate}
-
-\textbf{Ưu điểm của RAG:}
-\begin{itemize}
-    \item Câu trả lời chính xác dựa trên knowledge base riêng của BarberGo.
-    \item Tránh hallucination (bịa đặt thông tin sai).
-    \item Dễ dàng cập nhật tri thức mới (CRUD documents).
-    \item Context-aware, hiểu ngữ cảnh câu hỏi.
-    \item Có thể audit sources (biết câu trả lời từ đâu).
-\end{itemize}
-
 \textbf{Ứng dụng trong BarberGo:}
 \begin{itemize}
     \item Tư vấn dịch vụ cắt tóc, chăm sóc da.
@@ -345,283 +131,54 @@ Hệ thống RAG chatbot bao gồm 3 thành phần chính:
 
 \subsection{Python}
 
-Python là ngôn ngữ lập trình bậc cao, thông dịch, đa mục đích, được phát triển bởi Guido van Rossum và ra mắt lần đầu năm 1991. Python nổi bật với cú pháp đơn giản, dễ đọc, sử dụng indent để định nghĩa khối lệnh thay vì dấu ngoặc nhọn.
-
-\textbf{Đặc điểm chính:}
+Backend của BarberGo được xây dựng bằng python với FastAPI. Python được sử dụng bởi vì:
 \begin{itemize}
-    \item Cú pháp gần với ngôn ngữ tự nhiên, dễ học và sử dụng.
-    \item Ngôn ngữ động (dynamically typed), không cần khai báo kiểu dữ liệu trước.
-    \item Đa nền tảng, chạy trên Windows, macOS, Linux.
-    \item Thư viện chuẩn phong phú.
-    \item Cộng đồng lớn mạnh, nhiều tài liệu và thư viện bên thứ ba.
-    \item Hỗ trợ lập trình hướng đối tượng, functional và procedural.
+    \item Hỗ trợ AI/ML libraries (Diffusers, PyTorch, MediaPipe)
+    \item Tích hợp dễ Google Gemini API và Supabase SDK
+    \item Cộng đồng lớn, tài liệu phong phú
 \end{itemize}
 
-\subsubsection{Ưu điểm trong phát triển AI/ML}
+\subsection{FastAPI}
 
-Python là ngôn ngữ phổ biến nhất cho AI/Machine Learning nhờ các ưu điểm:
+FastAPI là ASGI framework hiệu năng cao, hỗ trợ async/await natively. 
+Ưu điểm:
 \begin{itemize}
-    \item Hệ sinh thái thư viện mạnh mẽ:
-    \begin{itemize}
-        \item \textbf{Deep Learning}: TensorFlow, PyTorch, Keras.
-        \item \textbf{Machine Learning}: Scikit-learn, XGBoost.
-        \item \textbf{Computer Vision}: OpenCV, MediaPipe, Pillow.
-        \item \textbf{NLP}: NLTK, spaCy, Transformers.
-        \item \textbf{Data Science}: NumPy, Pandas, Matplotlib.
-    \end{itemize}
-    \item Tốc độ phát triển nhanh nhờ cú pháp đơn giản.
-    \item Jupyter Notebook hỗ trợ prototyping và visualization.
+    \item Xử lý concurrent AI requests hiệu quả
+    \item Auto validation với Pydantic
+    \item Auto generate API docs (Swagger UI)
 \end{itemize}
-
-\subsubsection{Thư viện chính trong BarberGo Backend}
-
-\begin{itemize}
-    \item \textbf{Diffusers (HuggingFace)}:
-    \begin{itemize}
-        \item Thư viện chính cho Stable Diffusion.
-        \item Hỗ trợ text-to-image, image-to-image, inpainting.
-        \item Pipeline: StableDiffusionInpaintPipeline.
-    \end{itemize}
-
-    \item \textbf{MediaPipe}:
-    \begin{itemize}
-        \item Google's ML solutions cho mobile và edge devices.
-        \item Face Detection, Face Mesh (468 landmarks).
-        \item Lightweight, chạy tốt trên CPU.
-    \end{itemize}
-
-    \item \textbf{PyTorch}:
-    \begin{itemize}
-        \item Framework deep learning cho CNN.
-        \item Hỗ trợ GPU acceleration với CUDA.
-        \item Transfer learning với pretrained models.
-    \end{itemize}
-
-    \item \textbf{TorchVision}:
-    \begin{itemize}
-        \item Models: MobileNetV2 (acne detection backbone).
-        \item Transforms: Data augmentation.
-        \item Datasets: Helper cho loading images.
-    \end{itemize}
-
-    \item \textbf{OpenCV (cv2)}:
-    \begin{itemize}
-        \item Xử lý ảnh: resize, crop, blur, color conversion.
-        \item Vẽ visualizations: bounding box, landmarks.
-        \item Morphological operations: dilate, erode.
-    \end{itemize}
-
-    \item \textbf{NumPy}:
-    \begin{itemize}
-        \item Xử lý mảng đa chiều hiệu quả.
-        \item Tính toán toán học: cosine similarity, vector operations.
-        \item Base cho OpenCV và PyTorch tensors.
-    \end{itemize}
-
-    \item \textbf{Pillow (PIL)}:
-    \begin{itemize}
-        \item Xử lý ảnh cơ bản: load, save, resize.
-        \item Hỗ trợ nhiều định dạng: JPEG, PNG, WEBP.
-        \item Convert giữa NumPy array và PIL Image.
-    \end{itemize}
-
-    \item \textbf{Google Generative AI (genai)}:
-    \begin{itemize}
-        \item Client library cho Gemini API.
-        \item Text generation, embeddings.
-        \item Streaming responses.
-    \end{itemize}
-
-    \item \textbf{Geopy}:
-    \begin{itemize}
-        \item Geocoding và reverse geocoding.
-        \item Nominatim client (OpenStreetMap).
-        \item Chuyển đổi (lat, lng) ↔ address.
-    \end{itemize}
-\end{itemize}
-
-
-\subsection{FastAPI Framework}
-
-FastAPI là web framework hiện đại, hiệu năng cao cho Python, được phát triển bởi Sebastián Ramírez. FastAPI được xây dựng dựa trên Starlette (ASGI framework) và Pydantic (data validation), hỗ trợ async/await natively.
-
-\textbf{Đặc điểm chính:}
-\begin{itemize}
-    \item \textbf{Tốc độ cao}: Performance tương đương NodeJS và Go nhờ ASGI.
-    \item \textbf{Type hints}: Sử dụng Python type hints cho validation và documentation.
-    \item \textbf{Auto documentation}: Tự động generate Swagger UI và ReDoc.
-    \item \textbf{Async support}: Native async/await cho concurrent requests.
-    \item \textbf{Data validation}: Tích hợp Pydantic cho request/response validation.
-    \item \textbf{Dependency Injection}: Built-in DI system.
-\end{itemize}
-
-\textbf{Ưu điểm cho BarberGo:}
-\begin{itemize}
-    \item Xử lý concurrent AI requests hiệu quả (hairstyle generation, acne detection).
-    \item Auto validation giảm bugs, tăng reliability.
-    \item Interactive API docs giúp frontend team dễ integrate.
-    \item Fast development với type safety.
-    \item Compatible với ML libraries (PyTorch, Diffusers).
-\end{itemize}
-
-\subsection{Pydantic}
-
-Pydantic là thư viện data validation và serialization cho Python, sử dụng type hints để define schemas. Trong FastAPI, Pydantic được sử dụng để:
-
-\begin{itemize}
-    \item Validate request data.
-    \item Serialize response data.
-    \item Generate JSON schemas.
-    \item Type checking và IDE autocomplete.
-\end{itemize}
-
 
 \section{Công nghệ Frontend}
-
 \subsection{Flutter}
 
-Flutter là bộ công cụ phát triển giao diện người dùng (UI toolkit) đa nền tảng do Google phát triển, cho phép xây dựng ứng dụng native cho mobile (Android, iOS), web, desktop từ một codebase duy nhất. Flutter sử dụng ngôn ngữ lập trình Dart và engine render riêng (Skia), không phụ thuộc vào native components.
-
-\textbf{Đặc điểm chính:}
-\begin{itemize}
-    \item \textbf{Single codebase}: Một mã nguồn cho iOS, Android, Web.
-    \item \textbf{Widget-based}: Everything is a widget.
-    \item \textbf{Hot Reload}: Xem thay đổi ngay lập tức mà không restart app.
-    \item \textbf{Native performance}: Biên dịch AOT (Ahead-Of-Time) sang native code.
-    \item \textbf{Rich widgets}: Material Design (Android) và Cupertino (iOS) widgets.
-    \item \textbf{Reactive framework}: UI tự động update khi state thay đổi.
-\end{itemize}
-
-\textbf{Ưu điểm cho BarberGo Mobile App:}
-\begin{itemize}
-    \item Giảm 50\% thời gian phát triển (1 codebase thay vì 2).
-    \item UI đẹp, mượt mà với 60fps animation.
-    \item Dễ integrate với camera, location, notifications.
-    \item Package ecosystem phong phú (HTTP, image picker, maps).
-    \item Hot reload tăng tốc development cycle.
-\end{itemize}
+Flutter (Dart, Google) cho phép xây dựng mobile app (iOS/Android) từ single codebase. 
+Ưu điểm: Hot reload nhanh, UI đẹp (60fps), package ecosystem phong phú.
 
 \subsection{Vue.js 3}
 
-Vue.js là progressive JavaScript framework cho xây dựng user interfaces và single-page applications (SPA). Vue 3 (phiên bản mới nhất) giới thiệu Composition API, performance cải thiện và TypeScript support tốt hơn.
+Vue.js 3 với Composition API cho web admin dashboard. 
+Stack: Vite (build tool), Pinia (state management), TailwindCSS (styling).
 
-\textbf{Đặc điểm chính:}
-\begin{itemize}
-    \item \textbf{Reactive data binding}: UI tự động update khi data thay đổi.
-    \item \textbf{Component-based}: Chia UI thành các components tái sử dụng.
-    \item \textbf{Composition API}: Tổ chức logic theo chức năng thay vì lifecycle.
-    \item \textbf{Virtual DOM}: Optimized rendering performance.
-    \item \textbf{Template syntax}: Dễ học, gần với HTML.
-    \item \textbf{Ecosystem}: Vue Router, Pinia (state management), Vuetify (UI library).
-\end{itemize}
-
-\textbf{Ưu điểm cho BarberGo Admin Dashboard:}
-\begin{itemize}
-    \item Lightweight và dễ học hơn React/Angular.
-    \item Composition API giúp code reusable và maintainable.
-    \item Hot Module Replacement (HMR) với Vite.
-    \item TypeScript support cho type safety.
-    \item Reactive system mạnh mẽ.
-\end{itemize}
-
-\textbf{Công nghệ stack:}
-\begin{itemize}
-    \item \textbf{Vite}: Build tool nhanh, hot reload instant.
-    \item \textbf{Pinia}: State management (thay Vuex).
-    \item \textbf{Vue Router}: SPA routing.
-    \item \textbf{Axios}: HTTP client.
-    \item \textbf{Zod}: Schema validation.
-    \item \textbf{TailwindCSS / Element Plus}: UI styling.
-\end{itemize}
 \subsection{Figma}
 Figma là công cụ thiết kế UI/UX cloud-based, hỗ trợ collaboration thời gian thực. Trong BarberGo, Figma được sử dụng để thiết kế wireframes, mockups cho mobile app và admin dashboard, xây dựng design system (colors, typography, components), tạo interactive prototypes và export assets cho developers.
 
 
 \section{Cơ sở dữ liệu}
-
-\subsection{PostgreSQL}
-
-PostgreSQL là hệ quản trị cơ sở dữ liệu quan hệ (RDBMS) mã nguồn mở, mạnh mẽ và tuân thủ chuẩn SQL. PostgreSQL hỗ trợ ACID (Atomicity, Consistency, Isolation, Durability), đảm bảo tính toàn vẹn dữ liệu.
-
-\textbf{Đặc điểm chính:}
-\begin{itemize}
-    \item \textbf{ACID compliance}: Transactions an toàn.
-    \item \textbf{Rich data types}: JSON, Array, UUID, JSONB, Geometric types.
-    \item \textbf{Indexing}: B-tree, Hash, GiST, GIN, BRIN indexes.
-    \item \textbf{Foreign keys và constraints}: Referential integrity.
-    \item \textbf{Advanced queries}: CTEs, window functions, full-text search.
-    \item \textbf{Extensions}: PostGIS (geography), pgvector (vector similarity).
-\end{itemize}
-
-\textbf{Tại sao chọn PostgreSQL:}
-\begin{itemize}
-    \item Mạnh mẽ, ổn định cho production.
-    \item Hỗ trợ pgvector extension cho RAG chatbot.
-    \item PostGIS cho geographic data (lat, lng).
-    \item JSONB cho flexible schema (metadata).
-    \item Open-source, miễn phí.
-\end{itemize}
-
-
 \subsection{Supabase}
 
-Supabase là Backend-as-a-Service (BaaS) mã nguồn mở, được gọi là "open source Firebase alternative". Supabase cung cấp PostgreSQL database, authentication, storage, real-time subscriptions và auto-generated APIs.
-
-\textbf{Các thành phần chính:}
-
-\begin{enumerate}
-    \item \textbf{PostgreSQL Database:}
-    \begin{itemize}
-        \item Full PostgreSQL database với pgAdmin.
-        \item Support extensions: pgvector, PostGIS.
-        \item Row Level Security (RLS) cho authorization.
-    \end{itemize}
-
-    \item \textbf{Authentication:}
-    \begin{itemize}
-        \item Email/password authentication.
-        \item OAuth providers: Google, Facebook, GitHub.
-        \item JWT tokens.
-        \item Email verification, password reset.
-    \end{itemize}
-
-    \item \textbf{Storage:}
-    \begin{itemize}
-        \item S3-compatible object storage.
-        \item Upload/download files, images.
-        \item CDN distribution.
-        \item Access control với RLS.
-    \end{itemize}
-
-    \item \textbf{Auto-generated APIs (PostgREST):}
-    \begin{itemize}
-        \item RESTful API tự động từ database schema.
-        \item CRUD operations qua HTTP.
-        \item Filtering, sorting, pagination.
-    \end{itemize}
-
-    \item \textbf{Edge Functions:}
-    \begin{itemize}
-        \item Serverless functions (Deno runtime).
-        \item Custom business logic.
-    \end{itemize}
-\end{enumerate}
-
-\textbf{Ưu điểm cho BarberGo:}
+Supabase (BaaS) cung cấp:
 \begin{itemize}
-    \item Giảm thời gian setup backend infrastructure.
-    \item Authentication out-of-the-box.
-    \item Hosting, backups, scaling tự động.
-    \item PostgreSQL extensions (pgvector, PostGIS).
-    \item Free tier generous cho development.
-    \item Dashboard admin-friendly.
+    \item PostgreSQL database với pgvector, PostGIS extensions
+    \item Authentication (Email, OAuth)
+    \item Storage (S3-compatible)
+    \item Row Level Security (RLS)
 \end{itemize}
 
+Ưu điểm: Setup nhanh, free tier generous, auto-generated REST APIs.
 
 \subsection{Pgvector Extension}
 
 Pgvector là PostgreSQL extension cho vector similarity search, được sử dụng chủ yếu cho Retrieval-Augmented Generation (RAG) và semantic search.
-
 
 
 \section{Cloud Services}
@@ -650,7 +207,6 @@ Google Cloud Platform (GCP) là dịch vụ cloud computing của Google, cung c
     \end{itemize}
 \end{enumerate}
 
-
 \subsection{Supabase Storage}
 
 Supabase Storage được tích hợp sẵn trong Supabase.
@@ -664,244 +220,24 @@ Supabase Storage được tích hợp sẵn trong Supabase.
     \item Image transformations (resize, crop).
 \end{itemize}
 
-\section{Kiến trúc hệ thống (Design Architecture)}
+\section{Kiến trúc hệ thống}
 
-\subsection{MVVM Pattern (Frontend)}
+\textbf{Frontend (MVVM):} 
+- Model: Data từ API
+- View: UI components
+- ViewModel: Business logic, state management
 
-MVVM (Model-View-ViewModel) là design pattern phổ biến cho frontend development, đặc biệt phù hợp với Vue.js và Flutter.
+\textbf{Backend (Three-Tier):}
+- Presentation: FastAPI routers, validation
+- Business Logic: Services (RAG, Booking, Auth)
+- Data Access: Supabase client, CRUD operations
 
-\textbf{Các thành phần:}
+\subsection{Geocoding và Maps}
 
-\begin{enumerate}
-    \item \textbf{Model (Data Layer):}
-    \begin{itemize}
-        \item Dữ liệu từ API (Supabase, FastAPI).
-        \item Business entities: User, Barber, Booking, Service.
-        \item Không chứa UI logic.
-    \end{itemize}
-
-    \item \textbf{View (Presentation Layer):}
-    \begin{itemize}
-        \item UI components: buttons, inputs, lists.
-        \item Template/markup: Vue templates, Flutter widgets.
-        \item Hiển thị dữ liệu từ ViewModel.
-        \item Gửi user actions đến ViewModel.
-    \end{itemize}
-
-    \item \textbf{ViewModel (Logic Layer):}
-    \begin{itemize}
-        \item Reactive data binding.
-        \item Business logic: validation, formatting.
-        \item State management.
-        \item API calls, data transformation.
-        \item Expose data và methods cho View.
-    \end{itemize}
-\end{enumerate}
-
-\textbf{Data flow:}
-\begin{center}
-User interaction → View → ViewModel → Model (API) \\
-Model (API) → ViewModel → View (auto re-render)
-\end{center}
-
-
-\textbf{Ưu điểm:}
+Hệ thống sử dụng:
 \begin{itemize}
-    \item Separation of concerns: View và logic tách biệt.
-    \item Testability: ViewModel có thể unit test dễ dàng.
-    \item Two-way data binding: UI tự động sync với data.
-    \item Reusability: ViewModel có thể dùng cho nhiều Views.
+    \item Nominatim API (OpenStreetMap) cho geocoding
+    \item PostGIS để lưu trữ và truy vấn dữ liệu địa lý
+    \item Routing algorithms: Dựa vào khoảng cách tiến hành lựa chọn thuật toán phù hợp: Dijkstra (<5km), A* (5-15km), Bellman-Ford (>15km)
 \end{itemize}
-
-
-\subsection{Three-Tier Layered Architecture (Backend)}
-
-Backend của BarberGo sử dụng kiến trúc phân lớp 3 tầng (Three-Tier Layered Architecture), tuân theo nguyên tắc Separation of Concerns.
-
-\textbf{Các tầng:}
-
-\begin{enumerate}
-    \item \textbf{Presentation Layer:}
-    \begin{itemize}
-        \item FastAPI routers, HTTP endpoints.
-        \item Request/response handling.
-        \item Input validation với Pydantic schemas.
-        \item Authentication/authorization middleware.
-        \item Error handling, HTTP status codes.
-    \end{itemize}
-    
-
-    \item \textbf{Business Logic Layer:}
-    \begin{itemize}
-        \item Core business logic.
-        \item Use cases, workflows.
-        \item Orchestration giữa các components.
-        \item Không phụ thuộc HTTP hay Database cụ thể.
-        \item Reusable across different interfaces.
-    \end{itemize}
-
-    \item \textbf{Data Access Layer:}
-    \begin{itemize}
-        \item Database connections (Supabase client).
-        \item CRUD operations.
-        \item SQL queries, ORM.
-        \item Data persistence.
-    \end{itemize}
-\end{enumerate}
-
-\textbf{Supporting Layers:}
-
-\begin{itemize}
-    \item \textbf{Schemas (DTOs):} 
-    \begin{itemize}
-        \item Pydantic models cho validation.
-        \item Request/Response contracts.
-        \item Type safety.
-    \end{itemize}
-
-    \item \textbf{Core Utilities:} 
-    \begin{itemize}
-        \item Constants, configurations.
-        \item Security: JWT handling.
-        \item Custom exceptions.
-    \end{itemize}
-
-    \item \textbf{Utils:} 
-    \begin{itemize}
-        \item Helper functions.
-        \item Image processing, geocoding.
-    \end{itemize}
-\end{itemize}
-
-\textbf{Data flow:}
-\begin{center}
-HTTP Request → Router (validate) → Service (logic) → Database → Response
-\end{center}
-
-\textbf{Ưu điểm:}
-\begin{itemize}
-    \item Separation of Concerns: Mỗi layer có trách nhiệm rõ ràng.
-    \item Testability: Có thể mock từng layer để test.
-    \item Maintainability: Thay đổi ở layer này không ảnh hưởng layer khác.
-    \item Scalability: Dễ mở rộng, thêm tính năng mới.
-    \item Reusability: Services có thể gọi từ nhiều routers.
-\end{itemize}
-
-
-\section{Geocoding và Maps}
-
-\subsection{Geocoding với Nominatim}
-
-Geocoding là quá trình chuyển đổi địa chỉ văn bản thành tọa độ địa lý (latitude, longitude) và ngược lại (reverse geocoding).
-
-\textbf{Nominatim}:
-\begin{itemize}
-    \item Geocoding service của OpenStreetMap.
-    \item Free, open-source.
-    \item API endpoint: \texttt{nominatim.openstreetmap.org}.
-    \item Rate limit: 1 request/second.
-\end{itemize}
-
-\subsection{PostGIS Extension}
-
-PostGIS là extension cho PostgreSQL, thêm hỗ trợ cho geographic data và spatial queries.
-
-\textbf{Chức năng chính:}
-\begin{itemize}
-    \item Lưu trữ geographic data types: POINT, LINESTRING, POLYGON.
-    \item Spatial queries: distance, contains, intersects.
-    \item Spatial indexing: GiST indexes.
-    \item Coordinate transformations (SRID).
-\end{itemize}
-
-\textbf{Ưu điểm:}
-\begin{itemize}
-    \item Spatial queries hiệu quả với GiST indexing.
-    \item Tính khoảng cách chính xác (meters).
-    \item Hỗ trợ nhiều coordinate systems (SRID).
-    \item Tích hợp sẵn trong PostgreSQL.
-\end{itemize}
-
-\subsection{OpenStreetMap và Routing}
-
-OpenStreetMap (OSM) là bản đồ mã nguồn mở, cộng đồng đóng góp. BarberGo sử dụng OSM data cho routing và directions.
-
-\textbf{Routing Algorithms:}
-
-Hệ thống hỗ trợ 3 thuật toán tìm đường đi và tự động lựa chọn thuật toán phù hợp dựa trên khoảng cách giữa vị trí hiện tại và barber shop đích:
-
-\begin{enumerate}
-    \item \textbf{Dijkstra Algorithm (Khoảng cách ngắn):}
-    \begin{itemize}
-        \item Tìm đường đi ngắn nhất từ điểm xuất phát đến tất cả điểm.
-        \item Hoạt động với đồ thị có trọng số không âm.
-        \item Độ phức tạp: $O((V + E) \log V)$ với priority queue.
-        \item Phù hợp cho khoảng cách dưới 5km.
-    \end{itemize}
-    
-    Ứng dụng: Tìm đường đến barber shop trong khu vực gần (< 5km).
-
-    \item \textbf{A* (A-star) Algorithm (Khoảng cách trung bình):}
-    \begin{itemize}
-        \item Mở rộng Dijkstra với heuristic function.
-        \item Ước lượng chi phí còn lại đến đích.
-        \item Nhanh hơn Dijkstra khi có thông tin heuristic tốt.
-        \item Heuristic: Haversine distance (khoảng cách trực tiếp).
-        \item Phù hợp cho khoảng cách từ 5km đến 15km.
-    \end{itemize}
-    
-    Công thức:
-    \begin{equation}
-    f(n) = g(n) + h(n)
-    \end{equation}
-    Trong đó: $g(n)$ = chi phí từ start, $h(n)$ = heuristic đến goal.
-    
-    Ứng dụng: Chỉ đường tối ưu đến barber shop trong khu vực trung bình (5-15km).
-
-    \item \textbf{Bellman-Ford Algorithm (Khoảng cách xa):}
-    \begin{itemize}
-        \item Tìm đường đi ngắn nhất trong đồ thị có trọng số âm.
-        \item Phát hiện chu trình âm.
-        \item Độ phức tạp: $O(VE)$.
-        \item Xử lý tốt các trường hợp phức tạp với nhiều nút.
-        \item Phù hợp cho khoảng cách trên 15km.
-    \end{itemize}
-    
-    Ứng dụng: Tìm đường đến barber shop ở khu vực xa (> 15km).
-\end{enumerate}
-
-\textbf{Chiến lược lựa chọn thuật toán:}
-
-Hệ thống tự động chọn thuật toán dựa trên khoảng cách Haversine giữa vị trí người dùng và barber shop:
-\begin{itemize}
-    \item Khoảng cách < 5km: Dijkstra Algorithm
-    \item Khoảng cách từ 5km đến 15km: A* Algorithm
-    \item Khoảng cách > 15km: Bellman-Ford Algorithm
-\end{itemize}
-
-Điều này đảm bảo hiệu suất tối ưu cho mọi trường hợp sử dụng.
-
-\subsection{Quản lý dự án}
-
-Notion là công cụ quản lý dự án và tổ chức công việc all-in-one, được sử dụng để quản lý toàn bộ dự án BarberGo.
-
-\textbf{Chức năng sử dụng:}
-\begin{itemize}
-    \item \textbf{Work Breakdown Structure (WBS):} Phân rã dự án thành các tasks nhỏ, phân cấp theo modules và features
-    \item \textbf{Theo dõi tiến độ:} Timeline view, progress tracking, deadline management
-    \item \textbf{Tổ chức ý tưởng:} Brainstorming, note-taking, requirements documentation
-    \item \textbf{Lập kế hoạch:} Sprint planning, milestone tracking theo mô hình Waterfall
-    \item \textbf{Lưu trữ tài liệu:} Centralized repository cho tài liệu thiết kế, API docs, meeting notes
-\end{itemize}
-
-\textbf{Mô hình Waterfall:}
-
-Dự án BarberGo được tổ chức theo các phases tuần tự:
-\begin{enumerate}
-    \item Requirements Analysis: Thu thập yêu cầu, phân tích nghiệp vụ
-    \item System Design: Thiết kế kiến trúc, database schema, UI/UX
-    \item Implementation: Phát triển backend, frontend, AI features
-    \item Testing: Unit testing, integration testing, user acceptance testing
-    \item Deployment: Deploy lên production, monitoring
-    \item Maintenance: Bug fixes, feature updates
-\end{enumerate}
+\clearpage

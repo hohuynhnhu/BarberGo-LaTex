@@ -1,137 +1,198 @@
-\section{Class diagram}
-\subsection{Class diagram của hệ thống}
+\section{Class Diagram}
+
+\subsection{Class Diagram của hệ thống}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{figures/class.jpg}
-    \caption{Class diagram của hệ thống}
+    \caption{Class Diagram của hệ thống BarberGo}
     \label{fig:class}
 \end{figure}
 
-Class Diagram mô tả cấu trúc tĩnh của hệ thống BarberGo, bao gồm các lớp Schema (đại diện cho entities/models) và các lớp Service (đại diện cho business logic layer). Thiết kế tuân theo kiến trúc Three-Tier với tách biệt rõ ràng giữa data models và business logic.
+Class Diagram mô tả kiến trúc backend theo mô hình Three-Tier, 
+tách biệt Schema layer (data models) và Service layer (business logic). 
+Thiết kế tuân theo SOLID principles với 8 Schema classes và 8 Service classes.
 
-\subsection{Nhóm lớp Schema (Data Models)}
+\subsection{Schema Layer - Data Models}
 
-Các lớp Schema đại diện cho các thực thể trong cơ sở dữ liệu, được thiết kế dựa trên Pydantic models để đảm bảo type safety và data validation.
+\textbf{Mục đích:} Định nghĩa cấu trúc dữ liệu và validation sử dụng Pydantic
 
-\subsubsection{Core Schemas}
+\begin{table}[H]
+\centering
+\caption{Các Schema classes}
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Schema} & \textbf{Vai trò} \\
+\hline
+User & Base model cho authentication và authorization \\
+\hline
+Barber & Thông tin salon và vị trí địa lý (PostGIS) \\
+\hline
+Service & Dịch vụ của từng salon \\
+\hline
+TimeSlot & Khung giờ làm việc và trạng thái available \\
+\hline
+Booking & Lịch hẹn và trạng thái (pending/confirmed/completed) \\
+\hline
+Rating & Đánh giá salon (1-5 sao) \\
+\hline
+ChatSession & Phiên chat với RAG bot \\
+\hline
+Appointment & Yêu cầu hợp tác mở salon \\
+\hline
+\end{tabular}
+\end{table}
 
-\textbf{User:} Đại diện cho người dùng hệ thống với các thuộc tính id (str), email (str), full name (str), role (str: customer/barber/admin). Có quan hệ 1-N với Barber, Booking, Rating, Appointment và ChatSession.
+\noindent\textbf{Đặc điểm:} Pydantic models đảm bảo type safety, auto-validation và JSON serialization. Chi tiết attributes xem ERD (Mục 3.X).
 
-\textbf{Barber:} Thông tin barber shop với id (UUID), name (str), address (str), rank (Decimal), user id (UUID). Quan hệ N-1 với User, 1-N với Service, TimeSlot và Rating.
+\vspace{0.5cm}
 
-\textbf{Service:} Dịch vụ cung cấp với id (int), barber id (str), service name (str), price (int), duration min (int). Quan hệ N-1 với Barber và M-N với Booking.
+\subsection{Service Layer - Business Logic}
 
-\textbf{TimeSlot:} Khung giờ làm việc với id (int), barber id (str), slot date (date), start time (time), end time (time), is available (bool). Quan hệ N-1 với Barber và 1-1 với Booking.
+\textbf{Mục đích:} Orchestrate operations và implement use cases
 
-\textbf{Booking:} Lịch hẹn với id (int), user id (str), time slot id (int), total price (int), status (str: pending/confirmed/rejected/completed). Quan hệ N-1 với User, 1-1 với TimeSlot, M-N với Service.
+\subsubsection{Core Business Services}
 
-\textbf{Rating:} Đánh giá với id (int), barber id (str), user id (str), score (Decimal: 1-5). Quan hệ N-1 với cả User và Barber.
+\begin{table}[H]
+\centering
+\caption{Core Services và responsibilities}
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Service} & \textbf{Methods \& Responsibilities} \\
+\hline
+UserService & 
+register\_user(): Đăng ký, validate email uniqueness \\
+& login\_user(): Xác thực, tạo JWT session \\
+& update\_user(): Cập nhật profile \\
+\hline
+BarberService & 
+create\_barber(): Tạo salon, validate owner \\
+& get\_top\_barbers(): Lấy salons theo rank và location (PostGIS) \\
+& update\_barber(): Cập nhật services, working hours \\
+\hline
+TimeSlotService & 
+create\_time\_slot(): Tạo khung giờ mới \\
+& get\_available\_time\_slots(): Lấy khung giờ trống \\
+\hline
+BookingService & 
+create\_booking(): Tạo booking, lock time\_slot, tính total\_price \\
+& cancel\_booking(): Hủy booking, release time\_slot \\
+& \textbf{Dependency:} TimeSlotService \\
+\hline
+RatingService & 
+create\_rating(): Tạo rating, validate booking completed \\
+& update\_barber\_rank(): Tính lại rank trung bình \\
+& \textbf{Dependency:} BarberService \\
+\hline
+\end{tabular}
+\end{table}
 
-\textbf{Appointment:} Yêu cầu hợp tác với id (str), user id (str), name barber (str), status (str: pending/approved/rejected). Quan hệ N-1 với User.
-
-\textbf{ChatSession:} Phiên chat với id (str), user id (str), title (str). Quan hệ N-1 với User.
-
-\subsection{Nhóm lớp Service (Business Logic)}
-
-Các lớp Service chứa business logic và orchestrate operations trên data models, implement các use cases của hệ thống.
-
-\subsubsection{Core Services}
-
-\textbf{UserService:} Quản lý user lifecycle với các methods:
-\begin{itemize}
-    \item register user(): Đăng ký tài khoản mới, validate email uniqueness
-    \item login user(): Xác thực người dùng, tạo session
-    \item update user(): Cập nhật thông tin profile (avatar, phone, password)
-\end{itemize}
-
-\textbf{BarberService:} Quản lý barber shops với các methods:
-\begin{itemize}
-    \item create barber(): Tạo barber shop mới, validate owner
-    \item get barber by id(): Lấy thông tin chi tiết barber
-    \item update barber(): Cập nhật thông tin, services, working hours
-    \item get top barbers(): Lấy danh sách barbers theo rank và location
-\end{itemize}
-
-\textbf{TimeSlotService:} Quản lý khung giờ với các methods:
-\begin{itemize}
-    \item create time slot(): Tạo khung giờ mới cho barber
-    \item get available time slots(): Lấy danh sách khung giờ trống theo ngày và barber
-\end{itemize}
-
-\textbf{BookingService:} Xử lý đặt lịch với các methods:
-\begin{itemize}
-    \item create booking(): Tạo booking mới, lock time slot, tính total price
-    \item get bookings by user(): Lấy lịch sử bookings của user
-    \item cancel booking(): Hủy booking, release time slot
-\end{itemize}
-Dependency: TimeSlotService (kiểm tra availability trước khi book)
-
-\textbf{RatingService:} Quản lý đánh giá với các methods:
-\begin{itemize}
-    \item create rating(): Tạo rating mới, validate booking completed
-    \item get ratings by barber(): Lấy danh sách ratings của barber
-    \item update barber rank(): Tính lại rank trung bình, trigger sau mỗi rating
-\end{itemize}
-Dependency: BarberService (cập nhật rank)
+\vspace{0.5cm}
 
 \subsubsection{AI Services}
 
-\textbf{RAGService:} Xử lý chatbot RAG với các methods:
-\begin{itemize}
-    \item query(): Xử lý query từ user, semantic search documents, generate response
-    \item create chat session(): Tạo session mới cho user
-    \item generate embedding(): Convert text thành vector embedding (768-dim)
-\end{itemize}
-Technologies: Google text-embedding-004, Gemini 2.0 Flash, pgvector cosine similarity
+\begin{table}[H]
+\centering
+\caption{AI Services và technologies}
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Service} & \textbf{Methods \& Technologies} \\
+\hline
+\textbf{RAGService} & 
+query(): Query → vector search → LLM generate \\
+& generate\_embedding(): Text → vector[768] \\
+& create\_chat\_session(): Tạo session mới \\
+& \textbf{Tech:} text-embedding-004, Gemini 2.5 Flash, pgvector \\
+\hline
+AcneDetectionService & 
+process\_image(): Image → 5 face regions → CNN classification \\
+& detect\_acne\_in\_region(): Binary classification per region \\
+& \textbf{Tech:} MediaPipe Face Mesh, MobileNetV2 CNN \\
+\hline
+HairStyleGenerator & 
+generate\_single\_style(): Image + prompt → hairstyle \\
+& preprocess\_image(): Face detection, mask generation \\
+& \textbf{Tech:} Stable Diffusion 1.5 Inpainting, MediaPipe \\
+\hline
+\end{tabular}
+\end{table}
 
-\textbf{AcneDetectionService:} Phát hiện mụn với các methods:
-\begin{itemize}
-    \item process image(): Pipeline chính - preprocess, detect, analyze
-    \item detect acne in region(): Detect mụn trong vùng face sử dụng YOLOv8 + CNN
-\end{itemize}
-Technologies: MediaPipe Face Mesh, YOLOv8, MobileNetV2 CNN
-
-\textbf{HairStyleGenerator:} Tạo kiểu tóc với các methods:
-\begin{itemize}
-    \item generate single style(): Generate hairstyle sử dụng Stable Diffusion
-    \item preprocess image(): Face detection, segmentation, mask preparation
-\end{itemize}
-Technologies: Stable Diffusion 1.5 Inpainting, MediaPipe Face Mesh
+\vspace{0.5cm}
 
 \subsection{Quan hệ giữa các lớp}
 
-\subsubsection{Schema Associations}
-
-Các mối quan hệ chính giữa các Schema classes:
-\begin{itemize}
-    \item User owns (1-N) Barber: Một user có thể sở hữu nhiều barber shops
-    \item User makes (1-N) Booking: Một user có thể đặt nhiều lịch hẹn
-    \item User gives (1-N) Rating: Một user có thể đánh giá nhiều barbers
-    \item Barber offers (1-N) Service: Một barber cung cấp nhiều dịch vụ
-    \item Barber has (1-N) TimeSlot: Một barber có nhiều khung giờ
-    \item Booking uses (1-1) TimeSlot: Một booking chiếm một khung giờ duy nhất
-    \item Booking includes (M-N) Service: Một booking có thể bao gồm nhiều dịch vụ
-\end{itemize}
-
 \subsubsection{Service Dependencies}
 
-Các lớp Service có dependency relationships để implement business workflows:
-\begin{itemize}
-    \item UserService → User: CRUD operations trên User model
-    \item BarberService → Barber: CRUD operations trên Barber model
-    \item BookingService → Booking, TimeSlotService: Tạo booking và check availability
-    \item RatingService → Rating, BarberService: Tạo rating và update rank
-    \item RAGService → ChatSession: Quản lý chat sessions và messages
-\end{itemize}
+\begin{table}[H]
+\centering
+\caption{Dependencies giữa Services}
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Service} & \textbf{Depends On} & \textbf{Lý do} \\
+\hline
+BookingService & TimeSlotService & Check availability trước khi booking \\
+\hline
+RatingService & BarberService & Update barber.rank sau rating \\
+\hline
+RAGService & ChatSession Schema & Lưu chat history \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Service-Schema Mapping}
+
+\begin{table}[H]
+\centering
+\caption{Service operate trên Schema}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Service} & \textbf{Primary Schemas} \\
+\hline
+UserService & User \\
+\hline
+BarberService & Barber, Service \\
+\hline
+TimeSlotService & TimeSlot \\
+\hline
+BookingService & Booking, TimeSlot, Service \\
+\hline
+RatingService & Rating \\
+\hline
+RAGService & ChatSession, ChatMessage \\
+\hline
+AcneDetectionService & - (stateless) \\
+\hline
+HairStyleGenerator & - (stateless) \\
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{0.5cm}
 
 \subsection{Design Patterns áp dụng}
 
-\textbf{Service Layer Pattern:} Tách biệt business logic (Services) khỏi data models (Schemas), đảm bảo Single Responsibility Principle.
-
-\textbf{Dependency Injection:} Services depend on abstractions, dễ dàng mock và test.
-
-\textbf{Data Transfer Objects (DTO):} Pydantic Schemas đóng vai trò DTOs, validate và serialize data giữa các layers.
+\begin{table}[H]
+\centering
+\caption{Design patterns trong hệ thống}
+\begin{tabular}{|l|p{9cm}|}
+\hline
+\textbf{Pattern} & \textbf{Áp dụng} \\
+\hline
+Service Layer & Tách business logic khỏi data models, đảm bảo SRP \\
+\hline
+Dependency Injection & Services depend on abstractions, dễ mock và test \\
+\hline
+DTO Pattern & Pydantic Schemas validate và serialize data giữa layers \\
+\hline
+Repository (implicit) & Services truy cập DB qua Supabase client \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection{Kết luận}
 
-Class Diagram thể hiện cấu trúc rõ ràng với 8 Schema classes (data layer) và 8 Service classes (business logic layer). Thiết kế tuân theo SOLID principles, dễ maintain và extend. Các AI Services (RAG, Acne Detection, Hair Style Generator) được tách riêng thành independent services, cho phép scale và optimize độc lập. Mối quan hệ giữa các classes đảm bảo data integrity và business logic consistency.
+Class Diagram thể hiện kiến trúc Three-Tier rõ ràng với 8 Schema classes 
+(data layer) và 8 Service classes (business logic layer). 
+Thiết kế tuân theo SOLID principles, dễ maintain và extend. 
+AI Services (RAG, Acne Detection, Hairstyle Generator) được tách riêng, 
+cho phép scale và optimize độc lập.
