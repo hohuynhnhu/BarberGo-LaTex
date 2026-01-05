@@ -24,21 +24,21 @@ Sau khi xác thực thành công, hệ thống khởi tạo phiên làm việc v
 \end{figure}
 
 Sơ đồ thể hiện quy trình đặt lịch dịch vụ của người dùng. 
-Người dùng lựa chọn tiệm cắt tóc, dịch vụ và khung giờ mong muốn, hệ thống kiểm tra tính khả dụng của thời gian trong cơ sở dữ liệu. 
+Người dùng lựa chọn tiệm tóc, dịch vụ và khung giờ mong muốn, hệ thống kiểm tra tính khả dụng của thời gian trong cơ sở dữ liệu. 
 Nếu hợp lệ, hệ thống tạo lịch hẹn và cập nhật trạng thái khung giờ tương ứng. 
 Kết quả đặt lịch được phản hồi lại cho người dùng.
 
 %--------------------------------------------------
 
-\subsection{Sequence Diagram tạo tiệm cắt tóc}
+\subsection{Sequence Diagram tạo tiệm tóc}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/se_tao_barber.jpg}
-    \caption{Sequence Diagram - Tạo tiệm cắt tóc}
+    \caption{Sequence Diagram - Tạo tiệm tóc}
     \label{fig:se_tao_barber}
 \end{figure}
 
-Sơ đồ mô tả quá trình tạo mới tiệm cắt tóc trong hệ thống. 
+Sơ đồ mô tả quá trình tạo mới tiệm tóc trong hệ thống. 
 Chủ tiệm nhập thông tin tiệm thông qua giao diện ứng dụng, hệ thống tiến hành kiểm tra và lưu dữ liệu vào cơ sở dữ liệu Supabase. 
 Sau khi tạo thành công, tiệm được kích hoạt để phục vụ các chức năng quản lý và đặt lịch.
 
@@ -52,7 +52,7 @@ Sau khi tạo thành công, tiệm được kích hoạt để phục vụ các 
     \label{fig:se_dv}
 \end{figure}
 
-Sơ đồ biểu diễn các thao tác quản lý dịch vụ của tiệm cắt tóc bao gồm thêm, chỉnh sửa và xóa dịch vụ. 
+Sơ đồ biểu diễn các thao tác quản lý dịch vụ của tiệm tóc bao gồm thêm, chỉnh sửa và xóa dịch vụ. 
 Hệ thống tiếp nhận yêu cầu từ chủ tiệm, thực hiện cập nhật dữ liệu tương ứng trong cơ sở dữ liệu và phản hồi kết quả xử lý.
 
 %--------------------------------------------------
@@ -65,7 +65,7 @@ Hệ thống tiếp nhận yêu cầu từ chủ tiệm, thực hiện cập nh�
     \label{fig:se_time_slot}
 \end{figure}
 
-Sơ đồ mô tả quy trình quản lý các khung giờ làm việc của tiệm cắt tóc. 
+Sơ đồ mô tả quy trình quản lý các khung giờ làm việc của tiệm tóc. 
 Chủ tiệm thực hiện thiết lập hoặc điều chỉnh thời gian làm việc, hệ thống lưu trữ và đồng bộ dữ liệu với cơ sở dữ liệu. 
 Các khung giờ này được sử dụng trong chức năng đặt lịch của người dùng.
 
@@ -161,6 +161,6 @@ Hệ thống cập nhật thông tin vào cơ sở dữ liệu và vector databa
     \label{fig:se_map}
 \end{figure}
 
-Sơ đồ thể hiện quy trình gắn định vị cho tiệm cắt tóc. 
+Sơ đồ thể hiện quy trình gắn định vị cho tiệm tóc. 
 Khi người dùng chọn địa chỉ tiệm, hệ thống truy vấn dữ liệu kinh độ và vĩ độ từ cơ sở dữ liệu Supabase. 
 Dựa trên dữ liệu này, hệ thống thực hiện tìm kiếm và vẽ lộ trình di chuyển trên bản đồ nhằm hỗ trợ người dùng đến tiệm một cách thuận tiện.
