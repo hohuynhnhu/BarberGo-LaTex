@@ -1,15 +1,50 @@
 \chapter{KẾT QUẢ VÀ HƯỚNG PHÁT TRIỂN}
 
+\section{Tổng quan kết quả đạt được}
 
-\section{Kết quả đạt được}
+Sau quá trình phân tích, thiết kế và triển khai, đề tài đã xây dựng thành công hệ thống BarberGo – một hệ thống đặt lịch và quản lý tiệm cắt tóc tích hợp AI. Hệ thống được phát triển theo kiến trúc client--server, đảm bảo khả năng mở rộng, tính ổn định và phù hợp với các ứng dụng thực tế.
 
-\begin{itemize}
-    \item Xây dựng được hệ thống BarberGo theo mô hình client--server, bao gồm Backend API, Web Admin và Mobile App, đáp ứng đầy đủ các yêu cầu chức năng đã đề ra.
-    \item Thiết kế và triển khai cơ sở dữ liệu sử dụng Supabase PostgreSQL, đảm bảo tính nhất quán, bảo mật và phân quyền truy cập dữ liệu thông qua cơ chế Row Level Security (RLS).
-    \item Tích hợp thành công các mô hình trí tuệ nhân tạo, bao gồm mô hình CNN phát hiện mụn, mô hình Stable Diffusion tạo kiểu tóc và mô hình RAG chatbot.
-    \item Kết quả kiểm thử cho thấy hệ thống hoạt động đúng chức năng, các thành phần giao tiếp đồng bộ và đáp ứng yêu cầu về hiệu năng trong phạm vi nghiên cứu.
-\end{itemize}
+Các thành phần chính của hệ thống bao gồm ứng dụng di động cho khách hàng, ứng dụng dành cho chủ tiệm, hệ thống quản trị web và các mô-đun AI. Trong đó, mô hình RAG đóng vai trò trọng tâm, giúp nâng cao chất lượng tương tác giữa người dùng và hệ thống thông qua khả năng truy xuất dữ liệu private để hỗ trợ quá trình tạo sinh câu trả lời.
 
+Kết quả triển khai cho thấy hệ thống đáp ứng đầy đủ các yêu cầu chức năng đã đề ra, các thành phần giao tiếp đồng bộ, ổn định và đảm bảo mục tiêu nghiên cứu của đề tài về xây dựng một nền tảng hỗ trợ quản lý và tư vấn thông minh trong lĩnh vực chăm sóc tóc.
+
+\section{Kết quả triển khai các thành phần hệ thống}
+
+\subsection{Ứng dụng khách hàng (Customer App)}
+
+Ứng dụng khách hàng được phát triển trên nền tảng di động, đóng vai trò là giao diện chính để người dùng tương tác với hệ thống BarberGo. Ứng dụng cho phép người dùng thực hiện các chức năng như đăng ký, đăng nhập, tìm kiếm tiệm cắt tóc, xem thông tin dịch vụ, đặt lịch hẹn và theo dõi trạng thái lịch hẹn.
+
+Ngoài các chức năng cơ bản, ứng dụng khách hàng còn tích hợp các tính năng AI nhằm nâng cao trải nghiệm người dùng. Cụ thể, người dùng có thể sử dụng chatbot AI để đặt câu hỏi liên quan đến chăm sóc tóc, da đầu và các dịch vụ phù hợp. Kết quả triển khai cho thấy ứng dụng hoạt động ổn định, giao diện thân thiện và đáp ứng tốt nhu cầu sử dụng trong phạm vi nghiên cứu của đề tài.
+
+\subsection{Ứng dụng chủ tiệm (Owner App)}
+
+Ứng dụng dành cho chủ tiệm được xây dựng nhằm hỗ trợ việc quản lý hoạt động kinh doanh một cách hiệu quả. Thông qua ứng dụng này, chủ tiệm có thể quản lý lịch hẹn, cập nhật thông tin dịch vụ, theo dõi trạng thái đặt lịch của khách hàng và nhận thông báo khi có lịch hẹn mới.
+
+Kết quả triển khai cho thấy ứng dụng giúp giảm thiểu các thao tác thủ công, hạn chế tình trạng trùng lịch và nâng cao hiệu quả quản lý thời gian. Việc đồng bộ dữ liệu thời gian thực với hệ thống backend giúp chủ tiệm nắm bắt kịp thời các thay đổi, từ đó cải thiện chất lượng phục vụ khách hàng.
+
+\subsection{Hệ thống Web Admin}
+
+Hệ thống Web Admin đóng vai trò quản trị trung tâm, cho phép quản lý toàn bộ dữ liệu và hoạt động của hệ thống BarberGo. Các chức năng chính bao gồm quản lý người dùng, quản lý tiệm cắt tóc, giám sát dữ liệu lịch hẹn và kiểm soát nội dung hệ thống.
+
+Trong quá trình triển khai, hệ thống Web Admin được thiết kế với cơ chế phân quyền rõ ràng, đảm bảo chỉ người quản trị có thẩm quyền mới có thể thực hiện các thao tác nhạy cảm. Kết quả kiểm thử cho thấy hệ thống hoạt động ổn định, hỗ trợ tốt công tác quản lý và giám sát toàn bộ nền tảng.
+
+\subsection{Hệ thống AI \& RAG}
+
+Hệ thống AI là thành phần cốt lõi tạo nên sự khác biệt của BarberGo so với các ứng dụng đặt lịch truyền thống. Trong khuôn khổ đề tài, các mô hình AI được triển khai bao gồm mô hình CNN phát hiện mụn, mô hình Stable Diffusion tạo kiểu tóc và đặc biệt là mô hình chatbot dựa trên kiến trúc RAG.
+
+\textbf{Mô hình CNN phát hiện mụn} được sử dụng để phân tích hình ảnh khuôn mặt người dùng, từ đó hỗ trợ nhận diện tình trạng da. Kết quả triển khai cho thấy mô hình có khả năng phát hiện các vùng da có mụn với độ chính xác chấp nhận được trong phạm vi thử nghiệm.
+
+\textbf{Mô hình Stable Diffusion} được tích hợp nhằm hỗ trợ sinh ảnh kiểu tóc dựa trên mô tả của người dùng. Kết quả sinh ảnh giúp người dùng có cái nhìn trực quan hơn về các kiểu tóc phù hợp trước khi đưa ra quyết định đặt dịch vụ.
+
+\textbf{Mô hình RAG Chatbot} là trọng tâm chính của đề tài. Khác với các chatbot sử dụng LLM thuần túy, mô hình RAG cho phép kết hợp giữa khả năng tạo sinh của mô hình ngôn ngữ lớn và dữ liệu private của hệ thống BarberGo. Cụ thể, khi người dùng đặt câu hỏi, hệ thống sẽ thực hiện truy xuất các tài liệu liên quan từ cơ sở dữ liệu private (ví dụ: thông tin dịch vụ, kiến thức chăm sóc tóc, quy trình cắt tóc), sau đó cung cấp ngữ cảnh này cho LLM để tạo ra câu trả lời phù hợp.
+
+Kết quả triển khai cho thấy mô hình RAG giúp cải thiện đáng kể chất lượng câu trả lời, giảm hiện tượng hallucination và đảm bảo nội dung phản hồi phù hợp với bối cảnh của hệ thống. Đồng thời, thời gian phản hồi của chatbot vẫn được duy trì ở mức nhanh, đáp ứng tốt yêu cầu tương tác thời gian thực của người dùng.
+
+\section{Đánh giá tổng thể}
+
+Tổng thể, hệ thống BarberGo đã được triển khai thành công và đạt được các mục tiêu đề ra ban đầu. Việc tích hợp AI, đặc biệt là mô hình RAG, đã giúp nâng cao giá trị thực tiễn của hệ thống, biến ứng dụng từ một nền tảng đặt lịch đơn thuần thành một hệ thống hỗ trợ tư vấn thông minh.
+
+Tuy nhiên, hệ thống vẫn còn một số hạn chế nhất định, chẳng hạn như quy mô dữ liệu private phục vụ cho RAG còn hạn chế và mô hình LLM chưa được fine-tune chuyên sâu cho lĩnh vực chăm sóc tóc. Đây là những yếu tố có thể tiếp tục được cải thiện trong các nghiên cứu tiếp theo.
 
 \section{Hướng phát triển}
 
@@ -17,8 +52,9 @@ Trong thời gian tới, hệ thống BarberGo có thể được tiếp tục n
 
 \begin{itemize}
     \item Mở rộng và tối ưu các mô hình AI nhằm nâng cao độ chính xác trong phân tích da và chất lượng hình ảnh sinh ra.
-    \item Nghiên cứu triển khai hệ thống theo kiến trúc microservices và container hóa để tăng khả năng mở rộng và dễ dàng bảo trì.
-    \item Tích hợp thêm các chức năng thông minh như gợi ý dịch vụ cá nhân hóa, phân tích hành vi người dùng và hệ thống đánh giá tự động.
+    \item Mở rộng tập dữ liệu private và cải tiến cơ chế truy xuất nhằm nâng cao hiệu quả của mô hình RAG chatbot.
+    \item Nghiên cứu fine-tune mô hình ngôn ngữ lớn theo miền tri thức chuyên biệt về chăm sóc tóc và dịch vụ làm đẹp.
+    \item Triển khai hệ thống theo kiến trúc microservices và container hóa để tăng khả năng mở rộng và dễ dàng bảo trì.
     \item Tối ưu hiệu năng hệ thống thông qua caching, load balancing và tối ưu truy vấn cơ sở dữ liệu.
     \item Hoàn thiện giao diện người dùng và nâng cao trải nghiệm trên nền tảng di động, hướng tới triển khai thực tế với quy mô lớn.
 \end{itemize}
